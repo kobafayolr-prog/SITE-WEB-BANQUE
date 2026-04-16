@@ -49,62 +49,267 @@ pages.get('/', (c) => {
   const testimonials = store.testimonials.filter(t => t.published).slice(0, 3)
 
   const content = `
-  <!-- HERO -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- HERO SLIDER — 3 slides animés                   -->
+  <!-- ═══════════════════════════════════════════════ -->
   <section id="hero">
-    <!-- Image de fond configurable via admin -->
-    <div class="hero-image-bg">
-      <img src="${s.heroImage || 'https://media.istockphoto.com/id/1090484192/ko/%EC%82%AC%EC%A7%84/%EC%9D%80%ED%96%89-3-%EC%B0%A8%EC%9B%90-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98.jpg?s=170667a&w=0&k=20&c=5IcbxKIgkSb_lC3O071kkgVnYlOZ2jHarOhWSMpuC9U='}" alt="BGFIBank Centrafrique" id="hero-bg-img" onerror="this.style.opacity='0'">
+
+    <!-- SLIDES BACKGROUND -->
+    <div class="hero-slides">
+      <div class="hero-slide active" style="background-image:url('${s.heroImage || 'https://media.istockphoto.com/id/1090484192/ko/%EC%82%AC%EC%A7%84/%EC%9D%80%ED%96%89-3-%EC%B0%A8%EC%9B%90-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98.jpg?s=170667a&w=0&k=20&c=5IcbxKIgkSb_lC3O071kkgVnYlOZ2jHarOhWSMpuC9U='}')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1920&q=80')"></div>
+      <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938?w=1920&q=80')"></div>
     </div>
+
+    <!-- OVERLAY -->
     <div class="hero-overlay"></div>
+
+    <!-- PARTICULES FLOTTANTES -->
+    <div class="hero-particles">
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+
+    <!-- CONTENU PRINCIPAL -->
     <div class="container hero-content">
-      <h1>${s.heroTitle.replace('Centrafrique', '<span>Centrafrique</span>')}</h1>
-      <p>${s.heroSubtitle}</p>
-      <div class="hero-btns">
+
+      <!-- BADGE ANIMÉ -->
+      <div class="hero-badge reveal-up">
+        <span class="badge-dot"></span>
+        <span>Votre banque de confiance en RCA depuis 30 ans</span>
+      </div>
+
+      <!-- TITRE TYPEWRITER -->
+      <h1 class="reveal-up" style="animation-delay:0.2s;">
+        <span id="typewriter-text"></span><span class="cursor-blink">|</span>
+      </h1>
+
+      <!-- SOUS-TITRE -->
+      <p class="hero-subtitle reveal-up" style="animation-delay:0.4s;">${s.heroSubtitle}</p>
+
+      <!-- BOUTONS CTA -->
+      <div class="hero-btns reveal-up" style="animation-delay:0.6s;">
         <a href="https://leclient.bgfi.com" target="_blank" class="btn-primary">
           <i class="fas fa-user-plus"></i> ${s.heroCta}
+          <span class="btn-shine"></span>
         </a>
         <a href="/simulateurs" class="btn-secondary">
           <i class="fas fa-calculator"></i> Simuler mon crédit
         </a>
+        <a href="/contact" class="btn-ghost">
+          <i class="fas fa-phone"></i> Nous appeler
+        </a>
       </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-number">30+</span><span class="stat-label">Ans d'expérience</span></div>
-        <div class="stat"><span class="stat-number">12</span><span class="stat-label">Pays africains</span></div>
-        <div class="stat"><span class="stat-number">100%</span><span class="stat-label">Digital & Sécurisé</span></div>
-        <div class="stat"><span class="stat-number">24h</span><span class="stat-label">Service en ligne</span></div>
+
+      <!-- STATS COMPTEURS ANIMÉS -->
+      <div class="hero-stats reveal-up" style="animation-delay:0.8s;">
+        <div class="stat">
+          <span class="stat-number counter" data-target="30" data-suffix="+">0</span>
+          <span class="stat-label">Ans d'expérience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number counter" data-target="12" data-suffix="">0</span>
+          <span class="stat-label">Pays africains</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number counter" data-target="10000" data-suffix="+" data-display="10K+">0</span>
+          <span class="stat-label">Clients actifs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" style="font-size:28px;">24h</span>
+          <span class="stat-label">Service en ligne</span>
+        </div>
       </div>
     </div>
+
+    <!-- SLIDER DOTS -->
+    <div class="hero-dots">
+      <button class="dot active" onclick="goSlide(0)"></button>
+      <button class="dot" onclick="goSlide(1)"></button>
+      <button class="dot" onclick="goSlide(2)"></button>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <span>Défiler</span>
+    </div>
+
   </section>
 
-  <!-- ECONOMIC TICKER -->
-  <div id="economic-ticker">
+  <!-- SCRIPT ANIMATIONS HERO -->
+  <script>
+  (function() {
+    // ── TYPEWRITER ────────────────────────────────────────────
+    const phrases = [
+      "La banque qui accompagne votre <span style='color:#C2CFA4;'>croissance</span> en Centrafrique",
+      "Des solutions <span style='color:#C2CFA4;'>digitales</span> pour votre avenir financier",
+      "Investissez <span style='color:#C2CFA4;'>durablement</span> avec BGFIBank Centrafrique"
+    ];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+    const el = document.getElementById('typewriter-text');
+    function typeWriter() {
+      if (!el) return;
+      const current = phrases[phraseIdx];
+      const plain = current.replace(/<[^>]+>/g, '');
+      if (!deleting && charIdx <= plain.length) {
+        // Reconstituer le HTML partiel en tenant compte des spans
+        let shown = 0, html = '';
+        for (let i = 0; i < current.length; i++) {
+          if (current[i] === '<') {
+            const close = current.indexOf('>', i);
+            const tag = current.substring(i, close + 1);
+            html += tag; i = close;
+          } else {
+            if (shown < charIdx) { html += current[i]; shown++; }
+            else break;
+          }
+        }
+        el.innerHTML = html;
+        charIdx++;
+        if (charIdx > plain.length) { setTimeout(typeWriter, 2200); deleting = true; return; }
+        setTimeout(typeWriter, 55);
+      } else if (deleting && charIdx > 0) {
+        charIdx--;
+        // Strip and recount
+        const plain2 = current.replace(/<[^>]+>/g, '');
+        let shown = 0, html = '';
+        for (let i = 0; i < current.length; i++) {
+          if (current[i] === '<') {
+            const close = current.indexOf('>', i);
+            const tag = current.substring(i, close + 1);
+            html += tag; i = close;
+          } else {
+            if (shown < charIdx) { html += current[i]; shown++; }
+            else break;
+          }
+        }
+        el.innerHTML = html;
+        if (charIdx === 0) {
+          deleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          setTimeout(typeWriter, 400);
+          return;
+        }
+        setTimeout(typeWriter, 28);
+      }
+    }
+    setTimeout(typeWriter, 600);
+
+    // ── SLIDER AUTO ───────────────────────────────────────────
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dots .dot');
+    window.goSlide = function(n) {
+      slides[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    };
+    setInterval(() => { goSlide((currentSlide + 1) % slides.length); }, 5500);
+
+    // ── COMPTEURS ANIMÉS ──────────────────────────────────────
+    function animateCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        if (el.dataset.done) return;
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const display = el.dataset.display;
+        if (display) { el.textContent = display; el.dataset.done = '1'; return; }
+        let current = 0;
+        const step = Math.ceil(target / 60);
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = (current >= 1000 ? (current/1000).toFixed(0)+'K' : current) + suffix;
+          if (current >= target) { clearInterval(timer); el.dataset.done = '1'; }
+        }, 28);
+      });
+    }
+    setTimeout(animateCounters, 1200);
+  })();
+  </script>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- BANDEAU DÉFILANT (NEWS TICKER)                  -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="news-ticker-bar">
+    <div class="ntb-label">
+      <i class="fas fa-bolt"></i> EN DIRECT
+    </div>
+    <div class="ntb-track-wrap">
+      <div class="ntb-track" id="ntbTrack">
+        <!-- Bloc 1 -->
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-dollar-sign"></i> USD/FCFA : <strong>${s.exchangeUSD}</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-euro-sign"></i> EUR/FCFA : <strong>${s.exchangeEUR}</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-university"></i> Taux BEAC : <strong>${s.beacRate}%</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-lightbulb" style="color:#C2CFA4;"></i> ${s.economicTip}</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — Avenue des Martyrs, Bangui</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-clock"></i> Lun–Ven : 8h00–17h00 &nbsp;|&nbsp; Sam : 8h00–12h00</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-shield-alt" style="color:#C2CFA4;"></i> Agréée COBAC — Sécurisée SSL</span>
+        <!-- Bloc 2 (dupliqué pour l'effet infini) -->
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-dollar-sign"></i> USD/FCFA : <strong>${s.exchangeUSD}</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-euro-sign"></i> EUR/FCFA : <strong>${s.exchangeEUR}</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-university"></i> Taux BEAC : <strong>${s.beacRate}%</strong></span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-lightbulb" style="color:#C2CFA4;"></i> ${s.economicTip}</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — Avenue des Martyrs, Bangui</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-clock"></i> Lun–Ven : 8h00–17h00 &nbsp;|&nbsp; Sam : 8h00–12h00</span>
+        <span class="ntb-sep">◆</span>
+        <span><i class="fas fa-shield-alt" style="color:#C2CFA4;"></i> Agréée COBAC — Sécurisée SSL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT SCROLL-REVEAL GLOBAL -->
+  <script>
+  (function() {
+    // Scroll Reveal
+    const revealEls = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-fade, .section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  })();
+  </script>
+
+  <!-- ECONOMIC TICKER (compact, sous le bandeau) -->
+  <div id="economic-ticker" style="display:none;">
     <div class="container">
       <div class="ticker-inner">
         <span class="ticker-label"><i class="fas fa-chart-line"></i> Marchés</span>
         <div class="ticker-items">
-          <div class="ticker-item">
-            <span class="label"><i class="fas fa-dollar-sign"></i> USD/FCFA</span>
-            <span class="value" id="rateUSD">${s.exchangeUSD}</span>
-          </div>
-          <div class="ticker-item">
-            <span class="label"><i class="fas fa-euro-sign"></i> EUR/FCFA</span>
-            <span class="value" id="rateEUR">${s.exchangeEUR}</span>
-          </div>
-          <div class="ticker-item">
-            <span class="label"><i class="fas fa-university"></i> Taux BEAC</span>
-            <span class="value" id="rateBeac">${s.beacRate}%</span>
-          </div>
-        </div>
-        <div class="ticker-tip" id="economicTip">
-          <i class="fas fa-lightbulb" style="color:#7dcaa5;margin-right:6px;"></i>
-          ${s.economicTip}
+          <div class="ticker-item"><span class="label"><i class="fas fa-dollar-sign"></i> USD/FCFA</span><span class="value" id="rateUSD">${s.exchangeUSD}</span></div>
+          <div class="ticker-item"><span class="label"><i class="fas fa-euro-sign"></i> EUR/FCFA</span><span class="value" id="rateEUR">${s.exchangeEUR}</span></div>
+          <div class="ticker-item"><span class="label"><i class="fas fa-university"></i> Taux BEAC</span><span class="value" id="rateBeac">${s.beacRate}%</span></div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- SERVICES RAPIDES -->
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Nos solutions</span>
@@ -150,7 +355,7 @@ pages.get('/', (c) => {
   </section>
 
   <!-- DEVENIR CLIENT -->
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
         <div>
@@ -183,7 +388,7 @@ pages.get('/', (c) => {
   </section>
 
   <!-- PRODUITS POPULAIRES -->
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Produits & Services</span>
@@ -231,7 +436,7 @@ pages.get('/', (c) => {
   </section>
 
   <!-- ACTUALITÉS -->
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;text-align:left;margin-bottom:32px;">
         <div>
@@ -263,7 +468,7 @@ pages.get('/', (c) => {
   </section>
 
   <!-- TÉMOIGNAGES -->
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">Ils nous font confiance</span>
@@ -344,13 +549,13 @@ pages.get('/particuliers', (c) => {
       <p>Des solutions bancaires complètes pour votre vie quotidienne et vos projets personnels</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div id="comptes" class="section-header"><span class="eyebrow">Tous nos produits</span><h2>Nos services pour les Particuliers</h2><div class="divider"></div></div>
       <div class="grid-4" id="epargne" style="margin-top:16px;">${products.map(productCard).join('')}</div>
     </div>
   </section>
-  <section class="section section-alt" id="credits">
+  <section class="section section-alt reveal-section" id="credits">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
         <div>
@@ -385,13 +590,13 @@ pages.get('/professionnels', (c) => {
       <p>Des solutions adaptées pour développer et pérenniser votre activité professionnelle</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Nos produits</span><h2>Solutions pour Professionnels</h2><div class="divider"></div></div>
       <div class="grid-3">${products.map(productCard).join('')}</div>
     </div>
   </section>
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Expertise</span><h2>Pourquoi choisir BGFIBank pour votre activité ?</h2><div class="divider"></div></div>
       <div class="grid-4">
@@ -418,13 +623,13 @@ pages.get('/entreprises', (c) => {
       <p>Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Solutions corporate</span><h2>Nos services Entreprises</h2><div class="divider"></div></div>
       <div class="grid-3">${products.map(productCard).join('')}</div>
     </div>
   </section>
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Chiffres clés</span><h2>BGFIBank Centrafrique en chiffres</h2><div class="divider"></div></div>
       <div class="grid-4">
@@ -446,11 +651,11 @@ pages.get('/banque-privee', (c) => {
   <div class="page-hero" style="background:linear-gradient(135deg,#1a0533,#003a74);">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Banque Privée</div>
-      <h1><i class="fas fa-gem" style="margin-right:10px;color:#a8b088;"></i>Banque Privée</h1>
+      <h1><i class="fas fa-gem" style="margin-right:10px;color:#C2CFA4;"></i>Banque Privée</h1>
       <p>Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:60px;">
         <div>
@@ -461,7 +666,7 @@ pages.get('/banque-privee', (c) => {
         </div>
         <div style="background:linear-gradient(135deg,var(--bgfi-navy),#1a0533);border-radius:12px;padding:32px;">
           ${['Conseiller privé exclusif','Discrétion absolue','Stratégies d\'investissement sur mesure','Accès aux marchés financiers'].map(f=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
-            <i class="fas fa-check-circle" style="color:#a8b088;flex-shrink:0;"></i>
+            <i class="fas fa-check-circle" style="color:#C2CFA4;flex-shrink:0;"></i>
             <span style="color:rgba(255,255,255,0.9);font-size:14px;">${f}</span>
           </div>`).join('')}
         </div>
@@ -503,7 +708,7 @@ pages.get('/bgfibank-rca', (c) => {
       </div>
     </div>
   </section>
-  <section class="section section-alt" id="impact">
+  <section class="section section-alt reveal-section" id="impact">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Impact local</span><h2>Notre contribution au développement de la RCA</h2><div class="divider"></div></div>
       <div class="grid-3" style="margin-top:32px;">
@@ -549,7 +754,7 @@ pages.get('/espace-pme', (c) => {
       <p>BGFIBank croit au potentiel des entrepreneurs centrafricains — Solutions exclusives pour les PME</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Programme PME</span><h2>Comment financer votre projet en RCA ?</h2><div class="divider"></div></div>
       <div class="pme-steps">
@@ -560,7 +765,7 @@ pages.get('/espace-pme', (c) => {
       </div>
     </div>
   </section>
-  <section class="section section-alt">
+  <section class="section section-alt reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Nos offres PME</span><h2>Solutions conçues pour les entrepreneurs centrafricains</h2><div class="divider"></div></div>
       <div class="grid-3">
@@ -581,7 +786,7 @@ pages.get('/espace-pme', (c) => {
       </div>
     </div>
   </section>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
         <div>
@@ -629,7 +834,7 @@ pages.get('/actualites', (c) => {
       <p>Les dernières nouvelles de BGFIBank Centrafrique et de l'économie centrafricaine</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <!-- Filtres catégories -->
       <div class="segment-tabs" style="margin-bottom:32px;" id="cat-tabs">
@@ -671,7 +876,7 @@ pages.get('/actualites/:slug', (c) => {
       </div>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 340px;gap:40px;">
         <div>
@@ -722,7 +927,7 @@ pages.get('/simulateurs', (c) => {
       <p>Calculez et anticipez vos projets financiers en toute simplicité</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
         <div>
@@ -839,7 +1044,7 @@ pages.get('/agences', (c) => {
       <p>Retrouvez toutes nos agences et distributeurs automatiques en République Centrafricaine</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="map-layout">
         <div id="map"></div>
@@ -905,7 +1110,7 @@ pages.get('/contact', (c) => {
       <p>Notre équipe est disponible pour répondre à toutes vos questions</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;">
         <div>
@@ -998,7 +1203,7 @@ pages.get('/carrieres', (c) => {
       <p>Construisez votre carrière dans l'une des plus grandes banques d'Afrique Centrale</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container">
       <div class="section-header"><span class="eyebrow">Opportunités</span><h2>Nos offres d'emploi</h2><div class="divider"></div></div>
       ${jobs.length > 0 ? `<div style="display:flex;flex-direction:column;gap:16px;margin-top:24px;">
@@ -1036,7 +1241,7 @@ pages.get('/rendez-vous', (c) => {
       <p>Réservez un créneau avec l'un de nos conseillers</p>
     </div>
   </div>
-  <section class="section">
+  <section class="section reveal-section">
     <div class="container" style="max-width:700px;">
       <div class="admin-card">
         <h2 style="font-size:20px;font-weight:700;color:var(--bgfi-navy);margin-bottom:24px;"><i class="fas fa-calendar-alt" style="color:var(--bgfi-sky);margin-right:8px;"></i>Réserver mon rendez-vous</h2>
