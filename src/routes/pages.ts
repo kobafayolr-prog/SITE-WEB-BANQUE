@@ -51,9 +51,9 @@ pages.get('/', (c) => {
   const content = `
   <!-- HERO -->
   <section id="hero">
-    <!-- Image de fond : équipe BGFIBank Centrafrique -->
+    <!-- Image de fond configurable via admin -->
     <div class="hero-image-bg">
-      <img src="https://www.genspark.ai/api/files/s/fvaBzwai?cache_control=3600" alt="Équipe BGFIBank Centrafrique" id="hero-bg-img">
+      <img src="${s.heroImage || '/static/images/inauguration-placeholder.svg'}" alt="BGFIBank Centrafrique — Inauguration" id="hero-bg-img" onerror="this.style.opacity='0'">
     </div>
     <div class="hero-overlay"></div>
     <div class="container hero-content">

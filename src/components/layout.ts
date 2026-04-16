@@ -25,7 +25,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <div id="top-bar">
     <div class="container">
       <div style="display:flex;align-items:center;gap:20px;">
-        <span><i class="fas fa-phone" style="margin-right:6px;"></i>+236 75 00 00 00</span>
+        <span><i class="fas fa-phone" style="margin-right:6px;"></i>00236 72 80 98 08 / 75 65 54 65</span>
         <span><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i>Bangui, République Centrafricaine</span>
       </div>
       <div style="display:flex;align-items:center;gap:16px;">
@@ -222,8 +222,8 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         <div class="footer-col footer-contact">
           <h4>Nous Contacter</h4>
           <p><i class="fas fa-map-marker-alt"></i> Avenue des Martyrs, Bangui, RCA</p>
-          <p><i class="fas fa-phone"></i> +236 75 00 00 00</p>
-          <p><i class="fas fa-envelope"></i> contact@bgfibank-rca.com</p>
+          <p><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</p>
+          <p><i class="fas fa-envelope"></i> f.koba@bgfi.com</p>
           <p><i class="fas fa-clock"></i> Lun-Ven : 8h00 - 17h00</p>
           <div style="margin-top:16px;">
             <a href="/contact" class="btn btn-outline" style="font-size:12px;padding:8px 16px;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.3);">

@@ -74,6 +74,7 @@ export interface SiteSettings {
   heroTitle: string;
   heroSubtitle: string;
   heroCta: string;
+  heroImage: string;
   economicTip: string;
   exchangeUSD: string;
   exchangeEUR: string;
@@ -94,8 +95,8 @@ export interface PreRegistration {
 export const defaultSettings: SiteSettings = {
   siteName: "BGFIBank Centrafrique",
   slogan: "Votre partenaire pour l'avenir",
-  phone: "+236 75 00 00 00",
-  email: "contact@bgfibank-rca.com",
+  phone: "00236 72 80 98 08 / 75 65 54 65",
+  email: "f.koba@bgfi.com",
   address: "Avenue des Martyrs, Bangui, République Centrafricaine",
   facebook: "https://facebook.com/bgfibankrca",
   twitter: "https://twitter.com/bgfibankrca",
@@ -104,6 +105,7 @@ export const defaultSettings: SiteSettings = {
   heroTitle: "La banque qui accompagne votre croissance en Centrafrique",
   heroSubtitle: "Des solutions bancaires adaptées à vos besoins, disponibles partout en RCA. Ouvrez votre compte en quelques minutes.",
   heroCta: "Devenir client",
+  heroImage: "/static/images/inauguration-placeholder.svg",
   economicTip: "Conseil du jour : Diversifiez votre épargne avec un Dépôt à Terme pour sécuriser votre avenir financier.",
   exchangeUSD: "655.96",
   exchangeEUR: "655.96",

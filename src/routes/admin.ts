@@ -255,6 +255,14 @@ admin.get('/settings', (c) => {
       <div class="form-group"><label>Titre principal (Hero)</label><input type="text" id="heroTitle"></div>
       <div class="form-group"><label>Sous-titre (Hero)</label><textarea id="heroSubtitle" style="min-height:70px;"></textarea></div>
       <div class="form-group"><label>Bouton principal</label><input type="text" id="heroCta"></div>
+      <div class="form-group">
+        <label>Image principale (Hero) — URL ou chemin</label>
+        <input type="text" id="heroImage" placeholder="/static/images/inauguration-bgfi-centrafrique.jpg" style="font-size:12px;">
+        <small style="color:var(--bgfi-text-light);font-size:11px;">Entrez une URL externe (https://...) ou un chemin relatif (/static/images/...)</small>
+        <div id="heroImagePreview" style="margin-top:10px;display:none;">
+          <img id="heroImgTag" src="" alt="Aperçu" style="max-width:100%;max-height:200px;border-radius:8px;border:2px solid var(--bgfi-border);object-fit:cover;">
+        </div>
+      </div>
       <hr style="border:none;border-top:1px solid var(--bgfi-border);margin:20px 0;">
       <h3 style="font-size:14px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;"><i class="fas fa-chart-line" style="color:var(--bgfi-sky);margin-right:8px;"></i>Tableau de bord économique</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
@@ -277,15 +285,25 @@ admin.get('/settings', (c) => {
   <script>
     (async () => {
       const s = await api('GET', '/settings');
-      ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'].forEach(k => {
+      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
+      fields.forEach(k => {
         const el = document.getElementById(k);
         if (el) el.value = s[k] || '';
       });
+      // Prévisualisation image hero
+      const heroImg = document.getElementById('heroImage');
+      const showPreview = (url) => {
+        if (url) { document.getElementById('heroImgTag').src = url; document.getElementById('heroImagePreview').style.display = 'block'; }
+        else { document.getElementById('heroImagePreview').style.display = 'none'; }
+      };
+      showPreview(s.heroImage);
+      heroImg.addEventListener('input', () => showPreview(heroImg.value));
     })();
     async function saveSettings(e) {
       e.preventDefault();
       const data = {};
-      ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'].forEach(k => {
+      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
+      fields.forEach(k => {
         const el = document.getElementById(k);
         if (el) data[k] = el.value;
       });
