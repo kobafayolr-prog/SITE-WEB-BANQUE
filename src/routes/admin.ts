@@ -16,6 +16,47 @@ const adminLayout = (content: string, title = 'Dashboard', activePage = '') => `
   <title>${title} — Admin BGFIBank RCA</title>
   <link rel="stylesheet" href="/static/css/bgfi.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <script>
+    // Auth check (avant tout le reste)
+    const token = localStorage.getItem('bgfi_admin_token');
+    if (!token && !window.location.pathname.includes('/admin/login')) window.location.href = '/admin/login';
+
+    // Toast
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.innerHTML = '<i class="fas fa-'+(type==='success'?'check-circle':'exclamation-circle')+'"></i> '+msg;
+      t.className = 'toast show '+type;
+      setTimeout(() => t.className='toast', 3500);
+    }
+    // Modal
+    function openModal(title, body, footer='') {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = body;
+      document.getElementById('modal-footer').innerHTML = footer;
+      document.getElementById('modal').classList.add('open');
+    }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    // API helper
+    async function api(method, path, data=null) {
+      const opts = { method, headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token } };
+      if (data) opts.body = JSON.stringify(data);
+      const res = await fetch('/api'+path, opts);
+      return res.json();
+    }
+    async function del(path) {
+      if (!confirm('Confirmer la suppression ?')) return;
+      const r = await api('DELETE', path);
+      if (r.success) { showToast('Supprimé avec succès'); setTimeout(() => location.reload(), 800); }
+      else showToast(r.error||'Erreur', 'error');
+    }
+    async function toggle(path, data) {
+      const r = await api('PUT', path, data);
+      if (r.success) { showToast('Mis à jour'); setTimeout(() => location.reload(), 800); }
+      else showToast(r.error||'Erreur', 'error');
+    }
+  </script>
 </head>
 <body>
 <div id="admin-layout">
@@ -77,45 +118,8 @@ const adminLayout = (content: string, title = 'Dashboard', activePage = '') => `
   </div>
 </div>
 <script>
-  // Auth check
-  const token = localStorage.getItem('bgfi_admin_token');
-  if (!token && !window.location.pathname.includes('/admin/login')) window.location.href = '/admin/login';
-  
-  // Toast
-  function showToast(msg, type='success') {
-    const t = document.getElementById('toast');
-    t.innerHTML = '<i class="fas fa-'+(type==='success'?'check-circle':'exclamation-circle')+'"></i> '+msg;
-    t.className = 'toast show '+type;
-    setTimeout(() => t.className='toast', 3500);
-  }
-  // Modal
-  function openModal(title, body, footer='') {
-    document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-body').innerHTML = body;
-    document.getElementById('modal-footer').innerHTML = footer;
-    document.getElementById('modal').classList.add('open');
-  }
-  function closeModal() { document.getElementById('modal').classList.remove('open'); }
+  // Listener modal overlay (nécessite DOM chargé)
   document.getElementById('modal').addEventListener('click', e => { if(e.target === document.getElementById('modal')) closeModal(); });
-  
-  // API helper
-  async function api(method, path, data=null) {
-    const opts = { method, headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token } };
-    if (data) opts.body = JSON.stringify(data);
-    const res = await fetch('/api'+path, opts);
-    return res.json();
-  }
-  async function del(path) {
-    if (!confirm('Confirmer la suppression ?')) return;
-    const r = await api('DELETE', path);
-    if (r.success) { showToast('Supprimé avec succès'); setTimeout(() => location.reload(), 800); }
-    else showToast(r.error||'Erreur', 'error');
-  }
-  async function toggle(path, data) {
-    const r = await api('PUT', path, data);
-    if (r.success) { showToast('Mis à jour'); setTimeout(() => location.reload(), 800); }
-    else showToast(r.error||'Erreur', 'error');
-  }
 </script>
 </body>
 </html>`
