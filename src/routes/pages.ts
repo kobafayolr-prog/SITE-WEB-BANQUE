@@ -74,21 +74,21 @@ pages.get('/', (c) => {
     <div class="container hero-content">
 
       <!-- BADGE ANIMÉ -->
-      <div class="hero-badge reveal-up">
+      <div class="hero-badge">
         <span class="badge-dot"></span>
         <span>Votre banque de confiance en RCA depuis 30 ans</span>
       </div>
 
       <!-- TITRE TYPEWRITER -->
-      <h1 class="reveal-up" style="animation-delay:0.2s;">
+      <h1>
         <span id="typewriter-text"></span><span class="cursor-blink">|</span>
       </h1>
 
       <!-- SOUS-TITRE -->
-      <p class="hero-subtitle reveal-up" style="animation-delay:0.4s;">${s.heroSubtitle}</p>
+      <p class="hero-subtitle">${s.heroSubtitle}</p>
 
       <!-- BOUTONS CTA -->
-      <div class="hero-btns reveal-up" style="animation-delay:0.6s;">
+      <div class="hero-btns">
         <a href="https://leclient.bgfi.com" target="_blank" class="btn-primary">
           <i class="fas fa-user-plus"></i> ${s.heroCta}
           <span class="btn-shine"></span>
@@ -102,7 +102,7 @@ pages.get('/', (c) => {
       </div>
 
       <!-- STATS COMPTEURS ANIMÉS -->
-      <div class="hero-stats reveal-up" style="animation-delay:0.8s;">
+      <div class="hero-stats">
         <div class="stat">
           <span class="stat-number counter" data-target="30" data-suffix="+">0</span>
           <span class="stat-label">Ans d'expérience</span>
@@ -277,32 +277,7 @@ pages.get('/', (c) => {
     </div>
   </div>
 
-  <!-- SCRIPT SCROLL-REVEAL GLOBAL -->
-  <script>
-  (function() {
-    if (!('IntersectionObserver' in window)) return; // fallback : tout visible
-    // Activer le mode reveal uniquement si JS fonctionne
-    document.body.classList.add('js-reveal');
-    const revealEls = document.querySelectorAll('.reveal-section');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('revealed');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    // Observer chaque section avec un délai progressif
-    revealEls.forEach((el, i) => {
-      el.style.transitionDelay = (i * 0.05) + 's';
-      observer.observe(el);
-    });
-    // Sécurité : forcer tout visible après 3s (au cas où)
-    setTimeout(() => {
-      revealEls.forEach(el => el.classList.add('revealed'));
-    }, 3000);
-  })();
-  </script>
+
 
   <!-- ECONOMIC TICKER (compact, sous le bandeau) -->
   <div id="economic-ticker" style="display:none;">
