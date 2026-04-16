@@ -51,9 +51,12 @@ pages.get('/', (c) => {
   const content = `
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-bg-pattern"></div>
-    <div class="hero-bg-pattern2"></div>
-    <div class="container">
+    <!-- Image de fond : équipe BGFIBank Centrafrique -->
+    <div class="hero-image-bg">
+      <img src="https://www.genspark.ai/api/files/s/fvaBzwai?cache_control=3600" alt="Équipe BGFIBank Centrafrique" id="hero-bg-img">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
       <h1>${s.heroTitle.replace('Centrafrique', '<span>Centrafrique</span>')}</h1>
       <p>${s.heroSubtitle}</p>
       <div class="hero-btns">
