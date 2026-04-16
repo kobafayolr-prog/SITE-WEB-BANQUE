@@ -42,6 +42,7 @@ const adminLayout = (content: string, title = 'Dashboard', activePage = '') => `
       <a href="/admin/agencies" class="${activePage==='agencies'?'active':''}"><i class="fas fa-map-marker-alt"></i> Agences & GAB</a>
       <a href="/admin/jobs" class="${activePage==='jobs'?'active':''}"><i class="fas fa-briefcase"></i> Offres d'emploi</a>
       <a href="/admin/preregistrations" class="${activePage==='prereg'?'active':''}"><i class="fas fa-bell"></i> Pré-inscriptions</a>
+      <a href="/admin/messages" class="${activePage==='messages'?'active':''}"><i class="fas fa-envelope"></i> Messages reçus</a>
 
       <div class="nav-section">Compte</div>
       <a href="/admin/security" class="${activePage==='security'?'active':''}"><i class="fas fa-shield-alt"></i> Sécurité</a>
@@ -264,6 +265,19 @@ admin.get('/settings', (c) => {
         </div>
       </div>
       <hr style="border:none;border-top:1px solid var(--bgfi-border);margin:20px 0;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;"><i class="fas fa-envelope-open-text" style="color:var(--bgfi-sky);margin-right:8px;"></i>Configuration Email (Envoi des messages de contact)</h3>
+      <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px;color:#92400e;">
+        <i class="fas fa-info-circle" style="margin-right:6px;"></i>
+        Pour recevoir les messages du formulaire de contact par email, créez un compte gratuit sur
+        <a href="https://resend.com" target="_blank" style="color:#0d91d0;font-weight:700;">resend.com</a> et copiez votre clé API ci-dessous.
+        Plan gratuit : 100 emails/jour. <strong>Les messages sont toujours sauvegardés dans l'onglet "Messages reçus" même sans clé.</strong>
+      </div>
+      <div class="form-group">
+        <label>Clé API Resend (pour envoi email) <span style="color:var(--bgfi-text-light);font-weight:400;">— optionnel</span></label>
+        <input type="password" id="resendApiKey" placeholder="re_xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace;">
+        <small style="color:var(--bgfi-text-light);font-size:11px;">Votre clé est stockée de façon sécurisée et n'est jamais affichée en clair.</small>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--bgfi-border);margin:20px 0;">
       <h3 style="font-size:14px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;"><i class="fas fa-chart-line" style="color:var(--bgfi-sky);margin-right:8px;"></i>Tableau de bord économique</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
         <div class="form-group"><label>Taux USD/FCFA</label><input type="text" id="exchangeUSD"></div>
@@ -285,7 +299,7 @@ admin.get('/settings', (c) => {
   <script>
     (async () => {
       const s = await api('GET', '/settings');
-      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
+      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','resendApiKey','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
       fields.forEach(k => {
         const el = document.getElementById(k);
         if (el) el.value = s[k] || '';
@@ -302,7 +316,7 @@ admin.get('/settings', (c) => {
     async function saveSettings(e) {
       e.preventDefault();
       const data = {};
-      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
+      const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','resendApiKey','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
       fields.forEach(k => {
         const el = document.getElementById(k);
         if (el) data[k] = el.value;
@@ -533,6 +547,75 @@ admin.get('/preregistrations', (c) => {
     loadPreReg();
   </script>`
   return c.html(adminLayout(content, 'Pré-inscriptions', 'prereg'))
+})
+
+// ── MESSAGES REÇUS ───────────────────────────────────────────
+admin.get('/messages', (c) => {
+  const content = `
+  <div class="admin-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <h2 style="margin:0;"><i class="fas fa-envelope" style="color:var(--bgfi-sky);margin-right:8px;"></i>Messages du formulaire de contact</h2>
+      <span id="msgCount" style="background:var(--bgfi-sky);color:white;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;"></span>
+    </div>
+    <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#92400e;">
+      <i class="fas fa-info-circle" style="margin-right:6px;"></i>
+      Pour recevoir ces messages par email automatiquement, configurez votre clé Resend dans
+      <a href="/admin/settings" style="color:#0d91d0;font-weight:700;">Paramètres du site</a>.
+    </div>
+    <div id="msgList">
+      <div style="text-align:center;padding:40px;color:var(--bgfi-text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:12px;">Chargement...</p></div>
+    </div>
+  </div>
+  <script>
+    (async () => {
+      const messages = await api('GET', '/contact-messages');
+      const list = document.getElementById('msgList');
+      const count = document.getElementById('msgCount');
+      if (!messages || messages.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:60px;"><i class="fas fa-inbox" style="font-size:48px;color:var(--bgfi-border);display:block;margin-bottom:16px;"></i><p style="color:var(--bgfi-text-light);">Aucun message reçu pour le moment.</p></div>';
+        count.textContent = '0 message';
+        return;
+      }
+      const unread = messages.filter(m => !m.read).length;
+      count.textContent = messages.length + ' message' + (messages.length > 1 ? 's' : '') + (unread > 0 ? ' · ' + unread + ' non lu' + (unread > 1 ? 's' : '') : '');
+      list.innerHTML = messages.map(m => \`
+        <div id="msg-\${m.id}" style="border:1px solid \${m.read ? 'var(--bgfi-border)' : 'var(--bgfi-sky)'}; background:\${m.read ? 'white' : '#f0f9ff'}; border-radius:8px;padding:18px;margin-bottom:12px;transition:all 0.2s;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+            <div>
+              \${!m.read ? '<span style="background:var(--bgfi-sky);color:white;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;margin-right:8px;">Nouveau</span>' : ''}
+              <strong style="color:var(--bgfi-navy);font-size:16px;">\${m.name}</strong>
+              <span style="color:var(--bgfi-text-light);font-size:13px;margin-left:8px;">\${m.email}\${m.phone ? ' · ' + m.phone : ''}</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
+              <span style="font-size:12px;color:var(--bgfi-text-light);">\${new Date(m.date).toLocaleString('fr-FR')}</span>
+              <button onclick="markRead(\${m.id})" style="background:var(--bgfi-p3);color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:11px;">\${m.read ? '✓ Lu' : 'Marquer lu'}</button>
+              <a href="mailto:\${m.email}?subject=Re: \${encodeURIComponent(m.subject || 'Votre message')}&body=Bonjour \${encodeURIComponent(m.name)}," 
+                 style="background:var(--bgfi-sky);color:white;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:11px;text-decoration:none;">
+                <i class="fas fa-reply"></i> Répondre
+              </a>
+            </div>
+          </div>
+          <div style="margin-top:8px;">
+            <span style="background:var(--bgfi-light);color:var(--bgfi-navy);font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;">\${m.subject || 'Sans sujet'}</span>
+          </div>
+          <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.03);border-radius:6px;font-size:14px;color:var(--bgfi-text);line-height:1.7;border-left:3px solid var(--bgfi-sky);">\${m.message.replace(/\\n/g,'<br>')}</div>
+        </div>
+      \`).join('');
+    })();
+
+    async function markRead(id) {
+      await api('PUT', '/contact-messages/' + id + '/read', {});
+      const el = document.getElementById('msg-' + id);
+      if (el) {
+        el.style.border = '1px solid var(--bgfi-border)';
+        el.style.background = 'white';
+        const badge = el.querySelector('[style*="Nouveau"]');
+        if (badge) badge.remove();
+      }
+      showToast('Message marqué comme lu');
+    }
+  </script>`
+  return c.html(adminLayout(content, 'Messages reçus', 'messages'))
 })
 
 // ── SECURITY ─────────────────────────────────────────────────

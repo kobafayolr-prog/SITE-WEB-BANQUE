@@ -75,6 +75,7 @@ export interface SiteSettings {
   heroSubtitle: string;
   heroCta: string;
   heroImage: string;
+  resendApiKey: string;
   economicTip: string;
   exchangeUSD: string;
   exchangeEUR: string;
@@ -105,7 +106,8 @@ export const defaultSettings: SiteSettings = {
   heroTitle: "La banque qui accompagne votre croissance en Centrafrique",
   heroSubtitle: "Des solutions bancaires adaptées à vos besoins, disponibles partout en RCA. Ouvrez votre compte en quelques minutes.",
   heroCta: "Devenir client",
-  heroImage: "/static/images/hero-bgfi-invest.jpg",
+  resendApiKey: "",
+  heroImage: "https://media.istockphoto.com/id/1090484192/ko/%EC%82%AC%EC%A7%84/%EC%9D%80%ED%96%89-3-%EC%B0%A8%EC%9B%90-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98.jpg?s=170667a&w=0&k=20&c=5IcbxKIgkSb_lC3O071kkgVnYlOZ2jHarOhWSMpuC9U=",
   economicTip: "Conseil du jour : Diversifiez votre épargne avec un Dépôt à Terme pour sécuriser votre avenir financier.",
   exchangeUSD: "655.96",
   exchangeEUR: "655.96",
@@ -397,5 +399,6 @@ export const store = {
   testimonials: [...defaultTestimonials],
   jobs: [...defaultJobOffers],
   preRegistrations: [...defaultPreRegistrations],
+  contactMessages: [] as any[],
   adminPassword: "bgfi@admin2024", // À changer depuis l'admin
 };

@@ -53,7 +53,7 @@ pages.get('/', (c) => {
   <section id="hero">
     <!-- Image de fond configurable via admin -->
     <div class="hero-image-bg">
-      <img src="${s.heroImage || '/static/images/hero-bgfi-invest.jpg'}" alt="BGFIBank Centrafrique — Investir durablement" id="hero-bg-img" onerror="this.style.opacity='0'">
+      <img src="${s.heroImage || 'https://media.istockphoto.com/id/1090484192/ko/%EC%82%AC%EC%A7%84/%EC%9D%80%ED%96%89-3-%EC%B0%A8%EC%9B%90-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98.jpg?s=170667a&w=0&k=20&c=5IcbxKIgkSb_lC3O071kkgVnYlOZ2jHarOhWSMpuC9U='}" alt="BGFIBank Centrafrique" id="hero-bg-img" onerror="this.style.opacity='0'">
     </div>
     <div class="hero-overlay"></div>
     <div class="container hero-content">
@@ -926,8 +926,8 @@ pages.get('/contact', (c) => {
           <div style="display:flex;flex-direction:column;gap:16px;">
             ${[
               ['fa-map-marker-alt','Adresse','Avenue des Martyrs, Bangui<br>République Centrafricaine','var(--bgfi-sky)'],
-              ['fa-phone','Téléphone','+236 75 00 00 00','var(--bgfi-p3)'],
-              ['fa-envelope','Email','contact@bgfibank-rca.com','var(--bgfi-p4)'],
+              ['fa-phone','Téléphone','00236 72 80 98 08 / 75 65 54 65','var(--bgfi-p3)'],
+              ['fa-envelope','Email','f.koba@bgfi.com','var(--bgfi-p4)'],
               ['fa-clock','Horaires','Lun - Ven : 8h00 - 17h00<br>Samedi : 8h00 - 12h00','var(--bgfi-p6)'],
             ].map(([icon,label,val,color])=>`
             <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--bgfi-light);border-radius:8px;border-left:4px solid ${color};">
@@ -941,8 +941,8 @@ pages.get('/contact', (c) => {
             <i class="fas fa-headset" style="font-size:32px;color:var(--bgfi-mint);margin-bottom:12px;display:block;"></i>
             <div style="color:white;font-weight:700;margin-bottom:4px;">Service Client 24/7</div>
             <div style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:12px;">Pour les urgences bancaires</div>
-            <a href="tel:+23675000000" style="background:var(--bgfi-sky);color:white;padding:10px 24px;border-radius:4px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">
-              <i class="fas fa-phone" style="margin-right:6px;"></i>+236 75 00 00 00
+            <a href="tel:+236728098 08" style="background:var(--bgfi-sky);color:white;padding:10px 24px;border-radius:4px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">
+              <i class="fas fa-phone" style="margin-right:6px;"></i>00236 72 80 98 08
             </a>
           </div>
         </div>
@@ -950,7 +950,39 @@ pages.get('/contact', (c) => {
     </div>
   </section>
   <script>
-    function submitContact(e) { e.preventDefault(); showToast('Message envoyé ! Nous vous répondrons sous 24h.'); e.target.reset(); }
+    async function submitContact(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+      const data = {
+        name: form.querySelector('input[type="text"]').value,
+        email: form.querySelector('input[type="email"]').value,
+        phone: form.querySelector('input[type="tel"]').value,
+        subject: form.querySelector('select').value,
+        message: form.querySelector('textarea').value,
+      };
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast('Message envoyé avec succès ! Nous vous répondrons sous 24h.');
+          form.reset();
+        } else {
+          showToast(result.error || 'Erreur lors de l\'envoi', 'error');
+        }
+      } catch(err) {
+        showToast('Erreur de connexion. Réessayez.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer le message';
+      }
+    }
   </script>`
   return c.html(getLayout(content, 'Contact', ''))
 })

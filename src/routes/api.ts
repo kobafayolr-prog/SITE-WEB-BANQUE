@@ -186,6 +186,92 @@ api.delete('/jobs/:id', checkAdmin, async (c) => {
   return c.json({ success: true })
 })
 
+// ── CONTACT FORM — envoi email via Resend API ────────────────
+api.post('/contact', async (c) => {
+  const { name, email, phone, subject, message } = await c.req.json()
+  if (!name || !email || !message) {
+    return c.json({ error: 'Nom, email et message sont obligatoires' }, 400)
+  }
+
+  // Email de destination configuré dans les settings
+  const destEmail = store.settings.email || 'f.koba@bgfi.com'
+
+  // Clé Resend (à configurer via admin settings ou variable d'env)
+  const resendKey = (c.env as any)?.RESEND_API_KEY || store.settings.resendApiKey || ''
+
+  const htmlBody = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:24px;border-radius:8px;">
+      <div style="background:#003a74;padding:20px 24px;border-radius:8px 8px 0 0;">
+        <h2 style="color:white;margin:0;font-size:20px;">📩 Nouveau message — BGFIBank Centrafrique</h2>
+      </div>
+      <div style="background:white;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e0e4ea;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:10px 0;font-weight:700;color:#003a74;width:130px;">Nom</td><td style="padding:10px 0;color:#2c3e50;">${name}</td></tr>
+          <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Email</td><td style="padding:10px 8px;"><a href="mailto:${email}" style="color:#0d91d0;">${email}</a></td></tr>
+          <tr><td style="padding:10px 0;font-weight:700;color:#003a74;">Téléphone</td><td style="padding:10px 0;color:#2c3e50;">${phone || 'Non renseigné'}</td></tr>
+          <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Sujet</td><td style="padding:10px 8px;color:#2c3e50;">${subject || 'Non précisé'}</td></tr>
+          <tr><td colspan="2" style="padding:16px 0 8px;font-weight:700;color:#003a74;">Message</td></tr>
+          <tr><td colspan="2" style="padding:12px;background:#f4f6f9;border-radius:6px;color:#2c3e50;line-height:1.7;border-left:4px solid #0d91d0;">${message.replace(/\n/g, '<br>')}</td></tr>
+        </table>
+        <div style="margin-top:20px;padding:12px;background:#e8f5e9;border-radius:6px;font-size:12px;color:#6b7280;">
+          Message reçu le ${new Date().toLocaleString('fr-FR', {timeZone:'Africa/Bangui'})} — BGFIBank Centrafrique
+        </div>
+      </div>
+    </div>`
+
+  // Si clé Resend disponible → envoi réel
+  if (resendKey) {
+    try {
+      const resp = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'BGFIBank Centrafrique <noreply@bgfibank-rca.com>',
+          to: [destEmail],
+          reply_to: email,
+          subject: `[Contact Site] ${subject || 'Nouveau message'} — ${name}`,
+          html: htmlBody,
+        }),
+      })
+      const result = await resp.json() as any
+      if (resp.ok) {
+        // Sauvegarder aussi en base locale
+        store.contactMessages = store.contactMessages || []
+        store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
+        return c.json({ success: true, message: 'Message envoyé avec succès' })
+      } else {
+        console.error('Resend error:', result)
+        // Fallback : sauvegarder quand même
+        store.contactMessages = store.contactMessages || []
+        store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
+        return c.json({ success: true, message: 'Message reçu et enregistré' })
+      }
+    } catch (err) {
+      console.error('Email send error:', err)
+    }
+  }
+
+  // Sans clé Resend : sauvegarder le message en base locale (visible dans admin)
+  store.contactMessages = store.contactMessages || []
+  store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
+  return c.json({ success: true, message: 'Message reçu. Configurez une clé Resend pour l\'envoi par email.' })
+})
+
+// ── MESSAGES CONTACT (admin) ─────────────────────────────────
+api.get('/contact-messages', checkAdmin, (c) => {
+  return c.json((store.contactMessages || []).sort((a: any, b: any) => b.id - a.id))
+})
+
+api.put('/contact-messages/:id/read', checkAdmin, (c) => {
+  const id = parseInt(c.req.param('id'))
+  const msg = (store.contactMessages || []).find((m: any) => m.id === id)
+  if (msg) msg.read = true
+  return c.json({ success: true })
+})
+
 // ── PRE-REGISTRATIONS ────────────────────────────────────────
 api.post('/pre-register', async (c) => {
   const { email, service } = await c.req.json()
