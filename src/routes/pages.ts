@@ -280,8 +280,10 @@ pages.get('/', (c) => {
   <!-- SCRIPT SCROLL-REVEAL GLOBAL -->
   <script>
   (function() {
-    // Scroll Reveal
-    const revealEls = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-fade, .section');
+    if (!('IntersectionObserver' in window)) return; // fallback : tout visible
+    // Activer le mode reveal uniquement si JS fonctionne
+    document.body.classList.add('js-reveal');
+    const revealEls = document.querySelectorAll('.reveal-section');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -289,8 +291,16 @@ pages.get('/', (c) => {
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
-    revealEls.forEach(el => observer.observe(el));
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    // Observer chaque section avec un délai progressif
+    revealEls.forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.05) + 's';
+      observer.observe(el);
+    });
+    // Sécurité : forcer tout visible après 3s (au cas où)
+    setTimeout(() => {
+      revealEls.forEach(el => el.classList.add('revealed'));
+    }, 3000);
   })();
   </script>
 
