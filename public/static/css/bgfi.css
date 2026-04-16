@@ -160,9 +160,10 @@ body {
 #hero {
   position: relative;
   overflow: hidden;
-  min-height: 560px;
+  min-height: 580px;
   display: flex;
   align-items: center;
+  background: #1a1a1a;
 }
 /* Image de fond */
 .hero-image-bg {
@@ -174,24 +175,24 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
   display: block;
   transition: transform 8s ease;
 }
 #hero:hover #hero-bg-img {
   transform: scale(1.03);
 }
-/* Overlay dégradé sur l'image */
+/* Overlay dégradé sur l'image — léger pour laisser voir l'image */
 .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(
-    105deg,
-    rgba(0, 54, 102, 0.88) 0%,
-    rgba(0, 58, 116, 0.78) 45%,
-    rgba(0, 54, 102, 0.45) 75%,
-    rgba(0, 54, 102, 0.20) 100%
+    100deg,
+    rgba(10, 20, 45, 0.82) 0%,
+    rgba(0, 40, 80, 0.65) 40%,
+    rgba(0, 30, 60, 0.35) 70%,
+    rgba(0, 20, 40, 0.10) 100%
   );
 }
 /* Contenu hero au-dessus de l'overlay */

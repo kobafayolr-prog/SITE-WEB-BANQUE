@@ -53,7 +53,7 @@ pages.get('/', (c) => {
   <section id="hero">
     <!-- Image de fond configurable via admin -->
     <div class="hero-image-bg">
-      <img src="${s.heroImage || '/static/images/inauguration-placeholder.svg'}" alt="BGFIBank Centrafrique — Inauguration" id="hero-bg-img" onerror="this.style.opacity='0'">
+      <img src="${s.heroImage || '/static/images/hero-bgfi-invest.jpg'}" alt="BGFIBank Centrafrique — Investir durablement" id="hero-bg-img" onerror="this.style.opacity='0'">
     </div>
     <div class="hero-overlay"></div>
     <div class="container hero-content">

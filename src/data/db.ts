@@ -105,7 +105,7 @@ export const defaultSettings: SiteSettings = {
   heroTitle: "La banque qui accompagne votre croissance en Centrafrique",
   heroSubtitle: "Des solutions bancaires adaptées à vos besoins, disponibles partout en RCA. Ouvrez votre compte en quelques minutes.",
   heroCta: "Devenir client",
-  heroImage: "/static/images/inauguration-placeholder.svg",
+  heroImage: "/static/images/hero-bgfi-invest.jpg",
   economicTip: "Conseil du jour : Diversifiez votre épargne avec un Dépôt à Terme pour sécuriser votre avenir financier.",
   exchangeUSD: "655.96",
   exchangeEUR: "655.96",
