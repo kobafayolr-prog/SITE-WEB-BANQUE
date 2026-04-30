@@ -388,7 +388,7 @@ admin.get('/dashboard', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', async function() {
+  (async function() {
     try {
       const stats = await api('GET', '/stats');
       if (stats.articles) document.getElementById('stat-articles').textContent = stats.articles.published || 0;
@@ -410,7 +410,7 @@ admin.get('/dashboard', (c) => {
     } catch(e) {
       console.error('Dashboard load error:', e);
     }
-  });
+  })();
   </script>`
   return c.html(adminLayout(content, 'Tableau de bord', 'dashboard'))
 })
@@ -471,7 +471,7 @@ admin.get('/settings', (c) => {
     </form>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', async function() {
+  (async function() {
     const s = await api('GET', '/settings');
     const fields = ['siteName','slogan','phone','email','address','heroTitle','heroSubtitle','heroCta','heroImage','resendApiKey','exchangeUSD','exchangeEUR','beacRate','economicTip','facebook','twitter','linkedin','youtube'];
     fields.forEach(k => { const el = document.getElementById(k); if (el && s[k] !== undefined) el.value = s[k]; });
@@ -481,7 +481,7 @@ admin.get('/settings', (c) => {
     };
     showPreview(s.heroImage);
     document.getElementById('heroImage').addEventListener('input', e => showPreview(e.target.value));
-  });
+  })();
   async function saveSettings(e) {
     e.preventDefault();
     const data = {};
@@ -508,10 +508,10 @@ admin.get('/articles', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     document.getElementById('btnNewArticle').addEventListener('click', newArticle);
     loadArticles();
-  });
+  })();
 
   async function loadArticles() {
     const arts = await api('GET', '/articles?all=true');
@@ -586,7 +586,7 @@ admin.get('/products', (c) => {
   </div>
   <div id="products-container"><div style="text-align:center;padding:40px;color:var(--bgfi-text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:12px;">Chargement des produits...</p></div></div>
   <script>
-  document.addEventListener('DOMContentLoaded', function() { loadProducts(); });
+  (function() { loadProducts(); })();
 
   async function loadProducts() {
     const prods = await api('GET', '/products');
@@ -661,10 +661,10 @@ admin.get('/agencies', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     document.getElementById('btnNewAgency').addEventListener('click', newAgency);
     loadAgencies();
-  });
+  })();
   async function loadAgencies() {
     const ags = await api('GET', '/agencies');
     const container = document.getElementById('agencies-container');
@@ -722,10 +722,10 @@ admin.get('/jobs', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     document.getElementById('btnNewJob').addEventListener('click', newJob);
     loadJobs();
-  });
+  })();
   async function loadJobs() {
     const jobs = await api('GET', '/jobs?all=true');
     const container = document.getElementById('jobs-container');
@@ -773,10 +773,10 @@ admin.get('/testimonials', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     document.getElementById('btnNewTestimonial').addEventListener('click', newTestimonial);
     loadTestimonials();
-  });
+  })();
   async function loadTestimonials() {
     const items = await api('GET', '/testimonials?all=true');
     const container = document.getElementById('testimonials-container');
@@ -818,7 +818,7 @@ admin.get('/preregistrations', (c) => {
     </div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', async function() {
+  (async function() {
     const items = await api('GET', '/pre-registrations');
     const container = document.getElementById('prereg-container');
     if (!Array.isArray(items) || items.length === 0) {
@@ -833,7 +833,7 @@ admin.get('/preregistrations', (c) => {
       items.map(i => '<tr><td style="font-weight:600;color:var(--bgfi-navy);">'+i.email+'</td><td><span style="background:var(--bgfi-light);padding:3px 10px;border-radius:10px;font-size:12px;">'+i.service+'</span></td><td style="font-size:13px;white-space:nowrap;">'+new Date(i.date).toLocaleString("fr-FR")+'</td></tr>').join('') +
       '</tbody></table>';
     container.innerHTML = html;
-  });
+  })();
   </script>`
   return c.html(adminLayout(content, 'Pré-inscriptions', 'prereg'))
 })
@@ -853,7 +853,7 @@ admin.get('/messages', (c) => {
     <div id="msgList"><div style="text-align:center;padding:40px;color:var(--bgfi-text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:12px;">Chargement...</p></div></div>
   </div>
   <script>
-  document.addEventListener('DOMContentLoaded', async function() {
+  (async function() {
     const messages = await api('GET', '/contact-messages');
     const list = document.getElementById('msgList');
     const count = document.getElementById('msgCount');
@@ -881,7 +881,7 @@ admin.get('/messages', (c) => {
         <div style="margin-bottom:8px;"><span style="background:var(--bgfi-light);color:var(--bgfi-navy);font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;">\${m.subject||'Sans sujet'}</span></div>
         <div style="padding:12px;background:rgba(0,0,0,.03);border-radius:6px;font-size:13px;color:var(--bgfi-text);line-height:1.7;border-left:3px solid var(--bgfi-sky);">\${m.message.replace(/\\n/g,'<br>')}</div>
       </div>\`).join('');
-  });
+  })();
   async function markRead(id) {
     await api('PUT', '/contact-messages/'+id+'/read', {});
     const el = document.getElementById('msg-'+id);
