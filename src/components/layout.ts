@@ -3,7 +3,7 @@
 // BGFIBank Centrafrique
 // ============================================================
 
-export const getLayout = (content: string, title = 'BGFIBank Centrafrique', activePage = '') => `<!DOCTYPE html>
+export const getLayout = (content: string, title = 'BGFIBank Centrafrique', activePage = '', s: any = {}) => `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -25,8 +25,8 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <div id="top-bar">
     <div class="container">
       <div style="display:flex;align-items:center;gap:20px;">
-        <span><i class="fas fa-phone" style="margin-right:6px;"></i>00236 72 80 98 08 / 75 65 54 65</span>
-        <span><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i>Bangui, République Centrafricaine</span>
+        <span><i class="fas fa-phone" style="margin-right:6px;"></i>${s.phone || '00236 72 80 98 08 / 75 65 54 65'}</span>
+        <span><i class="fas fa-map-marker-alt" style="margin-right:6px;"></i>${s.address || 'Bangui, République Centrafricaine'}</span>
       </div>
       <div style="display:flex;align-items:center;gap:16px;">
         <div class="lang-switcher">
@@ -187,14 +187,14 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
           <div class="footer-bgfi-logo"><span>BGFI</span></div>
           <div class="footer-brand">
             <div class="bank-name">BGFIBank Centrafrique</div>
-            <div class="slogan">Votre partenaire pour l'avenir</div>
+            <div class="slogan">${s.slogan || "Votre partenaire pour l'avenir"}</div>
             <p>Filiale du Groupe BGFIBank, nous accompagnons particuliers, professionnels et entreprises dans leur développement financier en République Centrafricaine.</p>
           </div>
           <div class="footer-social">
-            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" title="Twitter/X"><i class="fab fa-twitter"></i></a>
-            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="${s.facebook || '#'}" title="Facebook" ${s.facebook ? 'target="_blank"' : ''}><i class="fab fa-facebook-f"></i></a>
+            <a href="${s.twitter || '#'}" title="Twitter/X" ${s.twitter ? 'target="_blank"' : ''}><i class="fab fa-twitter"></i></a>
+            <a href="${s.linkedin || '#'}" title="LinkedIn" ${s.linkedin ? 'target="_blank"' : ''}><i class="fab fa-linkedin-in"></i></a>
+            <a href="${s.youtube || '#'}" title="YouTube" ${s.youtube ? 'target="_blank"' : ''}><i class="fab fa-youtube"></i></a>
           </div>
         </div>
         <div class="footer-col">
@@ -221,9 +221,9 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         </div>
         <div class="footer-col footer-contact">
           <h4>Nous Contacter</h4>
-          <p><i class="fas fa-map-marker-alt"></i> Avenue des Martyrs, Bangui, RCA</p>
-          <p><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</p>
-          <p><i class="fas fa-envelope"></i> f.koba@bgfi.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> ${s.address || 'Avenue des Martyrs, Bangui, RCA'}</p>
+          <p><i class="fas fa-phone"></i> ${s.phone || '00236 72 80 98 08 / 75 65 54 65'}</p>
+          <p><i class="fas fa-envelope"></i> ${s.email || 'f.koba@bgfi.com'}</p>
           <p><i class="fas fa-clock"></i> Lun-Ven : 8h00 - 17h00</p>
           <div style="margin-top:16px;">
             <a href="/contact" class="btn btn-outline" style="font-size:12px;padding:8px 16px;color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.3);">

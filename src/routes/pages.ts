@@ -520,7 +520,7 @@ pages.get('/', (c) => {
   </section>
   `
 
-  return c.html(getLayout(content, 'Accueil', ''))
+  return c.html(getLayout(content, 'Accueil', '', store.settings))
 })
 
 // ── PARTICULIERS ──────────────────────────────────────────────
@@ -561,7 +561,7 @@ pages.get('/particuliers', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'Particuliers', 'particuliers'))
+  return c.html(getLayout(content, 'Particuliers', 'particuliers', store.settings))
 })
 
 // ── PROFESSIONNELS ────────────────────────────────────────────
@@ -594,7 +594,7 @@ pages.get('/professionnels', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'Professionnels', 'professionnels'))
+  return c.html(getLayout(content, 'Professionnels', 'professionnels', store.settings))
 })
 
 // ── ENTREPRISES ───────────────────────────────────────────────
@@ -626,7 +626,7 @@ pages.get('/entreprises', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'Entreprises & Institutions', 'entreprises'))
+  return c.html(getLayout(content, 'Entreprises & Institutions', 'entreprises', store.settings))
 })
 
 // ── BANQUE PRIVÉE ─────────────────────────────────────────────
@@ -660,7 +660,7 @@ pages.get('/banque-privee', (c) => {
       <div class="grid-2" style="margin-top:32px;">${products.map(productCard).join('')}</div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'Banque Privée', 'banque-privee'))
+  return c.html(getLayout(content, 'Banque Privée', 'banque-privee', store.settings))
 })
 
 // ── BGFIBank & la RCA ─────────────────────────────────────────
@@ -726,7 +726,7 @@ pages.get('/bgfibank-rca', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'BGFIBank & la RCA', 'bgfibank-rca'))
+  return c.html(getLayout(content, 'BGFIBank & la RCA', 'bgfibank-rca', store.settings))
 })
 
 // ── ESPACE PME ────────────────────────────────────────────────
@@ -804,7 +804,7 @@ pages.get('/espace-pme', (c) => {
   <script>
     function submitPMERequest(e) { e.preventDefault(); showToast('Votre demande a été envoyée ! Un conseiller vous contactera sous 48h.'); e.target.reset(); }
   </script>`
-  return c.html(getLayout(content, 'Espace PME', 'espace-pme'))
+  return c.html(getLayout(content, 'Espace PME', 'espace-pme', store.settings))
 })
 
 // ── ACTUALITÉS ────────────────────────────────────────────────
@@ -841,7 +841,7 @@ pages.get('/actualites', (c) => {
       });
     }
   </script>`
-  return c.html(getLayout(content, 'Actualités', 'actualites'))
+  return c.html(getLayout(content, 'Actualités', 'actualites', store.settings))
 })
 
 // ── ARTICLE DETAIL ────────────────────────────────────────────
@@ -899,7 +899,7 @@ pages.get('/actualites/:slug', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, article.title, 'actualites'))
+  return c.html(getLayout(content, article.title, 'actualites', store.settings))
 })
 
 // ── SIMULATEURS ───────────────────────────────────────────────
@@ -1015,7 +1015,7 @@ pages.get('/simulateurs', (c) => {
     }
     calcCredit(); calcDAT(); calcSaving();
   </script>`
-  return c.html(getLayout(content, 'Simulateurs Bancaires', 'simulateurs'))
+  return c.html(getLayout(content, 'Simulateurs Bancaires', 'simulateurs', store.settings))
 })
 
 // ── AGENCES ───────────────────────────────────────────────────
@@ -1082,7 +1082,7 @@ pages.get('/agences', (c) => {
       markers.forEach(m => { if(type === 'all' || m.type === type) map.addLayer(m.marker); else map.removeLayer(m.marker); });
     }
   </script>`
-  return c.html(getLayout(content, 'Nos Agences & GAB', ''))
+  return c.html(getLayout(content, 'Nos Agences & GAB', '', store.settings))
 })
 
 // ── CONTACT ───────────────────────────────────────────────────
@@ -1174,7 +1174,7 @@ pages.get('/contact', (c) => {
       }
     }
   </script>`
-  return c.html(getLayout(content, 'Contact', ''))
+  return c.html(getLayout(content, 'Contact', '', store.settings))
 })
 
 // ── CARRIÈRES ─────────────────────────────────────────────────
@@ -1213,7 +1213,7 @@ pages.get('/carrieres', (c) => {
       </div>
     </div>
   </section>`
-  return c.html(getLayout(content, 'Carrières', ''))
+  return c.html(getLayout(content, 'Carrières', '', store.settings))
 })
 
 // ── PRISE DE RDV ──────────────────────────────────────────────
@@ -1258,7 +1258,7 @@ pages.get('/rendez-vous', (c) => {
   <script>
     function submitRDV(e) { e.preventDefault(); showToast('Rendez-vous confirmé ! Vous recevrez une confirmation par SMS.'); e.target.reset(); }
   </script>`
-  return c.html(getLayout(content, 'Prendre rendez-vous', ''))
+  return c.html(getLayout(content, 'Prendre rendez-vous', '', store.settings))
 })
 
 export default pages
