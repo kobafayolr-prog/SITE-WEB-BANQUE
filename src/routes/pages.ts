@@ -249,9 +249,9 @@ pages.get('/', (c) => {
         <span class="ntb-sep">◆</span>
         <span><i class="fas fa-lightbulb" style="color:#C2CFA4;"></i> ${s.economicTip}</span>
         <span class="ntb-sep">◆</span>
-        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — Avenue des Martyrs, Bangui</span>
+        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — ${s.address||'Avenue des Martyrs, Bangui'}</span>
         <span class="ntb-sep">◆</span>
-        <span><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</span>
+        <span><i class="fas fa-phone"></i> ${s.phone||'00236 72 80 98 08 / 75 65 54 65'}</span>
         <span class="ntb-sep">◆</span>
         <span><i class="fas fa-clock"></i> Lun–Ven : 8h00–17h00 &nbsp;|&nbsp; Sam : 8h00–12h00</span>
         <span class="ntb-sep">◆</span>
@@ -266,9 +266,9 @@ pages.get('/', (c) => {
         <span class="ntb-sep">◆</span>
         <span><i class="fas fa-lightbulb" style="color:#C2CFA4;"></i> ${s.economicTip}</span>
         <span class="ntb-sep">◆</span>
-        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — Avenue des Martyrs, Bangui</span>
+        <span><i class="fas fa-map-marker-alt"></i> BGFIBank Centrafrique — ${s.address||'Avenue des Martyrs, Bangui'}</span>
         <span class="ntb-sep">◆</span>
-        <span><i class="fas fa-phone"></i> 00236 72 80 98 08 / 75 65 54 65</span>
+        <span><i class="fas fa-phone"></i> ${s.phone||'00236 72 80 98 08 / 75 65 54 65'}</span>
         <span class="ntb-sep">◆</span>
         <span><i class="fas fa-clock"></i> Lun–Ven : 8h00–17h00 &nbsp;|&nbsp; Sam : 8h00–12h00</span>
         <span class="ntb-sep">◆</span>
@@ -1087,6 +1087,7 @@ pages.get('/agences', (c) => {
 
 // ── CONTACT ───────────────────────────────────────────────────
 pages.get('/contact', (c) => {
+  const s = store.settings
   const content = `
   <div class="page-hero">
     <div class="container">
@@ -1115,9 +1116,9 @@ pages.get('/contact', (c) => {
           <h2 style="font-size:22px;font-weight:700;color:var(--bgfi-navy);margin-bottom:24px;">Nos coordonnées</h2>
           <div style="display:flex;flex-direction:column;gap:16px;">
             ${[
-              ['fa-map-marker-alt','Adresse','Avenue des Martyrs, Bangui<br>République Centrafricaine','var(--bgfi-sky)'],
-              ['fa-phone','Téléphone','00236 72 80 98 08 / 75 65 54 65','var(--bgfi-p3)'],
-              ['fa-envelope','Email','f.koba@bgfi.com','var(--bgfi-p4)'],
+              ['fa-map-marker-alt','Adresse',(s.address||'Avenue des Martyrs, Bangui, RCA'),'var(--bgfi-sky)'],
+              ['fa-phone','Téléphone',(s.phone||'00236 72 80 98 08 / 75 65 54 65'),'var(--bgfi-p3)'],
+              ['fa-envelope','Email',(s.email||'f.koba@bgfi.com'),'var(--bgfi-p4)'],
               ['fa-clock','Horaires','Lun - Ven : 8h00 - 17h00<br>Samedi : 8h00 - 12h00','var(--bgfi-p6)'],
             ].map(([icon,label,val,color])=>`
             <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--bgfi-light);border-radius:8px;border-left:4px solid ${color};">
@@ -1131,8 +1132,8 @@ pages.get('/contact', (c) => {
             <i class="fas fa-headset" style="font-size:32px;color:var(--bgfi-mint);margin-bottom:12px;display:block;"></i>
             <div style="color:white;font-weight:700;margin-bottom:4px;">Service Client 24/7</div>
             <div style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:12px;">Pour les urgences bancaires</div>
-            <a href="tel:+236728098 08" style="background:var(--bgfi-sky);color:white;padding:10px 24px;border-radius:4px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">
-              <i class="fas fa-phone" style="margin-right:6px;"></i>00236 72 80 98 08
+            <a href="tel:${s.phone||'+23672809808'}" style="background:var(--bgfi-sky);color:white;padding:10px 24px;border-radius:4px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">
+              <i class="fas fa-phone" style="margin-right:6px;"></i>${s.phone||'00236 72 80 98 08'}
             </a>
           </div>
         </div>
