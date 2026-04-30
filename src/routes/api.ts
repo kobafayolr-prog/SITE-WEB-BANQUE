@@ -295,6 +295,58 @@ api.post('/newsletter', async (c) => {
   return c.json({ success: true, message: 'Inscription à la newsletter confirmée' })
 })
 
+// ── UPLOAD IMAGE / FICHIER ───────────────────────────────────
+api.post('/upload', checkAdmin, async (c) => {
+  try {
+    const formData = await c.req.formData()
+    const file = formData.get('file') as File | null
+    if (!file) return c.json({ error: 'Aucun fichier reçu' }, 400)
+
+    const maxSize = 5 * 1024 * 1024 // 5 MB
+    if (file.size > maxSize) return c.json({ error: 'Fichier trop volumineux (max 5 Mo)' }, 400)
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']
+    if (!allowed.includes(file.type)) {
+      return c.json({ error: 'Format non supporté. Utilisez JPG, PNG, WebP, GIF ou PDF.' }, 400)
+    }
+
+    const buffer = await file.arrayBuffer()
+    const bytes = new Uint8Array(buffer)
+    let binary = ''
+    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i])
+    const base64 = btoa(binary)
+
+    const id = Date.now().toString() + '-' + Math.random().toString(36).slice(2, 8)
+    store.uploadedFiles[id] = { data: base64, mimeType: file.type, name: file.name }
+
+    const url = '/api/file/' + id
+    return c.json({ success: true, url, id, name: file.name, type: file.type })
+  } catch (err) {
+    return c.json({ error: 'Erreur lors de l\'upload' }, 500)
+  }
+})
+
+// ── SERVIR UN FICHIER UPLOADÉ ────────────────────────────────
+api.get('/file/:id', (c) => {
+  const id = c.req.param('id')
+  const file = store.uploadedFiles[id]
+  if (!file) return c.json({ error: 'Fichier non trouvé' }, 404)
+
+  const binary = atob(file.data)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+
+  return new Response(bytes, {
+    headers: {
+      'Content-Type': file.mimeType,
+      'Cache-Control': 'public, max-age=31536000',
+      'Content-Disposition': file.mimeType === 'application/pdf'
+        ? 'inline; filename="' + file.name + '"'
+        : 'inline',
+    }
+  })
+})
+
 // ── CHANGE PASSWORD ──────────────────────────────────────────
 api.post('/change-password', checkAdmin, async (c) => {
   const { newPassword } = await c.req.json()

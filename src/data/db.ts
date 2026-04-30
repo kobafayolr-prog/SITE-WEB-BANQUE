@@ -401,4 +401,5 @@ export const store = {
   preRegistrations: [...defaultPreRegistrations],
   contactMessages: [] as any[],
   adminPassword: "bgfi@admin2024", // À changer depuis l'admin
+  uploadedFiles: {} as Record<string, { data: string; mimeType: string; name: string }>,
 };
