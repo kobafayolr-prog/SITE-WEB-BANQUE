@@ -38,6 +38,7 @@
       '</div>' +
       '<div style="margin-bottom:8px;"><span style="background:var(--bgfi-light);color:var(--bgfi-navy);font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;">' + subject + '</span></div>' +
       '<div style="padding:12px;background:rgba(0,0,0,.03);border-radius:6px;font-size:13px;color:var(--bgfi-text);line-height:1.7;border-left:3px solid var(--bgfi-sky);">' + msgBody + '</div>' +
+      (m.attachmentUrl ? '<div style="margin-top:10px;"><a href="' + m.attachmentUrl + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#003a74;color:white;padding:7px 14px;border-radius:6px;font-size:12px;text-decoration:none;"><i class="fas fa-paperclip"></i> ' + (m.attachmentName || 'Piece jointe') + '</a></div>' : '') +
     '</div>';
   }).join('');
 })();

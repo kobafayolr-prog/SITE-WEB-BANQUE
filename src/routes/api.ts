@@ -188,49 +188,63 @@ api.delete('/jobs/:id', checkAdmin, async (c) => {
 
 // ── CONTACT FORM — envoi email via Resend ────────────────────
 api.post('/contact', async (c) => {
-  const { name, email, phone, subject, message } = await c.req.json()
+  const { name, email, phone, subject, message, attachmentUrl, attachmentName } = await c.req.json()
   if (!name || !email || !message) {
     return c.json({ error: 'Nom, email et message sont obligatoires' }, 400)
   }
 
-  // ── Clé Resend (permanente dans le code)
   const RESEND_API_KEY = 're_Kp9K7zhg_B4w7kGKmy5p7GV37pWUmyFNT'
-  // Sans domaine vérifié, Resend n'accepte d'envoyer QUE à cette adresse
   const OWNER_EMAIL = 'kobafayolr@gmail.com'
 
-  // ── Toujours sauvegarder dans l'admin (même si l'email échoue)
+  // ── Sauvegarder dans l'admin
   store.contactMessages = store.contactMessages || []
   store.contactMessages.push({
     id: Date.now(), name, email, phone,
     subject, message,
+    attachmentUrl: attachmentUrl || null,
+    attachmentName: attachmentName || null,
     date: new Date().toISOString(),
     read: false
   })
 
-  // ── Corps de l'email HTML
+  // ── Bloc pièce jointe dans l'email
+  const attachmentBlock = attachmentUrl ? `
+    <tr>
+      <td colspan="2" style="padding:12px 0 4px;font-weight:700;color:#003a74;">Piece jointe</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:8px 0;">
+        <a href="${attachmentUrl}" style="display:inline-flex;align-items:center;gap:8px;background:#003a74;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:14px;">
+          Telecharger : ${attachmentName || 'fichier'}
+        </a>
+      </td>
+    </tr>` : ''
+
+  // ── Corps email HTML
   const htmlBody = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:24px;border-radius:8px;">
   <div style="background:#003a74;padding:20px 24px;border-radius:8px 8px 0 0;">
-    <h2 style="color:white;margin:0;font-size:20px;">📩 Nouveau message — BGFIBank Centrafrique</h2>
+    <h2 style="color:white;margin:0;font-size:20px;">Nouveau message - BGFIBank Centrafrique</h2>
   </div>
   <div style="background:white;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e0e4ea;">
     <table style="width:100%;border-collapse:collapse;">
       <tr><td style="padding:10px 0;font-weight:700;color:#003a74;width:130px;">Nom</td><td style="padding:10px 0;color:#2c3e50;">${name}</td></tr>
       <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Email</td><td style="padding:10px 8px;"><a href="mailto:${email}" style="color:#0d91d0;">${email}</a></td></tr>
-      <tr><td style="padding:10px 0;font-weight:700;color:#003a74;">Téléphone</td><td style="padding:10px 0;color:#2c3e50;">${phone || 'Non renseigné'}</td></tr>
-      <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Sujet</td><td style="padding:10px 8px;color:#2c3e50;">${subject || 'Non précisé'}</td></tr>
+      <tr><td style="padding:10px 0;font-weight:700;color:#003a74;">Telephone</td><td style="padding:10px 0;color:#2c3e50;">${phone || 'Non renseigne'}</td></tr>
+      <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Sujet</td><td style="padding:10px 8px;color:#2c3e50;">${subject || 'Non precise'}</td></tr>
       <tr><td colspan="2" style="padding:16px 0 8px;font-weight:700;color:#003a74;">Message</td></tr>
       <tr><td colspan="2" style="padding:12px;background:#f4f6f9;border-radius:6px;color:#2c3e50;line-height:1.7;border-left:4px solid #0d91d0;">${message.replace(/\n/g, '<br>')}</td></tr>
+      ${attachmentBlock}
     </table>
     <div style="margin-top:20px;padding:12px;background:#e8f5e9;border-radius:6px;font-size:12px;color:#6b7280;">
-      Reçu le ${new Date().toLocaleString('fr-FR', {timeZone:'Africa/Bangui'})} — BGFIBank Centrafrique
+      Recu le ${new Date().toLocaleString('fr-FR', {timeZone:'Africa/Bangui'})} - BGFIBank Centrafrique
     </div>
   </div>
 </div>`
 
   // ── Envoi via Resend
   try {
-    console.log('[Contact] Envoi Resend vers', OWNER_EMAIL)
+    console.log('[Contact] Envoi Resend vers', OWNER_EMAIL, attachmentUrl ? '+ piece jointe' : '')
     const resp = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -241,7 +255,7 @@ api.post('/contact', async (c) => {
         from: 'BGFIBank Centrafrique <onboarding@resend.dev>',
         to: [OWNER_EMAIL],
         reply_to: email,
-        subject: `[Contact BGFIBank] ${subject || 'Nouveau message'} — ${name}`,
+        subject: `[Contact BGFIBank] ${subject || 'Nouveau message'} - ${name}`,
         html: htmlBody,
       }),
     })
@@ -250,14 +264,14 @@ api.post('/contact', async (c) => {
     console.log('[Contact] Resend status:', resp.status, JSON.stringify(result))
 
     if (resp.ok && result.id) {
-      return c.json({ success: true, emailSent: true, message: 'Message envoyé avec succès' })
+      return c.json({ success: true, emailSent: true, message: 'Message envoye avec succes' })
     } else {
       console.error('[Contact] Resend erreur:', result)
-      return c.json({ success: true, emailSent: false, message: 'Message enregistré dans l\'admin (email non envoyé)' })
+      return c.json({ success: true, emailSent: false, message: 'Message enregistre dans admin' })
     }
   } catch (err: any) {
     console.error('[Contact] Exception:', err?.message)
-    return c.json({ success: true, emailSent: false, message: 'Message enregistré dans l\'admin' })
+    return c.json({ success: true, emailSent: false, message: 'Message enregistre dans admin' })
   }
 })
 
@@ -296,7 +310,38 @@ api.post('/newsletter', async (c) => {
   return c.json({ success: true, message: 'Inscription à la newsletter confirmée' })
 })
 
-// ── UPLOAD IMAGE / FICHIER ───────────────────────────────────
+// ── UPLOAD PUBLIC — pièces jointes formulaire contact ────────
+api.post('/upload-public', async (c) => {
+  try {
+    const formData = await c.req.formData()
+    const file = formData.get('file') as File | null
+    if (!file) return c.json({ error: 'Aucun fichier reçu' }, 400)
+
+    const maxSize = 5 * 1024 * 1024
+    if (file.size > maxSize) return c.json({ error: 'Fichier trop volumineux (max 5 Mo)' }, 400)
+
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf']
+    if (!allowed.includes(file.type)) {
+      return c.json({ error: 'Format non supporté. Utilisez JPG, PNG, WebP, GIF ou PDF.' }, 400)
+    }
+
+    const buffer = await file.arrayBuffer()
+    const bytes = new Uint8Array(buffer)
+    let binary = ''
+    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i])
+    const base64 = btoa(binary)
+
+    const id = Date.now().toString() + '-' + Math.random().toString(36).slice(2, 8)
+    store.uploadedFiles[id] = { data: base64, mimeType: file.type, name: file.name }
+
+    const url = '/api/file/' + id
+    return c.json({ success: true, url, id, name: file.name, type: file.type })
+  } catch (err) {
+    return c.json({ error: 'Erreur lors de l\'upload' }, 500)
+  }
+})
+
+// ── UPLOAD IMAGE / FICHIER (admin) ───────────────────────────
 api.post('/upload', checkAdmin, async (c) => {
   try {
     const formData = await c.req.formData()

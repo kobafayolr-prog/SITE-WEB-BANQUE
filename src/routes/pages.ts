@@ -1109,6 +1109,15 @@ pages.get('/contact', (c) => {
               <select name="subject"><option>Demande information</option><option>Ouverture de compte</option><option>Credit Financement</option><option>Reclamation</option><option>Partenariat</option><option>Autre</option></select>
             </div>
             <div class="form-group"><label>Message *</label><textarea name="message" placeholder="Votre message..." required style="min-height:130px;"></textarea></div>
+            <div class="form-group">
+              <label>Piece jointe <span style="font-size:12px;color:#888;">(optionnel — PDF, JPG, PNG, max 5 Mo)</span></label>
+              <div id="dropZone" style="border:2px dashed #cbd5e0;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:#f8fafc;">
+                <i class="fas fa-paperclip" style="font-size:24px;color:#003a74;margin-bottom:8px;display:block;"></i>
+                <div style="font-size:14px;color:#555;">Glissez un fichier ici ou <span style="color:#0d91d0;font-weight:600;">cliquez pour choisir</span></div>
+                <div id="fileInfo" style="margin-top:8px;font-size:13px;color:#003a74;font-weight:600;display:none;"></div>
+                <input type="file" id="pieceJointe" name="pieceJointe" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none;">
+              </div>
+            </div>
             <button type="submit" id="contactBtn" class="btn btn-primary-sm btn-full"><i class="fas fa-paper-plane"></i> Envoyer le message</button>
           </form>
         </div>
@@ -1141,29 +1150,91 @@ pages.get('/contact', (c) => {
     </div>
   </section>
   <script>
+    // --- Gestion de la zone de depot fichier ---
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('pieceJointe');
+    var fileInfo = document.getElementById('fileInfo');
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.style.borderColor = '#003a74';
+      dropZone.style.background = '#ebf4ff';
+    });
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.style.borderColor = '#cbd5e0';
+      dropZone.style.background = '#f8fafc';
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.style.borderColor = '#cbd5e0';
+      dropZone.style.background = '#f8fafc';
+      if (e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        afficherFichier(e.dataTransfer.files[0]);
+      }
+    });
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) afficherFichier(fileInput.files[0]);
+    });
+
+    function afficherFichier(file) {
+      var taille = (file.size / 1024 / 1024).toFixed(2);
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Fichier trop lourd (max 5 Mo)', 'error');
+        fileInput.value = '';
+        fileInfo.style.display = 'none';
+        return;
+      }
+      fileInfo.innerHTML = '<i class="fas fa-check-circle" style="color:green;margin-right:6px;"></i>' + file.name + ' (' + taille + ' Mo)';
+      fileInfo.style.display = 'block';
+      dropZone.style.borderColor = '#28a745';
+    }
+
+    // --- Envoi du formulaire ---
     document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       var form = document.getElementById('contactForm');
       var btn = document.getElementById('contactBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-      var data = {
-        name: form.name.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        subject: form.subject.value,
-        message: form.message.value
-      };
+
       try {
+        // 1. Uploader le fichier si present
+        var attachmentUrl = null;
+        var attachmentName = null;
+        if (fileInput.files.length > 0) {
+          var fd = new FormData();
+          fd.append('file', fileInput.files[0]);
+          var upRes = await fetch('/api/upload-public', { method: 'POST', body: fd });
+          var upData = await upRes.json();
+          if (upData.url) {
+            attachmentUrl = upData.url;
+            attachmentName = upData.name;
+          }
+        }
+
+        // 2. Envoyer le message avec le lien du fichier
         var res = await fetch('/api/contact', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            name: form.name.value,
+            email: form.email.value,
+            phone: form.phone.value,
+            subject: form.subject.value,
+            message: form.message.value,
+            attachmentUrl: attachmentUrl,
+            attachmentName: attachmentName
+          })
         });
         var result = await res.json();
         if (result.success) {
           showToast('Message envoye avec succes ! Nous vous repondrons sous 24h.');
           form.reset();
+          fileInfo.style.display = 'none';
+          dropZone.style.borderColor = '#cbd5e0';
         } else {
           showToast(result.error || 'Erreur envoi', 'error');
         }
