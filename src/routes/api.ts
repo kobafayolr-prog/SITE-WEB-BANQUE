@@ -196,6 +196,15 @@ api.post('/contact', async (c) => {
   const RESEND_API_KEY = 're_Kp9K7zhg_B4w7kGKmy5p7GV37pWUmyFNT'
   const OWNER_EMAIL = 'kobafayolr@gmail.com'
 
+  // ── Construire l'URL absolue du serveur (pour les liens dans l'email)
+  const reqUrl = new URL(c.req.url)
+  const baseUrl = reqUrl.origin  // ex: https://3000-xxx.sandbox.novita.ai
+
+  // ── URL complète de la pièce jointe (cliquable depuis l'email)
+  const fullAttachmentUrl = attachmentUrl
+    ? (attachmentUrl.startsWith('http') ? attachmentUrl : baseUrl + attachmentUrl)
+    : null
+
   // ── Sauvegarder dans l'admin
   store.contactMessages = store.contactMessages || []
   store.contactMessages.push({
@@ -208,13 +217,13 @@ api.post('/contact', async (c) => {
   })
 
   // ── Bloc pièce jointe dans l'email
-  const attachmentBlock = attachmentUrl ? `
+  const attachmentBlock = fullAttachmentUrl ? `
     <tr>
       <td colspan="2" style="padding:12px 0 4px;font-weight:700;color:#003a74;">Piece jointe</td>
     </tr>
     <tr>
       <td colspan="2" style="padding:8px 0;">
-        <a href="${attachmentUrl}" style="display:inline-flex;align-items:center;gap:8px;background:#003a74;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:14px;">
+        <a href="${fullAttachmentUrl}" style="display:inline-flex;align-items:center;gap:8px;background:#003a74;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:14px;">
           Telecharger : ${attachmentName || 'fichier'}
         </a>
       </td>
