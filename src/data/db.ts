@@ -185,7 +185,7 @@ export const defaultProducts: Product[] = [
     title: "Compte Courant", icon: "fa-university",
     description: "Gérez vos finances au quotidien avec notre compte courant flexible et sécurisé.",
     features: ["Carte bancaire incluse", "Accès BGFIOnline 24h/24", "Relevés mensuels", "Virements nationaux et internationaux"],
-    available: true, cta: "Ouvrir un compte", ctaUrl: "https://leclient.bgfi.com"
+    available: true, cta: "Ouvrir un compte", ctaUrl: "https://www5.bgfionline.com/"
   },
   {
     id: 2, segment: "particuliers", slug: "compte-epargne",
@@ -234,7 +234,7 @@ export const defaultProducts: Product[] = [
     title: "BGFIOnline", icon: "fa-laptop",
     description: "Accédez à votre espace bancaire en ligne 24h/24 et 7j/7.",
     features: ["Tableau de bord complet", "Historique des transactions", "Virements en ligne", "Téléchargement de relevés"],
-    available: true, cta: "Se connecter", ctaUrl: "https://online.bgfi.com"
+    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/"
   },
   // PROFESSIONNELS
   {
@@ -242,7 +242,7 @@ export const defaultProducts: Product[] = [
     title: "Compte Professionnel", icon: "fa-briefcase",
     description: "Un compte dédié aux professionnels avec des services adaptés à votre activité.",
     features: ["Chéquier professionnel", "Accès multi-utilisateurs", "Reporting mensuel", "Conseiller dédié"],
-    available: true, cta: "Ouvrir un compte pro", ctaUrl: "https://leclient.bgfi.com"
+    available: true, cta: "Ouvrir un compte pro", ctaUrl: "https://www5.bgfionline.com/"
   },
   {
     id: 10, segment: "professionnels", slug: "credit-professionnel",

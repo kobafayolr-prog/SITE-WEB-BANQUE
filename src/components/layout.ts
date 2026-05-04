@@ -50,10 +50,10 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         </div>
       </a>
       <div class="header-actions">
-        <a href="https://leclient.bgfi.com" target="_blank" class="btn-client">
+        <a href="https://www5.bgfionline.com/" target="_blank" class="btn-client">
           <i class="fas fa-user-plus"></i> Devenir client
         </a>
-        <a href="https://online.bgfi.com" target="_blank" class="btn-online">
+        <a href="https://www5.bgfionline.com/" target="_blank" class="btn-online">
           <i class="fas fa-lock"></i> BGFIOnline
         </a>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
@@ -171,7 +171,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
                 <div style="font-weight:700;color:white;font-size:14px;">BGFIOnline</div>
                 <div style="font-size:12px;color:rgba(255,255,255,0.7);">Banque en ligne 24h/24</div>
               </div>
-              <a href="https://online.bgfi.com" target="_blank" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;text-decoration:none;">Accéder</a>
+              <a href="https://www5.bgfionline.com/" target="_blank" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;text-decoration:none;">Accéder</a>
             </div>
           </div>
         </div>

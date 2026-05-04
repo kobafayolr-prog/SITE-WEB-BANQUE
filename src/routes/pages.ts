@@ -89,7 +89,7 @@ pages.get('/', (c) => {
 
       <!-- BOUTONS CTA -->
       <div class="hero-btns">
-        <a href="https://leclient.bgfi.com" target="_blank" class="btn-primary">
+        <a href="https://www5.bgfionline.com/" target="_blank" class="btn-primary">
           <i class="fas fa-user-plus"></i> ${s.heroCta}
           <span class="btn-shine"></span>
         </a>
@@ -347,7 +347,7 @@ pages.get('/', (c) => {
           <span class="eyebrow" style="font-size:12px;font-weight:700;color:var(--bgfi-sky);text-transform:uppercase;letter-spacing:2px;display:block;margin-bottom:10px;">Ouverture de compte</span>
           <h2 style="font-size:32px;font-weight:700;color:var(--bgfi-navy);line-height:1.3;margin-bottom:16px;">Devenez client en <span style="color:var(--bgfi-sky);">4 étapes simples</span></h2>
           <p style="color:var(--bgfi-text-light);font-size:16px;line-height:1.7;margin-bottom:28px;">Ouvrez votre compte bancaire en ligne depuis votre smartphone ou ordinateur. Rapide, sécurisé et sans déplacement.</p>
-          <a href="https://leclient.bgfi.com" target="_blank" class="btn btn-primary-sm">
+          <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-primary-sm">
             <i class="fas fa-user-plus"></i> Ouvrir mon compte maintenant
           </a>
         </div>
@@ -550,13 +550,13 @@ pages.get('/particuliers', (c) => {
           <div style="margin:20px 0;display:flex;flex-direction:column;gap:10px;">
             ${['Consultation de solde en temps réel','Virements nationaux et internationaux','Téléchargement de relevés PDF','Historique complet des transactions'].map(f=>`<div style="display:flex;gap:10px;align-items:center;"><i class="fas fa-check-circle" style="color:var(--bgfi-p3);"></i><span style="font-size:14px;">${f}</span></div>`).join('')}
           </div>
-          <a href="https://online.bgfi.com" target="_blank" class="btn btn-primary-sm"><i class="fas fa-laptop"></i> Accéder à BGFIOnline</a>
+          <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-primary-sm"><i class="fas fa-laptop"></i> Accéder à BGFIOnline</a>
         </div>
         <div style="background:var(--bgfi-navy);border-radius:12px;padding:32px;text-align:center;">
           <i class="fas fa-laptop" style="font-size:64px;color:rgba(255,255,255,0.2);margin-bottom:16px;display:block;"></i>
           <div style="color:white;font-size:18px;font-weight:700;margin-bottom:8px;">BGFIOnline</div>
           <div style="color:rgba(255,255,255,0.6);font-size:13px;">Votre banque en ligne 24h/24</div>
-          <a href="https://online.bgfi.com" target="_blank" class="btn btn-white" style="margin-top:20px;"><i class="fas fa-external-link-alt"></i> Se connecter</a>
+          <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-white" style="margin-top:20px;"><i class="fas fa-external-link-alt"></i> Se connecter</a>
         </div>
       </div>
     </div>
