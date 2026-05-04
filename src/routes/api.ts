@@ -219,9 +219,18 @@ api.post('/contact', async (c) => {
       </div>
     </div>`
 
-  // Si clé Resend disponible → envoi réel
+  // Toujours sauvegarder le message dans l'admin (avant tout envoi email)
+  store.contactMessages = store.contactMessages || []
+  store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
+
+  // Si clé Resend disponible → tentative d'envoi email
   if (resendKey) {
     try {
+      // Resend en mode test : l'email part vers kobafayolr@gmail.com (compte propriétaire)
+      // En production avec domaine vérifié : l'email part vers destEmail
+      const resendOwnerEmail = 'kobafayolr@gmail.com'
+      const fromAddress = 'BGFIBank Centrafrique <onboarding@resend.dev>'
+
       const resp = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -229,35 +238,30 @@ api.post('/contact', async (c) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'BGFIBank Centrafrique <noreply@bgfibank-rca.com>',
-          to: [destEmail],
+          from: fromAddress,
+          to: [resendOwnerEmail],
           reply_to: email,
-          subject: `[Contact Site] ${subject || 'Nouveau message'} — ${name}`,
+          subject: `[Contact BGFIBank] ${subject || 'Nouveau message'} — ${name}`,
           html: htmlBody,
         }),
       })
       const result = await resp.json() as any
       if (resp.ok) {
-        // Sauvegarder aussi en base locale
-        store.contactMessages = store.contactMessages || []
-        store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
         return c.json({ success: true, message: 'Message envoyé avec succès' })
       } else {
         console.error('Resend error:', result)
-        // Fallback : sauvegarder quand même
-        store.contactMessages = store.contactMessages || []
-        store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
-        return c.json({ success: true, message: 'Message reçu et enregistré' })
+        // Email échoué mais message déjà sauvegardé dans l'admin
+        return c.json({ success: true, message: 'Message reçu et enregistré dans l\'admin' })
       }
     } catch (err) {
       console.error('Email send error:', err)
+      // Email échoué mais message déjà sauvegardé dans l'admin
+      return c.json({ success: true, message: 'Message reçu et enregistré dans l\'admin' })
     }
   }
 
-  // Sans clé Resend : sauvegarder le message en base locale (visible dans admin)
-  store.contactMessages = store.contactMessages || []
-  store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
-  return c.json({ success: true, message: 'Message reçu. Configurez une clé Resend pour l\'envoi par email.' })
+  // Sans clé Resend : message visible dans l'admin uniquement
+  return c.json({ success: true, message: 'Message reçu et enregistré' })
 })
 
 // ── MESSAGES CONTACT (admin) ─────────────────────────────────
