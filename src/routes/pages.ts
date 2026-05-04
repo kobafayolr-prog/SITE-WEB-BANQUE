@@ -1101,15 +1101,15 @@ pages.get('/contact', (c) => {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;">
         <div>
           <h2 style="font-size:22px;font-weight:700;color:var(--bgfi-navy);margin-bottom:24px;">Envoyez-nous un message</h2>
-          <form onsubmit="submitContact(event)" class="admin-card" style="padding:28px;">
-            <div class="form-group"><label>Nom complet *</label><input type="text" placeholder="Votre nom complet" required></div>
-            <div class="form-group"><label>Email *</label><input type="email" placeholder="votre@email.com" required></div>
-            <div class="form-group"><label>Téléphone</label><input type="tel" placeholder="+236 ..."></div>
-            <div class="form-group"><label>Sujet *</label>
-              <select><option>Demande d'information</option><option>Ouverture de compte</option><option>Crédit & Financement</option><option>Réclamation</option><option>Partenariat</option><option>Autre</option></select>
+          <form id="contactForm" class="admin-card" style="padding:28px;">
+            <div class="form-group"><label>Nom complet *</label><input type="text" name="name" placeholder="Votre nom complet" required></div>
+            <div class="form-group"><label>Email *</label><input type="email" name="email" placeholder="votre@email.com" required></div>
+            <div class="form-group"><label>Telephone</label><input type="tel" name="phone" placeholder="+236 ..."></div>
+            <div class="form-group"><label>Sujet</label>
+              <select name="subject"><option>Demande information</option><option>Ouverture de compte</option><option>Credit Financement</option><option>Reclamation</option><option>Partenariat</option><option>Autre</option></select>
             </div>
-            <div class="form-group"><label>Message *</label><textarea placeholder="Votre message..." required style="min-height:130px;"></textarea></div>
-            <button type="submit" class="btn btn-primary-sm btn-full"><i class="fas fa-paper-plane"></i> Envoyer le message</button>
+            <div class="form-group"><label>Message *</label><textarea name="message" placeholder="Votre message..." required style="min-height:130px;"></textarea></div>
+            <button type="submit" id="contactBtn" class="btn btn-primary-sm btn-full"><i class="fas fa-paper-plane"></i> Envoyer le message</button>
           </form>
         </div>
         <div>
@@ -1141,39 +1141,39 @@ pages.get('/contact', (c) => {
     </div>
   </section>
   <script>
-    async function submitContact(e) {
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
+      var form = document.getElementById('contactForm');
+      var btn = document.getElementById('contactBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-      const data = {
-        name: form.querySelector('input[type="text"]').value,
-        email: form.querySelector('input[type="email"]').value,
-        phone: form.querySelector('input[type="tel"]').value,
-        subject: form.querySelector('select').value,
-        message: form.querySelector('textarea').value,
+      var data = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        subject: form.subject.value,
+        message: form.message.value
       };
       try {
-        const res = await fetch('/api/contact', {
+        var res = await fetch('/api/contact', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(data)
         });
-        const result = await res.json();
+        var result = await res.json();
         if (result.success) {
-          showToast('Message envoyé avec succès ! Nous vous répondrons sous 24h.');
+          showToast('Message envoye avec succes ! Nous vous repondrons sous 24h.');
           form.reset();
         } else {
-          showToast(result.error || 'Erreur lors de l\'envoi', 'error');
+          showToast(result.error || 'Erreur envoi', 'error');
         }
       } catch(err) {
-        showToast('Erreur de connexion. Réessayez.', 'error');
+        showToast('Erreur de connexion. Reessayez.', 'error');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer le message';
       }
-    }
+    });
   </script>`
   return c.html(getLayout(content, 'Contact', '', store.settings))
 })
