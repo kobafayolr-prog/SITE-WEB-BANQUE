@@ -869,7 +869,7 @@ pages.get('/actualites/:slug', (c) => {
           <div style="font-size:16px;line-height:1.9;color:var(--bgfi-text);">${article.content}</div>
           <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--bgfi-border);display:flex;align-items:center;gap:12px;">
             <span style="font-size:13px;color:var(--bgfi-text-light);">Partager :</span>
-            <a href="#" style="background:#1877f2;color:white;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;"><i class="fab fa-facebook-f" style="margin-right:4px;"></i>Facebook</a>
+            <a href="https://www.facebook.com/profile/php?id=61586061494460" target="_blank" style="background:#1877f2;color:white;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;"><i class="fab fa-facebook-f" style="margin-right:4px;"></i>Facebook</a>
             <a href="#" style="background:#1da1f2;color:white;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;"><i class="fab fa-twitter" style="margin-right:4px;"></i>Twitter</a>
             <a href="#" style="background:#25d366;color:white;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;text-decoration:none;"><i class="fab fa-whatsapp" style="margin-right:4px;"></i>WhatsApp</a>
           </div>

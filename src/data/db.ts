@@ -99,7 +99,7 @@ export const defaultSettings: SiteSettings = {
   phone: "00236 72 80 98 08 / 75 65 54 65",
   email: "f.koba@bgfi.com",
   address: "Avenue des Martyrs, Bangui, République Centrafricaine",
-  facebook: "https://facebook.com/bgfibankrca",
+  facebook: "https://www.facebook.com/profile/php?id=61586061494460",
   twitter: "https://twitter.com/bgfibankrca",
   linkedin: "https://linkedin.com/company/bgfibank-centrafrique",
   youtube: "https://youtube.com/bgfibank",
