@@ -186,82 +186,79 @@ api.delete('/jobs/:id', checkAdmin, async (c) => {
   return c.json({ success: true })
 })
 
-// ── CONTACT FORM — envoi email via Resend API ────────────────
+// ── CONTACT FORM — envoi email via Resend ────────────────────
 api.post('/contact', async (c) => {
   const { name, email, phone, subject, message } = await c.req.json()
   if (!name || !email || !message) {
     return c.json({ error: 'Nom, email et message sont obligatoires' }, 400)
   }
 
-  // Email de destination configuré dans les settings
-  const destEmail = store.settings.email || 'f.koba@bgfi.com'
+  // ── Clé Resend (permanente dans le code)
+  const RESEND_API_KEY = 're_Kp9K7zhg_B4w7kGKmy5p7GV37pWUmyFNT'
+  // Sans domaine vérifié, Resend n'accepte d'envoyer QUE à cette adresse
+  const OWNER_EMAIL = 'kobafayolr@gmail.com'
 
-  // Clé Resend (à configurer via admin settings ou variable d'env)
-  const resendKey = (c.env as any)?.RESEND_API_KEY || store.settings.resendApiKey || ''
-
-  const htmlBody = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:24px;border-radius:8px;">
-      <div style="background:#003a74;padding:20px 24px;border-radius:8px 8px 0 0;">
-        <h2 style="color:white;margin:0;font-size:20px;">📩 Nouveau message — BGFIBank Centrafrique</h2>
-      </div>
-      <div style="background:white;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e0e4ea;">
-        <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:10px 0;font-weight:700;color:#003a74;width:130px;">Nom</td><td style="padding:10px 0;color:#2c3e50;">${name}</td></tr>
-          <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Email</td><td style="padding:10px 8px;"><a href="mailto:${email}" style="color:#0d91d0;">${email}</a></td></tr>
-          <tr><td style="padding:10px 0;font-weight:700;color:#003a74;">Téléphone</td><td style="padding:10px 0;color:#2c3e50;">${phone || 'Non renseigné'}</td></tr>
-          <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Sujet</td><td style="padding:10px 8px;color:#2c3e50;">${subject || 'Non précisé'}</td></tr>
-          <tr><td colspan="2" style="padding:16px 0 8px;font-weight:700;color:#003a74;">Message</td></tr>
-          <tr><td colspan="2" style="padding:12px;background:#f4f6f9;border-radius:6px;color:#2c3e50;line-height:1.7;border-left:4px solid #0d91d0;">${message.replace(/\n/g, '<br>')}</td></tr>
-        </table>
-        <div style="margin-top:20px;padding:12px;background:#e8f5e9;border-radius:6px;font-size:12px;color:#6b7280;">
-          Message reçu le ${new Date().toLocaleString('fr-FR', {timeZone:'Africa/Bangui'})} — BGFIBank Centrafrique
-        </div>
-      </div>
-    </div>`
-
-  // Toujours sauvegarder le message dans l'admin (avant tout envoi email)
+  // ── Toujours sauvegarder dans l'admin (même si l'email échoue)
   store.contactMessages = store.contactMessages || []
-  store.contactMessages.push({ id: Date.now(), name, email, phone, subject, message, date: new Date().toISOString(), read: false })
+  store.contactMessages.push({
+    id: Date.now(), name, email, phone,
+    subject, message,
+    date: new Date().toISOString(),
+    read: false
+  })
 
-  // Si clé Resend disponible → tentative d'envoi email
-  if (resendKey) {
-    try {
-      // Resend en mode test : l'email part vers kobafayolr@gmail.com (compte propriétaire)
-      // En production avec domaine vérifié : l'email part vers destEmail
-      const resendOwnerEmail = 'kobafayolr@gmail.com'
-      const fromAddress = 'BGFIBank Centrafrique <onboarding@resend.dev>'
+  // ── Corps de l'email HTML
+  const htmlBody = `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f4f6f9;padding:24px;border-radius:8px;">
+  <div style="background:#003a74;padding:20px 24px;border-radius:8px 8px 0 0;">
+    <h2 style="color:white;margin:0;font-size:20px;">📩 Nouveau message — BGFIBank Centrafrique</h2>
+  </div>
+  <div style="background:white;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e0e4ea;">
+    <table style="width:100%;border-collapse:collapse;">
+      <tr><td style="padding:10px 0;font-weight:700;color:#003a74;width:130px;">Nom</td><td style="padding:10px 0;color:#2c3e50;">${name}</td></tr>
+      <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Email</td><td style="padding:10px 8px;"><a href="mailto:${email}" style="color:#0d91d0;">${email}</a></td></tr>
+      <tr><td style="padding:10px 0;font-weight:700;color:#003a74;">Téléphone</td><td style="padding:10px 0;color:#2c3e50;">${phone || 'Non renseigné'}</td></tr>
+      <tr style="background:#f8f9fa;"><td style="padding:10px 8px;font-weight:700;color:#003a74;">Sujet</td><td style="padding:10px 8px;color:#2c3e50;">${subject || 'Non précisé'}</td></tr>
+      <tr><td colspan="2" style="padding:16px 0 8px;font-weight:700;color:#003a74;">Message</td></tr>
+      <tr><td colspan="2" style="padding:12px;background:#f4f6f9;border-radius:6px;color:#2c3e50;line-height:1.7;border-left:4px solid #0d91d0;">${message.replace(/\n/g, '<br>')}</td></tr>
+    </table>
+    <div style="margin-top:20px;padding:12px;background:#e8f5e9;border-radius:6px;font-size:12px;color:#6b7280;">
+      Reçu le ${new Date().toLocaleString('fr-FR', {timeZone:'Africa/Bangui'})} — BGFIBank Centrafrique
+    </div>
+  </div>
+</div>`
 
-      const resp = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: fromAddress,
-          to: [resendOwnerEmail],
-          reply_to: email,
-          subject: `[Contact BGFIBank] ${subject || 'Nouveau message'} — ${name}`,
-          html: htmlBody,
-        }),
-      })
-      const result = await resp.json() as any
-      if (resp.ok) {
-        return c.json({ success: true, message: 'Message envoyé avec succès' })
-      } else {
-        console.error('Resend error:', result)
-        // Email échoué mais message déjà sauvegardé dans l'admin
-        return c.json({ success: true, message: 'Message reçu et enregistré dans l\'admin' })
-      }
-    } catch (err) {
-      console.error('Email send error:', err)
-      // Email échoué mais message déjà sauvegardé dans l'admin
-      return c.json({ success: true, message: 'Message reçu et enregistré dans l\'admin' })
+  // ── Envoi via Resend
+  try {
+    console.log('[Contact] Envoi Resend vers', OWNER_EMAIL)
+    const resp = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'BGFIBank Centrafrique <onboarding@resend.dev>',
+        to: [OWNER_EMAIL],
+        reply_to: email,
+        subject: `[Contact BGFIBank] ${subject || 'Nouveau message'} — ${name}`,
+        html: htmlBody,
+      }),
+    })
+
+    const result = await resp.json() as any
+    console.log('[Contact] Resend status:', resp.status, JSON.stringify(result))
+
+    if (resp.ok && result.id) {
+      return c.json({ success: true, emailSent: true, message: 'Message envoyé avec succès' })
+    } else {
+      console.error('[Contact] Resend erreur:', result)
+      return c.json({ success: true, emailSent: false, message: 'Message enregistré dans l\'admin (email non envoyé)' })
     }
+  } catch (err: any) {
+    console.error('[Contact] Exception:', err?.message)
+    return c.json({ success: true, emailSent: false, message: 'Message enregistré dans l\'admin' })
   }
-
-  // Sans clé Resend : message visible dans l'admin uniquement
-  return c.json({ success: true, message: 'Message reçu et enregistré' })
 })
 
 // ── MESSAGES CONTACT (admin) ─────────────────────────────────
