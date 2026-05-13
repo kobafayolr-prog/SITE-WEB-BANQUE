@@ -702,7 +702,7 @@ pages.get('/particuliers', (c) => {
     if (!target) return;
     const btns = document.querySelectorAll('.prod-nav-btn');
     let found = null;
-    btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; });
+    btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; });
     if (found) showTab(hash, found);
   })();
   </script>`
@@ -826,7 +826,7 @@ pages.get('/professionnels', (c) => {
     const hash = location.hash.replace('#', '');
     if (!hash) return;
     const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
     if (target && btn) showTab(hash, btn);
   })();
   </script>`
@@ -954,7 +954,7 @@ pages.get('/entreprises', (c) => {
     const hash = location.hash.replace('#', '');
     if (!hash) return;
     const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
     if (target && btn) showTab(hash, btn);
   })();
   </script>`
@@ -1108,7 +1108,7 @@ pages.get('/banque-privee', (c) => {
     const hash = location.hash.replace('#', '');
     if (!hash) return;
     const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
     if (target && btn) showTab(hash, btn);
   })();
   </script>`
