@@ -179,121 +179,475 @@ export const defaultArticles: Article[] = [
 ];
 
 export const defaultProducts: Product[] = [
-  // PARTICULIERS
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — COMPTES
+  // ═══════════════════════════════════════
   {
-    id: 1, segment: "particuliers", slug: "compte-courant",
-    title: "Compte Courant", icon: "fa-university",
-    description: "Gérez vos finances au quotidien avec notre compte courant flexible et sécurisé.",
-    features: ["Carte bancaire incluse", "Accès BGFIOnline 24h/24", "Relevés mensuels", "Virements nationaux et internationaux"],
-    available: true, cta: "Ouvrir un compte", ctaUrl: "https://www5.bgfionline.com/"
+    id: 1, segment: "particuliers", slug: "compte-deposit",
+    title: "Compte Deposit (Compte Chèque)", icon: "fa-university",
+    description: "Un compte transactionnel pour vos opérations quotidiennes : dépôts, retraits, virements, paiement de factures. Idéal pour les salariés domiciliant leur salaire à BGFIBank.",
+    features: [
+      "Dépôts et retraits au guichet automatique",
+      "Ouverture gratuite",
+      "Absence de frais de transaction",
+      "Paiements de factures et virements de fonds",
+      "Suivi des dépenses en temps réel",
+      "Salaire minimum requis : 100 000 FCFA",
+    ],
+    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact"
   },
   {
     id: 2, segment: "particuliers", slug: "compte-epargne",
     title: "Compte Épargne", icon: "fa-piggy-bank",
-    description: "Constituez votre épargne progressivement avec un taux d'intérêt attractif.",
-    features: ["Taux d'intérêt attractif", "Pas de frais de gestion", "Versements libres", "Disponibilité immédiate"],
-    available: true, cta: "En savoir plus", ctaUrl: "/particuliers/compte-epargne"
+    description: "Une épargne réglementée et rémunérée à taux annuel prédéfini. Souple dans l'approvisionnement, disponible à tout moment. Inclut le Plan Épargne Logement (PEL) pour financer votre projet immobilier.",
+    features: [
+      "Taux de rémunération : 3,5% par an",
+      "Versement minimum : 50 000 FCFA",
+      "Épargne disponible à tout moment",
+      "Souplesse dans l'approvisionnement",
+      "Plan Épargne Logement (PEL) disponible",
+      "Conditions : pièce d'identité valide + 2 photos",
+    ],
+    available: true, cta: "Souscrire", ctaUrl: "/contact"
   },
   {
-    id: 3, segment: "particuliers", slug: "dat",
+    id: 3, segment: "particuliers", slug: "compte-gogoro",
+    title: "Épargne Gogoro", icon: "fa-star",
+    description: "Un placement rémunéré à versements mensuels réguliers, adapté aux salariés CDI. À l'issue de la période d'épargne, un prêt vous est accordé à des conditions avantageuses.",
+    features: [
+      "Taux d'épargne : 3,5% par an",
+      "Virement mensuel minimum : 25 000 FCFA",
+      "Accès à un crédit au taux de 13% HT",
+      "Durée de remboursement max : 24 mois",
+      "Frais de dossier : 15 000 FCFA",
+      "Réservé aux salariés CDI avec salaire min. 100 000 FCFA",
+    ],
+    available: true, cta: "En savoir plus", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — DÉPÔTS & PLACEMENTS
+  // ═══════════════════════════════════════
+  {
+    id: 4, segment: "particuliers", slug: "dat",
     title: "Dépôt à Terme (DAT)", icon: "fa-chart-line",
-    description: "Faites fructifier votre capital avec un rendement garanti sur une durée choisie.",
-    features: ["Capital garanti", "Taux fixe à la souscription", "Durées de 3 à 24 mois", "Renouvellement automatique possible"],
+    description: "Un placement à terme avec des conditions de durée, de taux et de montant négociées à l'avance. Rattaché à votre compte courant, souscriptible par tout client de la banque.",
+    features: [
+      "Montant minimal : 1 000 000 FCFA",
+      "Taux minimum post compté : 2,5%",
+      "Durée et taux négociés à l'avance",
+      "Taux préférentiels sur les demandes de financement",
+      "Conditions : pièce d'identité + formulaire CRC",
+      "Placement stable et sécurisé",
+    ],
     available: true, cta: "Simuler mon DAT", ctaUrl: "/simulateurs"
   },
   {
-    id: 4, segment: "particuliers", slug: "credit-personnel",
-    title: "Crédit Personnel", icon: "fa-hand-holding-usd",
-    description: "Financez vos projets personnels avec notre crédit rapide et flexible.",
-    features: ["Réponse rapide", "Taux compétitifs", "Durée flexible", "Sans justificatif d'utilisation"],
+    id: 5, segment: "particuliers", slug: "bon-de-caisse",
+    title: "Bon de Caisse (BDC)", icon: "fa-file-invoice-dollar",
+    description: "Titre de créance anonyme ou nominatif constatant un dépôt à échéance fixe. Le montant et la durée sont choisis à la souscription. Suivi indépendant du compte courant.",
+    features: [
+      "Montant minimum : 50 000 000 FCFA",
+      "Anonymat possible (nominatif ou anonyme)",
+      "Taux selon conditions du marché",
+      "Épargne dédiée à un projet futur",
+      "Suivi en parallèle du compte courant",
+      "Conditions : pièce d'identité + formulaire CRC",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — CRÉDITS
+  // ═══════════════════════════════════════
+  {
+    id: 6, segment: "particuliers", slug: "credit-consommation",
+    title: "Crédit à la Consommation", icon: "fa-hand-holding-usd",
+    description: "Crédit court/moyen terme pour couvrir vos besoins urgents : Cresco (frais scolaires), Crédit Voyage, Crédit Mariage, Crédit Flash. Simple, souple et disponible toute l'année.",
+    features: [
+      "Montant minimum : 100 000 FCFA",
+      "Revenu mensuel minimum : 50 000 FCFA",
+      "Cresco : remboursement sur 8 mois",
+      "Crédit Voyage : remboursement sur 12 mois",
+      "Réservé aux salariés secteur privé et public",
+      "Documents : 3 bulletins de salaire + pièce d'identité",
+    ],
+    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+  },
+  {
+    id: 7, segment: "particuliers", slug: "credit-immobilier",
+    title: "Crédit Immobilier", icon: "fa-home",
+    description: "Crédit moyen/long terme pour financer l'achat, la construction, l'extension ou la rénovation de votre logement. Sur la base de la documentation foncière du bien.",
+    features: [
+      "Achat de logement, terrain ou construction",
+      "Extension ou rénovation d'habitation",
+      "Taux d'intérêt attractifs",
+      "Flexibilité financière et aide à la constitution du patrimoine",
+      "Titulaire d'un compte chèque BGFIBank requis",
+      "Documents : titre foncier, justificatifs revenus, devis travaux",
+    ],
     available: true, cta: "Simuler mon crédit", ctaUrl: "/simulateurs"
   },
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — MONÉTIQUE
+  // ═══════════════════════════════════════
   {
-    id: 5, segment: "particuliers", slug: "cartes-bancaires",
-    title: "Cartes Bancaires", icon: "fa-credit-card",
-    description: "Payez partout dans le monde avec nos cartes Visa et Mastercard.",
-    features: ["Visa Classic & Gold", "Paiement sans contact", "Utilisation internationale", "Assurance voyage incluse"],
-    available: true, cta: "Choisir ma carte", ctaUrl: "/particuliers/cartes"
+    id: 8, segment: "particuliers", slug: "carte-gimac-ivoire",
+    title: "Carte GIMAC Ivoire", icon: "fa-credit-card",
+    description: "Carte interbancaire d'entrée de gamme. Plafond 250 000 FCFA/jour et 1 000 000 FCFA/semaine. Retraits et paiements TPE dans tous les établissements affichant le logo GIMAC.",
+    features: [
+      "Plafond : 250 000 FCFA/jour — 1 000 000 FCFA/semaine",
+      "Frais annuel : 3 000 FCFA HT",
+      "Retrait client BGFIBank : 250 FCFA HT",
+      "Retrait autres banques : 400 FCFA HT",
+      "Sécurité Motion Code",
+      "Conditions : pièce d'identité + compte épargne ou chèque",
+    ],
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
   },
   {
-    id: 6, segment: "particuliers", slug: "transfert-argent",
-    title: "Transfert d'Argent", icon: "fa-exchange-alt",
-    description: "Envoyez et recevez de l'argent en toute sécurité, en RCA et à l'international.",
-    features: ["Western Union disponible", "Virements CEMAC", "Transferts internationaux", "Délais rapides"],
-    available: true, cta: "Effectuer un transfert", ctaUrl: "/particuliers/transferts"
+    id: 9, segment: "particuliers", slug: "carte-gimac-anigre",
+    title: "Carte GIMAC Anigré", icon: "fa-credit-card",
+    description: "Carte moyenne gamme avec plafond élevé. Retraits dans tous les GAB GIMAC de la zone CEMAC. Consultation et édition de solde et historique.",
+    features: [
+      "Plafond : 1 500 000 FCFA/semaine",
+      "Frais annuel : 3 000 FCFA HT",
+      "Retrait client BGFIBank : 250 FCFA HT",
+      "Retrait autres banques : 400 FCFA HT",
+      "Paiement TPE — Utilisable dans la zone CEMAC",
+      "Conditions : pièce d'identité + compte épargne ou chèque",
+    ],
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
   },
   {
-    id: 7, segment: "particuliers", slug: "bgfi-mobile",
-    title: "BGFIMobile", icon: "fa-mobile-alt",
-    description: "Gérez votre banque depuis votre smartphone, où que vous soyez.",
-    features: ["Consultation de solde", "Virements instantanés", "Paiement de factures", "Notifications en temps réel"],
-    available: false, cta: "Être notifié", ctaUrl: "#notify-bgfimobile"
+    id: 10, segment: "particuliers", slug: "carte-gimac-diamant",
+    title: "Carte GIMAC Diamant", icon: "fa-gem",
+    description: "Carte haut de gamme avec le plafond le plus élevé de la gamme GIMAC. Pour une clientèle exigeante avec des besoins importants.",
+    features: [
+      "Plafond : 2 000 000 FCFA/semaine",
+      "Frais annuel : 3 000 FCFA HT",
+      "Retrait client BGFIBank : 250 FCFA HT",
+      "Retrait autres banques : 400 FCFA HT",
+      "Paiement TPE — Utilisable zone CEMAC",
+      "Conditions : pièce d'identité + compte épargne ou chèque",
+    ],
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
   },
   {
-    id: 8, segment: "particuliers", slug: "bgfi-online",
-    title: "BGFIOnline", icon: "fa-laptop",
-    description: "Accédez à votre espace bancaire en ligne 24h/24 et 7j/7.",
-    features: ["Tableau de bord complet", "Historique des transactions", "Virements en ligne", "Téléchargement de relevés"],
+    id: 11, segment: "particuliers", slug: "carte-visa-classique",
+    title: "Carte Visa Classique", icon: "fa-credit-card",
+    description: "Carte internationale de retrait et paiement pour clients particuliers et entrepreneurs. Achats en ligne, paiements chez les commerçants agréés Visa/Mastercard.",
+    features: [
+      "Abonnement mensuel : 5 000 FCFA HT",
+      "Utilisation nationale et internationale",
+      "Achats en ligne sécurisés",
+      "Sécurité : 3D Secure + Motion Code + Alerte SMS",
+      "Commande de chéquiers incluse",
+      "Conditions : pièce d'identité + compte chèque BGFIBank",
+    ],
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+  },
+  {
+    id: 12, segment: "particuliers", slug: "carte-visa-gold",
+    title: "Carte Visa Gold", icon: "fa-crown",
+    description: "Carte internationale haut de gamme avec plafonds élevés, garanties et services connexes. Possibilité de découvert. Réservée aux clients particuliers haut de gamme.",
+    features: [
+      "Abonnement mensuel : 7 000 FCFA HT",
+      "Plafonds de transactions élevés",
+      "Garanties et services premium associés",
+      "Sécurité : 3D Secure + Motion Code + Alerte SMS",
+      "Service à l'international — Achat en ligne",
+      "Conditions : pièce d'identité + compte chèque BGFIBank",
+    ],
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — DIGITAL
+  // ═══════════════════════════════════════
+  {
+    id: 13, segment: "particuliers", slug: "bgfi-online",
+    title: "BGFIOnline (Web Banking)", icon: "fa-laptop",
+    description: "Solution web disponible sur smartphone, tablette et desktop pour gérer votre compte bancaire à distance 24h/24 et 7j/7.",
+    features: [
+      "Consultation de comptes et historique",
+      "Virements simples et permanents",
+      "Téléchargement de relevés (format Excel)",
+      "Commande de cartes et chéquiers",
+      "Opposition sur cartes/chèques",
+      "Coût : 30 000 FCFA HT (particuliers)",
+    ],
     available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/"
   },
+  {
+    id: 14, segment: "particuliers", slug: "sms-banking",
+    title: "SMS Banking", icon: "fa-sms",
+    description: "Recevez des alertes et gérez votre compte directement par SMS. Rapide, simple et accessible depuis n'importe quel téléphone.",
+    features: [
+      "Alertes mouvements débit/crédit",
+      "Consultation mini relevé (5 dernières opérations)",
+      "Commande de chéquiers et cartes par SMS",
+      "Frais annuel : 3 000 FCFA",
+      "Alerte SMS : 100 FCFA HT",
+      "Message reçu : 150 FCFA HT",
+    ],
+    available: true, cta: "Souscrire", ctaUrl: "/contact"
+  },
+  {
+    id: 15, segment: "particuliers", slug: "bgfi-mobile",
+    title: "BGFIMobile", icon: "fa-mobile-alt",
+    description: "Application mobile de Mobile Banking et Mobile Money. Gérez votre compte et votre portefeuille électronique depuis votre téléphone.",
+    features: [
+      "Retrait sans carte au GAB",
+      "Virements bancaires locaux et zone CEMAC",
+      "Paiement de factures (eau, électricité, Canal+...)",
+      "Transfert d'argent cash local et international",
+      "Achat d'unités téléphoniques",
+      "Frais de souscription : 6 000 FCFA HT",
+    ],
+    available: true, cta: "Télécharger", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
+  // PARTICULIERS — TRANSFERTS
+  // ═══════════════════════════════════════
+  {
+    id: 16, segment: "particuliers", slug: "moneygram",
+    title: "MoneyGram", icon: "fa-globe",
+    description: "Service international de transfert d'argent rapide, sûr, fiable et pratique. Envoi et réception en quelques minutes partout dans le monde. Accessible aux clients et non-clients BGFIBank.",
+    features: [
+      "Transfert international en quelques minutes",
+      "Accessible clients et non-clients BGFIBank",
+      "Simple, rapide et disponible",
+      "Pièce d'identité en cours de validité",
+      "Formulaire d'envoi/retrait au guichet",
+      "Réseau mondial MoneyGram",
+    ],
+    available: true, cta: "Effectuer un transfert", ctaUrl: "/contact"
+  },
+  {
+    id: 17, segment: "particuliers", slug: "virement-local",
+    title: "Virement Local", icon: "fa-exchange-alt",
+    description: "Transfert de fonds d'un compte à un autre sur le plan national, dans la même banque ou entre banques différentes. Simple, rapide et sécurisé.",
+    features: [
+      "Transfert national inter-bancaire",
+      "Simple, rapide et sécurisé",
+      "Ordre de virement + pièce d'identité",
+      "Justificatifs de la transaction requis",
+      "Disponible pour particuliers et entreprises",
+      "Zone CEMAC couverte",
+    ],
+    available: true, cta: "Effectuer un virement", ctaUrl: "/contact"
+  },
+  {
+    id: 18, segment: "particuliers", slug: "virement-international",
+    title: "Virement International", icon: "fa-plane",
+    description: "Transfert de fonds vers l'extérieur de la zone CEMAC pour achat de biens, services, frais scolaires, aide familiale, loyer, évacuation sanitaire et plus.",
+    features: [
+      "Achat de biens et services à l'étranger",
+      "Frais de scolarité à l'étranger",
+      "Aide familiale et soutien financier",
+      "Règlement de loyer à l'étranger",
+      "Évacuation sanitaire",
+      "Documents selon nature du transfert",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
   // PROFESSIONNELS
+  // ═══════════════════════════════════════
   {
-    id: 9, segment: "professionnels", slug: "compte-pro",
-    title: "Compte Professionnel", icon: "fa-briefcase",
-    description: "Un compte dédié aux professionnels avec des services adaptés à votre activité.",
-    features: ["Chéquier professionnel", "Accès multi-utilisateurs", "Reporting mensuel", "Conseiller dédié"],
-    available: true, cta: "Ouvrir un compte pro", ctaUrl: "https://www5.bgfionline.com/"
+    id: 19, segment: "professionnels", slug: "compte-courant-pro",
+    title: "Compte Courant Professionnel", icon: "fa-briefcase",
+    description: "Compte dédié aux entreprises, administrations, ONG et associations. Fonctionne en ligne créditrice et débitrice pour les professionnels et entreprises.",
+    features: [
+      "Versement minimum : 1 000 000 FCFA",
+      "Pour SA, SARL, SURL, Coopératives, ONG",
+      "Gestion financière facilitée",
+      "Services adaptés aux besoins des entreprises",
+      "Documents : NIF, RCCM, statuts, pièce d'identité gérant",
+      "Conseiller dédié",
+    ],
+    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact"
   },
   {
-    id: 10, segment: "professionnels", slug: "credit-professionnel",
-    title: "Crédit Professionnel", icon: "fa-tools",
-    description: "Financez votre activité et développez votre entreprise avec nos crédits professionnels.",
-    features: ["Crédit d'équipement", "Crédit de trésorerie", "Financement de stocks", "Garanties flexibles"],
-    available: true, cta: "Simuler", ctaUrl: "/simulateurs"
+    id: 20, segment: "professionnels", slug: "credit-exploitation",
+    title: "Crédit d'Exploitation", icon: "fa-tools",
+    description: "Crédit court terme pour les entreprises ayant des écarts de trésorerie permanents ou ponctuels liés à leur cycle d'exploitation. Délais de mise en place courts.",
+    features: [
+      "Financement des besoins de trésorerie",
+      "Continuité de l'exploitation assurée",
+      "Délais de mise en place courts",
+      "Documents : états financiers 3 ans, relevés bancaires 12 mois",
+      "NIF, RCCM, quitus fiscal, CNSS requis",
+      "Demande adressée à la Direction Générale",
+    ],
+    available: true, cta: "Faire une demande", ctaUrl: "/contact"
   },
   {
-    id: 11, segment: "professionnels", slug: "tpe-paiement",
-    title: "Terminal de Paiement (TPE)", icon: "fa-cash-register",
-    description: "Acceptez les paiements par carte dans votre commerce avec notre solution TPE.",
-    features: ["Installation rapide", "Compatible toutes cartes", "Reporting en temps réel", "Support technique dédié"],
-    available: false, cta: "Être notifié", ctaUrl: "#notify-tpe"
-  },
-  // ENTREPRISES
-  {
-    id: 12, segment: "entreprises", slug: "cash-management",
-    title: "Cash Management", icon: "fa-coins",
-    description: "Optimisez la gestion de votre trésorerie avec nos solutions Cash Management.",
-    features: ["Centralisation des comptes", "Prévisions de trésorerie", "Virements de masse", "Reporting consolidé"],
-    available: false, cta: "Être notifié", ctaUrl: "#notify-cash"
-  },
-  {
-    id: 13, segment: "entreprises", slug: "financement-entreprise",
-    title: "Financement Entreprise", icon: "fa-building",
-    description: "Des solutions de financement sur mesure pour accompagner la croissance de votre entreprise.",
-    features: ["Crédit d'investissement", "Financement de projet", "Lignes de crédit", "Structuration sur mesure"],
+    id: 21, segment: "professionnels", slug: "credit-campagne",
+    title: "Crédit de Campagne", icon: "fa-seedling",
+    description: "Crédit dont le montant et la durée sont déterminés à l'avance selon le cycle d'exploitation de l'entreprise. Idéal pour les activités saisonnières.",
+    features: [
+      "Montant et durée négociés à l'avance",
+      "Adapté aux activités saisonnières",
+      "Financement des besoins de trésorerie",
+      "États financiers 3 dernières années requis",
+      "Compte d'exploitation prévisionnel",
+      "Demande adressée à la Direction Générale",
+    ],
     available: true, cta: "Nous contacter", ctaUrl: "/contact"
   },
   {
-    id: 14, segment: "entreprises", slug: "trade-finance",
-    title: "Trade Finance", icon: "fa-ship",
-    description: "Sécurisez vos transactions commerciales internationales avec nos instruments de Trade Finance.",
-    features: ["Lettres de crédit", "Remises documentaires", "Garanties bancaires", "Financement import/export"],
-    available: true, cta: "En savoir plus", ctaUrl: "/entreprises/trade-finance"
+    id: 22, segment: "professionnels", slug: "decouvert-avance-facture",
+    title: "Découvert / Avance sur Facture", icon: "fa-money-bill-wave",
+    description: "Ouverture de crédit à hauteur d'un plafond accordé pour faire face aux à-coups de trésorerie. L'avance sur facture procure des capitaux complémentaires sous forme d'avances.",
+    features: [
+      "Plafond d'emprunt accordé selon profil",
+      "Utilisation flexible en cas de besoin",
+      "Avance sur facture pour entreprises industrielles",
+      "Peu exigeant en garantie",
+      "Compte courant BGFIBank requis",
+      "Formulaire d'adhésion au CRC",
+    ],
+    available: true, cta: "Faire une demande", ctaUrl: "/contact"
   },
+  {
+    id: 23, segment: "professionnels", slug: "engagements-signature",
+    title: "Engagements par Signature", icon: "fa-file-signature",
+    description: "BGFIBank prend l'engagement de se substituer à son client en cas de défaillance. Escompte commerciale, Avals effets, Cautions, Garantie bancaire, Crédit documentaire.",
+    features: [
+      "Cautions de marché, douane, étudiante",
+      "Garantie bancaire pour opérations financières",
+      "Escompte commerciale pour règlement avant terme",
+      "Crédit documentaire pour importateurs",
+      "Facilite l'obtention de marchés publics",
+      "Documents : appel d'offre, modèle caution, dépôt en compte",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+  },
+  {
+    id: 24, segment: "professionnels", slug: "bgfi-online-pro",
+    title: "BGFIOnline Entreprises", icon: "fa-laptop",
+    description: "Solution web banking dédiée aux entreprises pour gérer vos comptes, effectuer des virements et suivre vos opérations à distance.",
+    features: [
+      "Gestion multi-comptes",
+      "Virements simples et permanents",
+      "Historique et relevés téléchargeables",
+      "Opposition sur cartes/chèques en ligne",
+      "Réclamations en ligne",
+      "Coût : 100 000 FCFA HT",
+    ],
+    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/"
+  },
+
+  // ═══════════════════════════════════════
+  // ENTREPRISES
+  // ═══════════════════════════════════════
+  {
+    id: 25, segment: "entreprises", slug: "compte-courant-entreprise",
+    title: "Compte Courant Société", icon: "fa-building",
+    description: "Compte dédié aux grandes entreprises, administrations publiques et privées, ONG et institutions. Versement minimum d'un million de FCFA.",
+    features: [
+      "Versement minimum : 1 000 000 FCFA",
+      "Fonctionne en ligne créditrice et débitrice",
+      "Pour SA, SARL, SURL et structures similaires",
+      "Services bancaires adaptés aux grandes structures",
+      "Documents : NIF, RCCM, statuts notariés, PV désignation gérant",
+      "Conseiller entreprise dédié",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+  },
+  {
+    id: 26, segment: "entreprises", slug: "credit-investissement",
+    title: "Crédit d'Investissement", icon: "fa-chart-bar",
+    description: "Crédit moyen/long terme pour financer l'acquisition ou l'amélioration de l'outil de production. Finance entre 70 et 80% du coût total du projet.",
+    features: [
+      "Financement de 70 à 80% du coût du projet",
+      "Matériels, immatériels ou financiers",
+      "Amélioration de l'outil de production",
+      "États financiers 3 ans + prévisionnel requis",
+      "RCCM, NIF, quitus fiscal, CNSS, ACFPE",
+      "Demande adressée à la Direction Générale",
+    ],
+    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+  },
+  {
+    id: 27, segment: "entreprises", slug: "dat-entreprise",
+    title: "Dépôt à Terme Entreprise", icon: "fa-coins",
+    description: "Placement à terme pour entreprises avec conditions négociées. Collecte de ressources stables avec taux avantageux et possibilité de taux préférentiels sur financements.",
+    features: [
+      "Montant minimal : 1 000 000 FCFA",
+      "Taux minimum post compté : 2,5%",
+      "Conditions de durée et taux négociées",
+      "Taux préférentiels sur demandes de financement",
+      "Rattaché au compte courant",
+      "Conditions : pièce d'identité + formulaire CRC",
+    ],
+    available: true, cta: "Souscrire", ctaUrl: "/contact"
+  },
+  {
+    id: 28, segment: "entreprises", slug: "trade-finance",
+    title: "Trade Finance / Virement International", icon: "fa-ship",
+    description: "Sécurisez vos transactions commerciales internationales. Crédit documentaire, garanties bancaires, virements hors CEMAC pour import/export.",
+    features: [
+      "Crédit documentaire pour importateurs",
+      "Garanties bancaires internationales",
+      "Virements internationaux sécurisés",
+      "Achat de biens et services à l'étranger",
+      "Attestation de domiciliation bancaire",
+      "Documents selon nature de l'opération",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+  },
+
+  // ═══════════════════════════════════════
   // BANQUE PRIVÉE
+  // ═══════════════════════════════════════
   {
-    id: 15, segment: "banque-privee", slug: "gestion-patrimoine",
-    title: "Gestion de Patrimoine", icon: "fa-gem",
-    description: "Une gestion personnalisée de votre patrimoine par nos experts financiers.",
-    features: ["Conseil patrimonial personnalisé", "Diversification des placements", "Optimisation fiscale", "Reporting exclusif"],
-    available: true, cta: "Prendre RDV", ctaUrl: "/rendez-vous"
+    id: 29, segment: "banque-privee", slug: "compte-premium",
+    title: "Compte Premium", icon: "fa-crown",
+    description: "Une offre bancaire d'exception avec services exclusifs et conseiller privé dédié. Pour une clientèle haut de gamme exigeant le meilleur.",
+    features: [
+      "Conseiller privé exclusif",
+      "Carte Visa Gold incluse",
+      "Services bancaires prioritaires",
+      "Accès aux produits de placement premium",
+      "Accompagnement personnalisé",
+      "Contactez-nous pour les conditions",
+    ],
+    available: true, cta: "Prendre RDV", ctaUrl: "/contact"
   },
   {
-    id: 16, segment: "banque-privee", slug: "compte-premium",
-    title: "Compte Premium", icon: "fa-crown",
-    description: "Une offre bancaire d'exception avec des services exclusifs et un conseiller privé dédié.",
-    features: ["Conseiller privé exclusif", "Carte Visa Infinite", "Accès salons VIP aéroports", "Services conciergerie"],
-    available: true, cta: "Nous rejoindre", ctaUrl: "/contact"
+    id: 30, segment: "banque-privee", slug: "gestion-patrimoine",
+    title: "Gestion de Patrimoine", icon: "fa-gem",
+    description: "Valorisez et protégez votre patrimoine avec l'accompagnement d'experts financiers BGFIBank. Solutions sur mesure pour vos placements et investissements.",
+    features: [
+      "Conseil patrimonial personnalisé",
+      "Dépôt à Terme et Bon de Caisse",
+      "Diversification des placements",
+      "Accompagnement sur les investissements",
+      "Reporting exclusif et régulier",
+      "Contactez-nous pour les conditions",
+    ],
+    available: true, cta: "Prendre RDV", ctaUrl: "/contact"
+  },
+  {
+    id: 31, segment: "banque-privee", slug: "bon-caisse-prive",
+    title: "Bon de Caisse Privé", icon: "fa-file-invoice-dollar",
+    description: "Titre de créance anonyme ou nominatif pour des placements importants. Taux selon conditions du marché. Solution idéale pour sécuriser et faire fructifier un capital élevé.",
+    features: [
+      "Montant minimum : 50 000 000 FCFA",
+      "Anonymat possible",
+      "Taux selon conditions du marché",
+      "Épargne dédiée à un projet futur",
+      "Suivi indépendant du compte courant",
+      "Conditions : pièce d'identité + formulaire CRC",
+    ],
+    available: true, cta: "Nous contacter", ctaUrl: "/contact"
   },
 ];
 
