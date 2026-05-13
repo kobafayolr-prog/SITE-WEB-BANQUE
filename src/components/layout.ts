@@ -72,12 +72,12 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
             <i class="fas fa-user"></i> Particuliers <i class="fas fa-chevron-down chevron"></i>
           </a>
           <div class="dropdown-menu">
-            <a href="/particuliers#comptes"><i class="fas fa-university"></i> Comptes bancaires</a>
-            <a href="/particuliers#epargne"><i class="fas fa-piggy-bank"></i> Épargne & DAT</a>
-            <a href="/particuliers#credits"><i class="fas fa-hand-holding-usd"></i> Crédits</a>
-            <a href="/particuliers#cartes"><i class="fas fa-credit-card"></i> Cartes & Paiements</a>
-            <a href="/particuliers#transferts"><i class="fas fa-exchange-alt"></i> Transferts d'argent</a>
-            <a href="/particuliers#digital"><i class="fas fa-mobile-alt"></i> Services Digitaux</a>
+            <a href="/particuliers#tab-comptes"><i class="fas fa-university"></i> Comptes bancaires</a>
+            <a href="/particuliers#tab-epargne"><i class="fas fa-piggy-bank"></i> Épargne & Placements</a>
+            <a href="/particuliers#tab-credits"><i class="fas fa-hand-holding-usd"></i> Crédits</a>
+            <a href="/particuliers#tab-cartes"><i class="fas fa-credit-card"></i> Cartes & Paiements</a>
+            <a href="/particuliers#tab-digital"><i class="fas fa-laptop"></i> Banque Digitale</a>
+            <a href="/particuliers#tab-transferts"><i class="fas fa-exchange-alt"></i> Transferts d'argent</a>
           </div>
         </li>
         <li>
@@ -85,9 +85,9 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
             <i class="fas fa-briefcase"></i> Professionnels <i class="fas fa-chevron-down chevron"></i>
           </a>
           <div class="dropdown-menu">
-            <a href="/professionnels#comptes"><i class="fas fa-building"></i> Compte professionnel</a>
-            <a href="/professionnels#credits"><i class="fas fa-tools"></i> Crédits professionnels</a>
-            <a href="/professionnels#tpe"><i class="fas fa-cash-register"></i> Terminal de paiement</a>
+            <a href="/professionnels#tab-compte"><i class="fas fa-building"></i> Compte professionnel</a>
+            <a href="/professionnels#tab-credits-pro"><i class="fas fa-tools"></i> Crédits & Financement</a>
+            <a href="/professionnels#tab-digital-pro"><i class="fas fa-laptop"></i> Banque Digitale</a>
           </div>
         </li>
         <li>
@@ -95,15 +95,20 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
             <i class="fas fa-industry"></i> Entreprises <i class="fas fa-chevron-down chevron"></i>
           </a>
           <div class="dropdown-menu">
-            <a href="/entreprises#cash"><i class="fas fa-coins"></i> Cash Management</a>
-            <a href="/entreprises#financement"><i class="fas fa-chart-bar"></i> Financements</a>
-            <a href="/entreprises#trade"><i class="fas fa-ship"></i> Trade Finance</a>
+            <a href="/entreprises#tab-compte-ent"><i class="fas fa-building"></i> Compte Société</a>
+            <a href="/entreprises#tab-financement-ent"><i class="fas fa-chart-bar"></i> Financement & Épargne</a>
+            <a href="/entreprises#tab-international"><i class="fas fa-ship"></i> Commerce International</a>
           </div>
         </li>
         <li>
           <a href="/banque-privee" class="${activePage === 'banque-privee' ? 'active' : ''}">
-            <i class="fas fa-gem"></i> Banque Privée
+            <i class="fas fa-gem"></i> Banque Privée <i class="fas fa-chevron-down chevron"></i>
           </a>
+          <div class="dropdown-menu">
+            <a href="/banque-privee#tab-compte-prive"><i class="fas fa-crown"></i> Compte Premium</a>
+            <a href="/banque-privee#tab-patrimoine"><i class="fas fa-gem"></i> Gestion de Patrimoine</a>
+            <a href="/banque-privee#tab-placements"><i class="fas fa-file-invoice-dollar"></i> Placements</a>
+          </div>
         </li>
         <li>
           <a href="/bgfibank-rca" class="${activePage === 'bgfibank-rca' ? 'active' : ''}">

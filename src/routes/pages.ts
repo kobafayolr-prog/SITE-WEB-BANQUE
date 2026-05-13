@@ -694,13 +694,17 @@ pages.get('/particuliers', (c) => {
     btn.classList.add('active');
     window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
-  // Activation via hash URL (ex: /particuliers#cartes)
-  const hash = location.hash.replace('#','');
-  const hashMap = {comptes:'tab-comptes', epargne:'tab-epargne', credits:'tab-credits', cartes:'tab-cartes', digital:'tab-digital', transferts:'tab-transferts'};
-  if (hash && hashMap[hash]) {
-    const btn = document.querySelector('[onclick*="' + hashMap[hash] + '"]');
-    if (btn) showTab(hashMap[hash], btn);
-  }
+  // Activation de l'onglet via le hash de l'URL (ex: /particuliers#tab-cartes)
+  (function() {
+    const hash = location.hash.replace('#', '');
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    if (!target) return;
+    const btns = document.querySelectorAll('.prod-nav-btn');
+    let found = null;
+    btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; });
+    if (found) showTab(hash, found);
+  })();
   </script>`
   return c.html(getLayout(content, 'Particuliers', 'particuliers', store.settings))
 })
@@ -818,6 +822,13 @@ pages.get('/professionnels', (c) => {
     btn.classList.add('active');
     window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
+  (function() {
+    const hash = location.hash.replace('#', '');
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    if (target && btn) showTab(hash, btn);
+  })();
   </script>`
   return c.html(getLayout(content, 'Professionnels', 'professionnels', store.settings))
 })
@@ -939,6 +950,13 @@ pages.get('/entreprises', (c) => {
     btn.classList.add('active');
     window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
+  (function() {
+    const hash = location.hash.replace('#', '');
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    if (target && btn) showTab(hash, btn);
+  })();
   </script>`
   return c.html(getLayout(content, 'Entreprises & Institutions', 'entreprises', store.settings))
 })
@@ -1086,6 +1104,13 @@ pages.get('/banque-privee', (c) => {
     btn.classList.add('active');
     window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
+  (function() {
+    const hash = location.hash.replace('#', '');
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf(hash) !== -1) found = b; }); const btn = found;
+    if (target && btn) showTab(hash, btn);
+  })();
   </script>`
   return c.html(getLayout(content, 'Banque Privée', 'banque-privee', store.settings))
 })
