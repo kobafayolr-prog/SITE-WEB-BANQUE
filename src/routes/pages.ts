@@ -525,141 +525,568 @@ pages.get('/', (c) => {
 
 // ── PARTICULIERS ──────────────────────────────────────────────
 pages.get('/particuliers', (c) => {
-  const products = store.products.filter(p => p.segment === 'particuliers')
+  const all = store.products.filter(p => p.segment === 'particuliers')
+  const comptes  = all.filter(p => ['compte-deposit','compte-epargne','compte-gogoro'].includes(p.slug))
+  const epargne  = all.filter(p => ['dat','bon-de-caisse'].includes(p.slug))
+  const credits  = all.filter(p => ['credit-consommation','credit-immobilier'].includes(p.slug))
+  const cartes   = all.filter(p => p.slug.startsWith('carte-'))
+  const digital  = all.filter(p => ['bgfi-online','sms-banking','bgfi-mobile'].includes(p.slug))
+  const transferts = all.filter(p => ['moneygram','virement-local','virement-international'].includes(p.slug))
+
+  const tabNav = (tabs: {id:string, icon:string, label:string, count:number}[]) =>
+    `<nav class="prod-nav-wrap">
+      <div class="prod-nav">
+        ${tabs.map((t,i)=>`
+        <button class="prod-nav-btn${i===0?' active':''}" onclick="showTab('${t.id}',this)">
+          <i class="fas ${t.icon}"></i>${t.label}
+          <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${t.count}</span>
+        </button>`).join('')}
+      </div>
+    </nav>`
+
   const content = `
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Particuliers</div>
-      <h1><i class="fas fa-user" style="margin-right:10px;"></i>Espace Particuliers</h1>
+      <h1><i class="fas fa-user" style="margin-right:12px;"></i>Espace Particuliers</h1>
       <p>Des solutions bancaires complètes pour votre vie quotidienne et vos projets personnels</p>
     </div>
   </div>
-  <section class="section reveal-section">
+
+  ${tabNav([
+    {id:'tab-comptes',   icon:'fa-university',       label:'Comptes',          count: comptes.length},
+    {id:'tab-epargne',   icon:'fa-chart-line',        label:'Épargne & Placements', count: epargne.length},
+    {id:'tab-credits',   icon:'fa-hand-holding-usd',  label:'Crédits',          count: credits.length},
+    {id:'tab-cartes',    icon:'fa-credit-card',        label:'Cartes & Paiements', count: cartes.length},
+    {id:'tab-digital',   icon:'fa-laptop',             label:'Banque Digitale',  count: digital.length},
+    {id:'tab-transferts',icon:'fa-exchange-alt',       label:'Transferts',       count: transferts.length},
+  ])}
+
+  <section class="section">
     <div class="container">
-      <div id="comptes" class="section-header"><span class="eyebrow">Tous nos produits</span><h2>Nos services pour les Particuliers</h2><div class="divider"></div></div>
-      <div class="grid-4" id="epargne" style="margin-top:16px;">${products.map(productCard).join('')}</div>
-    </div>
-  </section>
-  <section class="section section-alt reveal-section" id="credits">
-    <div class="container">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
-        <div>
-          <span class="eyebrow">Banque à distance</span>
-          <h2 style="font-size:28px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;" id="digital">Gérez votre banque depuis partout</h2>
-          <p style="color:var(--bgfi-text-light);line-height:1.7;">BGFIOnline vous permet de consulter vos comptes, effectuer des virements et télécharger vos relevés à tout moment, depuis n'importe quel navigateur.</p>
-          <div style="margin:20px 0;display:flex;flex-direction:column;gap:10px;">
-            ${['Consultation de solde en temps réel','Virements nationaux et internationaux','Téléchargement de relevés PDF','Historique complet des transactions'].map(f=>`<div style="display:flex;gap:10px;align-items:center;"><i class="fas fa-check-circle" style="color:var(--bgfi-p3);"></i><span style="font-size:14px;">${f}</span></div>`).join('')}
-          </div>
-          <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-primary-sm"><i class="fas fa-laptop"></i> Accéder à BGFIOnline</a>
+
+      <!-- COMPTES -->
+      <div id="tab-comptes" class="prod-section visible">
+        <div class="section-header">
+          <span class="eyebrow">Comptes bancaires</span>
+          <h2>Ouvrez votre compte BGFIBank</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Choisissez le compte qui correspond à votre situation. Ouverture rapide, accès immédiat à tous nos services.</p>
         </div>
-        <div style="background:var(--bgfi-navy);border-radius:12px;padding:32px;text-align:center;">
-          <i class="fas fa-laptop" style="font-size:64px;color:rgba(255,255,255,0.2);margin-bottom:16px;display:block;"></i>
-          <div style="color:white;font-size:18px;font-weight:700;margin-bottom:8px;">BGFIOnline</div>
-          <div style="color:rgba(255,255,255,0.6);font-size:13px;">Votre banque en ligne 24h/24</div>
-          <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-white" style="margin-top:20px;"><i class="fas fa-external-link-alt"></i> Se connecter</a>
+        <div class="grid-3" style="margin-top:32px;">${comptes.map(productCard).join('')}</div>
+        <div class="prod-cta-banner">
+          <div><h3>Prêt à ouvrir votre compte ?</h3><p>Un conseiller vous accompagne dans toutes vos démarches d'ouverture de compte.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Nous contacter</a>
+            <a href="/agences" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-map-marker-alt"></i> Trouver une agence</a>
+          </div>
         </div>
       </div>
+
+      <!-- ÉPARGNE & PLACEMENTS -->
+      <div id="tab-epargne" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Épargne & Placements</span>
+          <h2>Faites fructifier votre argent</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Des produits d'épargne et de placement sécurisés avec des rendements attractifs.</p>
+        </div>
+        <div class="grid-2" style="margin-top:32px;max-width:860px;margin-left:auto;margin-right:auto;">${epargne.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="margin-top:48px;">
+          <div><h3>Simulez votre épargne</h3><p>Calculez vos gains potentiels avec nos outils de simulation gratuits.</p></div>
+          <div class="cta-actions">
+            <a href="/simulateurs" class="btn btn-white"><i class="fas fa-calculator"></i> Simuler</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRÉDITS -->
+      <div id="tab-credits" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Crédits</span>
+          <h2>Financez vos projets personnels</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Que ce soit pour la consommation ou l'immobilier, BGFIBank vous accompagne dans la réalisation de vos projets.</p>
+        </div>
+        <div class="grid-2" style="margin-top:32px;max-width:860px;margin-left:auto;margin-right:auto;">${credits.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;">
+          ${[['fa-bolt','Réponse rapide','Décision de principe sous 48h'],['fa-shield-alt','Taux compétitifs','Les meilleurs taux du marché centrafricain'],['fa-user-tie','Conseiller dédié','Un expert crédit à votre écoute']].map(([ico,t,d])=>`
+          <div><div style="font-size:28px;color:var(--bgfi-sky);margin-bottom:8px;"><i class="fas ${ico}"></i></div><div style="font-weight:700;color:var(--bgfi-navy);margin-bottom:4px;">${t}</div><div style="font-size:13px;color:var(--bgfi-text-light);">${d}</div></div>`).join('')}
+        </div>
+        <div class="prod-cta-banner" style="margin-top:32px;">
+          <div><h3>Simulez votre crédit</h3><p>Calculez vos mensualités et vérifiez votre capacité d'emprunt en quelques secondes.</p></div>
+          <div class="cta-actions">
+            <a href="/simulateurs" class="btn btn-white"><i class="fas fa-calculator"></i> Simuler mon crédit</a>
+            <a href="/contact" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-envelope"></i> Demander un crédit</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARTES -->
+      <div id="tab-cartes" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Cartes & Paiements</span>
+          <h2>Payez partout, en toute sécurité</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Des cartes bancaires adaptées à chaque profil — du retrait local aux paiements internationaux.</p>
+        </div>
+        <div class="grid-3" style="margin-top:32px;">${cartes.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="margin-top:48px;">
+          <div><h3>Quelle carte vous correspond ?</h3><p>Parlez à un conseiller pour choisir la carte adaptée à votre usage quotidien.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Demander une carte</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- BANQUE DIGITALE -->
+      <div id="tab-digital" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Banque Digitale</span>
+          <h2>Gérez votre banque depuis partout</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Accédez à tous vos services bancaires 24h/24, 7j/7 depuis votre smartphone ou ordinateur.</p>
+        </div>
+        <div class="grid-3" style="margin-top:32px;">${digital.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-navy);border-radius:12px;padding:40px;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+          <div>
+            <div style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Banque en ligne</div>
+            <h3 style="color:white;font-size:22px;font-weight:700;margin-bottom:12px;">BGFIOnline — Votre banque 24h/24</h3>
+            <p style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.7;margin-bottom:20px;">Consultez vos comptes, effectuez des virements, téléchargez vos relevés et gérez vos opérations depuis n'importe quel navigateur.</p>
+            <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-white"><i class="fas fa-external-link-alt"></i> Accéder à BGFIOnline</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            ${['Consultation de solde en temps réel','Virements nationaux et internationaux','Téléchargement de relevés PDF','Historique complet des transactions','Paramétrage des alertes SMS'].map(f=>`
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;">
+              <i class="fas fa-check-circle" style="color:#C2CFA4;flex-shrink:0;"></i>
+              <span style="color:rgba(255,255,255,0.9);font-size:14px;">${f}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSFERTS -->
+      <div id="tab-transferts" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Transferts d'argent</span>
+          <h2>Envoyez et recevez de l'argent</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Transferts locaux et internationaux, rapides et sécurisés, vers plus de 200 pays.</p>
+        </div>
+        <div class="grid-3" style="margin-top:32px;">${transferts.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="margin-top:48px;">
+          <div><h3>Besoin d'un virement ?</h3><p>Contactez votre agence la plus proche ou réalisez vos opérations directement sur BGFIOnline.</p></div>
+          <div class="cta-actions">
+            <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-white"><i class="fas fa-laptop"></i> BGFIOnline</a>
+            <a href="/agences" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-map-marker-alt"></i> Nos agences</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>`
+  </section>
+
+  <script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
+  }
+  // Activation via hash URL (ex: /particuliers#cartes)
+  const hash = location.hash.replace('#','');
+  const hashMap = {comptes:'tab-comptes', epargne:'tab-epargne', credits:'tab-credits', cartes:'tab-cartes', digital:'tab-digital', transferts:'tab-transferts'};
+  if (hash && hashMap[hash]) {
+    const btn = document.querySelector('[onclick*="' + hashMap[hash] + '"]');
+    if (btn) showTab(hashMap[hash], btn);
+  }
+  </script>`
   return c.html(getLayout(content, 'Particuliers', 'particuliers', store.settings))
 })
 
 // ── PROFESSIONNELS ────────────────────────────────────────────
 pages.get('/professionnels', (c) => {
-  const products = store.products.filter(p => p.segment === 'professionnels')
+  const all = store.products.filter(p => p.segment === 'professionnels')
+  const compte   = all.filter(p => p.slug === 'compte-courant-pro')
+  const credits  = all.filter(p => ['credit-exploitation','credit-campagne','decouvert-avance-facture','engagements-signature'].includes(p.slug))
+  const digital  = all.filter(p => p.slug === 'bgfi-online-pro')
+
   const content = `
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Professionnels</div>
-      <h1><i class="fas fa-briefcase" style="margin-right:10px;"></i>Espace Professionnels</h1>
+      <h1><i class="fas fa-briefcase" style="margin-right:12px;"></i>Espace Professionnels</h1>
       <p>Des solutions adaptées pour développer et pérenniser votre activité professionnelle</p>
     </div>
   </div>
-  <section class="section reveal-section">
+
+  <nav class="prod-nav-wrap">
+    <div class="prod-nav">
+      <button class="prod-nav-btn active" onclick="showTab('tab-compte',this)">
+        <i class="fas fa-building"></i>Compte Professionnel
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${compte.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-credits-pro',this)">
+        <i class="fas fa-tools"></i>Crédits & Financement
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${credits.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-digital-pro',this)">
+        <i class="fas fa-laptop"></i>Banque Digitale
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${digital.length}</span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="section">
     <div class="container">
-      <div class="section-header"><span class="eyebrow">Nos produits</span><h2>Solutions pour Professionnels</h2><div class="divider"></div></div>
-      <div class="grid-3">${products.map(productCard).join('')}</div>
+
+      <!-- COMPTE PRO -->
+      <div id="tab-compte" class="prod-section visible">
+        <div class="section-header">
+          <span class="eyebrow">Compte bancaire professionnel</span>
+          <h2>Un compte taillé pour votre activité</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Gérez vos flux financiers professionnels avec un compte dédié, accompagné d'un conseiller expert.</p>
+        </div>
+        <div style="max-width:600px;margin:32px auto 0;">${compte.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
+          ${[['fa-user-tie','Conseiller dédié','Un expert à votre disposition'],['fa-tachometer-alt','Réactivité','Décisions rapides pour votre activité'],['fa-shield-alt','Sécurité','Normes bancaires internationales'],['fa-handshake','Partenariat','Plus qu\'une banque, un allié']].map(([ico,t,d])=>`
+          <div><div style="font-size:28px;color:var(--bgfi-sky);margin-bottom:8px;"><i class="fas ${ico}"></i></div><div style="font-weight:700;color:var(--bgfi-navy);font-size:14px;margin-bottom:4px;">${t}</div><div style="font-size:13px;color:var(--bgfi-text-light);">${d}</div></div>`).join('')}
+        </div>
+        <div class="prod-cta-banner">
+          <div><h3>Ouvrez votre compte professionnel</h3><p>Un conseiller vous accompagne dès votre premier rendez-vous.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Prendre contact</a>
+            <a href="/agences" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-map-marker-alt"></i> Nos agences</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRÉDITS & FINANCEMENT -->
+      <div id="tab-credits-pro" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Crédits & Financement</span>
+          <h2>Financez votre activité et vos projets</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Des solutions de financement flexibles pour soutenir votre trésorerie, vos campagnes et vos engagements commerciaux.</p>
+        </div>
+        <div class="grid-2" style="margin-top:32px;">${credits.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="margin-top:48px;">
+          <div><h3>Simulez votre financement professionnel</h3><p>Évaluez vos besoins et obtenez une réponse de principe rapide.</p></div>
+          <div class="cta-actions">
+            <a href="/simulateurs" class="btn btn-white"><i class="fas fa-calculator"></i> Simuler</a>
+            <a href="/contact" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-envelope"></i> Faire une demande</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIGITAL PRO -->
+      <div id="tab-digital-pro" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Banque Digitale Professionnelle</span>
+          <h2>Pilotez votre entreprise en ligne</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">BGFIOnline Entreprises vous donne accès à toutes vos opérations bancaires depuis votre bureau ou en déplacement.</p>
+        </div>
+        <div style="max-width:600px;margin:32px auto 0;">${digital.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-navy);border-radius:12px;padding:40px;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+          <div>
+            <div style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Portail entreprises</div>
+            <h3 style="color:white;font-size:22px;font-weight:700;margin-bottom:12px;">BGFIOnline Entreprises</h3>
+            <p style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.7;margin-bottom:20px;">Gérez plusieurs comptes, autorisez des paiements à plusieurs niveaux et consultez vos relevés en temps réel depuis un seul espace sécurisé.</p>
+            <a href="https://www5.bgfionline.com/" target="_blank" class="btn btn-white"><i class="fas fa-external-link-alt"></i> Accéder au portail</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            ${['Gestion multi-comptes','Virements de masse','Relevés et reporting en temps réel','Signatures électroniques','Accès multi-utilisateurs avec droits configurables'].map(f=>`
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;">
+              <i class="fas fa-check-circle" style="color:#C2CFA4;flex-shrink:0;"></i>
+              <span style="color:rgba(255,255,255,0.9);font-size:14px;">${f}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
-  <section class="section section-alt reveal-section">
-    <div class="container">
-      <div class="section-header"><span class="eyebrow">Expertise</span><h2>Pourquoi choisir BGFIBank pour votre activité ?</h2><div class="divider"></div></div>
-      <div class="grid-4">
-        ${[['fa-user-tie','Conseiller dédié','Un expert à votre disposition pour toutes vos opérations bancaires professionnelles'],['fa-tachometer-alt','Réactivité','Des décisions rapides pour ne pas bloquer votre activité'],['fa-shield-alt','Sécurité','Des solutions sécurisées conformes aux normes bancaires internationales'],['fa-handshake','Partenariat','Plus qu\'une banque, un véritable partenaire de votre croissance']].map(([icon,title,desc])=>`
-        <div class="card"><div class="card-body" style="text-align:center;">
-          <div style="font-size:36px;color:var(--bgfi-sky);margin-bottom:12px;"><i class="fas ${icon}"></i></div>
-          <div class="card-title">${title}</div>
-          <div class="card-text">${desc}</div>
-        </div></div>`).join('')}
-      </div>
-    </div>
-  </section>`
+
+  <script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
+  }
+  </script>`
   return c.html(getLayout(content, 'Professionnels', 'professionnels', store.settings))
 })
 
 // ── ENTREPRISES ───────────────────────────────────────────────
 pages.get('/entreprises', (c) => {
-  const products = store.products.filter(p => p.segment === 'entreprises')
+  const all = store.products.filter(p => p.segment === 'entreprises')
+  const compte      = all.filter(p => p.slug === 'compte-courant-entreprise')
+  const financement = all.filter(p => ['credit-investissement','dat-entreprise'].includes(p.slug))
+  const internat    = all.filter(p => p.slug === 'trade-finance')
+
   const content = `
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Entreprises</div>
-      <h1><i class="fas fa-industry" style="margin-right:10px;"></i>Espace Entreprises & Institutions</h1>
+      <h1><i class="fas fa-industry" style="margin-right:12px;"></i>Espace Entreprises & Institutions</h1>
       <p>Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international</p>
     </div>
   </div>
-  <section class="section reveal-section">
+
+  <nav class="prod-nav-wrap">
+    <div class="prod-nav">
+      <button class="prod-nav-btn active" onclick="showTab('tab-compte-ent',this)">
+        <i class="fas fa-building"></i>Compte Société
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${compte.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-financement-ent',this)">
+        <i class="fas fa-chart-bar"></i>Financement & Épargne
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${financement.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-international',this)">
+        <i class="fas fa-ship"></i>Commerce International
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${internat.length}</span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="section">
     <div class="container">
-      <div class="section-header"><span class="eyebrow">Solutions corporate</span><h2>Nos services Entreprises</h2><div class="divider"></div></div>
-      <div class="grid-3">${products.map(productCard).join('')}</div>
+
+      <!-- COMPTE SOCIÉTÉ -->
+      <div id="tab-compte-ent" class="prod-section visible">
+        <div class="section-header">
+          <span class="eyebrow">Compte bancaire société</span>
+          <h2>Un compte au cœur de votre activité</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">BGFIBank met à disposition des entreprises un compte courant société performant pour gérer l'ensemble de vos flux financiers.</p>
+        </div>
+        <div style="max-width:600px;margin:32px auto 0;">${compte.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
+          ${[['30+','Années de présence en RCA'],['500M+','FCFA de crédits accordés'],['1 000+','Entreprises accompagnées'],['6','Agences & GAB en RCA']].map(([num,label])=>`
+          <div><div style="font-size:36px;font-weight:700;color:var(--bgfi-sky);margin-bottom:4px;">${num}</div><div style="font-size:13px;color:var(--bgfi-text-light);">${label}</div></div>`).join('')}
+        </div>
+        <div class="prod-cta-banner">
+          <div><h3>Ouvrez votre compte société</h3><p>Notre équipe corporate vous accompagne dans toutes les formalités d'ouverture.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter un expert</a>
+            <a href="/agences" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;"><i class="fas fa-map-marker-alt"></i> Nos agences</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANCEMENT & ÉPARGNE -->
+      <div id="tab-financement-ent" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Financement & Épargne entreprise</span>
+          <h2>Investissez et placez vos excédents</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Des solutions de crédit à l'investissement et des produits de placement pour optimiser vos ressources financières.</p>
+        </div>
+        <div class="grid-2" style="margin-top:32px;max-width:860px;margin-left:auto;margin-right:auto;">${financement.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="margin-top:48px;">
+          <div><h3>Un projet d'investissement ?</h3><p>Nos analystes crédit étudient votre dossier et vous proposent la meilleure structure de financement.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Soumettre un projet</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMERCE INTERNATIONAL -->
+      <div id="tab-international" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Commerce International</span>
+          <h2>Développez vos échanges à l'international</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">BGFIBank vous accompagne dans vos opérations d'import-export grâce à une gamme complète de solutions Trade Finance.</p>
+        </div>
+        <div style="max-width:600px;margin:32px auto 0;">${internat.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;">
+          <div style="text-align:center;margin-bottom:28px;">
+            <span class="eyebrow">Nos instruments Trade Finance</span>
+            <h3 style="color:var(--bgfi-navy);font-size:18px;font-weight:700;margin-top:6px;">Sécurisez vos transactions internationales</h3>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+            ${[['fa-file-contract','Crédoc (Lettre de Crédit)','Garantie de paiement documentaire pour vos importations et exportations'],['fa-handshake','Remise Documentaire','Recouvrement sécurisé des créances commerciales internationales'],['fa-globe','Virements Internationaux','Transferts SWIFT vers plus de 180 pays, en toutes devises']].map(([ico,t,d])=>`
+            <div style="background:white;border-radius:8px;padding:20px;border:1px solid var(--bgfi-border);">
+              <div style="font-size:24px;color:var(--bgfi-sky);margin-bottom:10px;"><i class="fas ${ico}"></i></div>
+              <div style="font-weight:700;color:var(--bgfi-navy);font-size:14px;margin-bottom:6px;">${t}</div>
+              <div style="font-size:13px;color:var(--bgfi-text-light);line-height:1.6;">${d}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="prod-cta-banner" style="margin-top:32px;">
+          <div><h3>Une opération internationale ?</h3><p>Notre équipe Trade Finance vous assiste dans la structuration et l'exécution de vos opérations.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter notre équipe</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
-  <section class="section section-alt reveal-section">
-    <div class="container">
-      <div class="section-header"><span class="eyebrow">Chiffres clés</span><h2>BGFIBank Centrafrique en chiffres</h2><div class="divider"></div></div>
-      <div class="grid-4">
-        ${[['30+','Années de présence en RCA'],['500M+','FCFA de crédits accordés'],['1000+','Entreprises accompagnées'],['6','Agences & GAB en RCA']].map(([num,label])=>`
-        <div class="card"><div class="card-body" style="text-align:center;padding:32px 20px;">
-          <div style="font-size:40px;font-weight:700;color:var(--bgfi-sky);margin-bottom:8px;">${num}</div>
-          <div style="font-size:14px;color:var(--bgfi-text-light);">${label}</div>
-        </div></div>`).join('')}
-      </div>
-    </div>
-  </section>`
+
+  <script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
+  }
+  </script>`
   return c.html(getLayout(content, 'Entreprises & Institutions', 'entreprises', store.settings))
 })
 
 // ── BANQUE PRIVÉE ─────────────────────────────────────────────
 pages.get('/banque-privee', (c) => {
-  const products = store.products.filter(p => p.segment === 'banque-privee')
+  const all = store.products.filter(p => p.segment === 'banque-privee')
+  const comptes    = all.filter(p => p.slug === 'compte-premium')
+  const patrimoine = all.filter(p => p.slug === 'gestion-patrimoine')
+  const placements = all.filter(p => p.slug === 'bon-caisse-prive')
+
   const content = `
-  <div class="page-hero" style="background:linear-gradient(135deg,#1a0533,#003a74);">
+  <div class="page-hero" style="background:linear-gradient(135deg,#0d0628 0%,#003a74 60%,#0d4a8a 100%);">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Banque Privée</div>
-      <h1><i class="fas fa-gem" style="margin-right:10px;color:#C2CFA4;"></i>Banque Privée</h1>
+      <h1><i class="fas fa-gem" style="margin-right:12px;color:#C2CFA4;"></i>Banque Privée</h1>
       <p>Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales</p>
     </div>
   </div>
-  <section class="section reveal-section">
+
+  <nav class="prod-nav-wrap" style="border-bottom-color:#e8e0f0;">
+    <div class="prod-nav">
+      <button class="prod-nav-btn active" onclick="showTab('tab-compte-prive',this)">
+        <i class="fas fa-crown"></i>Compte Premium
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${comptes.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-patrimoine',this)">
+        <i class="fas fa-gem"></i>Gestion de Patrimoine
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${patrimoine.length}</span>
+      </button>
+      <button class="prod-nav-btn" onclick="showTab('tab-placements',this)">
+        <i class="fas fa-file-invoice-dollar"></i>Placements
+        <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${placements.length}</span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="section">
     <div class="container">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:60px;">
-        <div>
-          <span class="eyebrow">Excellence & Exclusivité</span>
-          <h2 style="font-size:28px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;">Un service sur mesure pour votre patrimoine</h2>
-          <p style="color:var(--bgfi-text-light);line-height:1.7;margin-bottom:20px;">La Banque Privée BGFIBank s'adresse aux particuliers souhaitant une gestion personnalisée et discrète de leur patrimoine, avec l'expertise d'un conseiller privé dédié.</p>
-          <a href="/rendez-vous" class="btn btn-primary-sm"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
+
+      <!-- COMPTE PREMIUM -->
+      <div id="tab-compte-prive" class="prod-section visible">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:48px;">
+          <div>
+            <span class="eyebrow">Excellence & Exclusivité</span>
+            <h2 style="font-size:28px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;">Un compte à la hauteur de vos ambitions</h2>
+            <p style="color:var(--bgfi-text-light);line-height:1.7;margin-bottom:24px;">La Banque Privée BGFIBank s'adresse aux clients recherchant une relation bancaire personnalisée et discrète, avec un conseiller privé dédié à leur service exclusif.</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+              ${['Conseiller privé exclusif et dédié','Accueil en salon privé dans nos agences','Services disponibles 24h/24 sur demande','Conditions tarifaires préférentielles'].map(f=>`
+              <div style="display:flex;align-items:center;gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--bgfi-p3);flex-shrink:0;"></i>
+                <span style="font-size:14px;color:var(--bgfi-text);">${f}</span>
+              </div>`).join('')}
+            </div>
+            <a href="/contact" class="btn btn-primary-sm"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
+          </div>
+          <div style="background:linear-gradient(135deg,#0d0628,#003a74);border-radius:12px;padding:32px;">
+            ${['Discrétion absolue','Gestion patrimoniale sur mesure','Accès prioritaire à tous les produits','Assistance dédiée à l\'international','Reporting personnalisé de votre patrimoine'].map(f=>`
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+              <i class="fas fa-check-circle" style="color:#C2CFA4;flex-shrink:0;"></i>
+              <span style="color:rgba(255,255,255,0.9);font-size:14px;">${f}</span>
+            </div>`).join('')}
+          </div>
         </div>
-        <div style="background:linear-gradient(135deg,var(--bgfi-navy),#1a0533);border-radius:12px;padding:32px;">
-          ${['Conseiller privé exclusif','Discrétion absolue','Stratégies d\'investissement sur mesure','Accès aux marchés financiers'].map(f=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
-            <i class="fas fa-check-circle" style="color:#C2CFA4;flex-shrink:0;"></i>
-            <span style="color:rgba(255,255,255,0.9);font-size:14px;">${f}</span>
-          </div>`).join('')}
+        <div style="max-width:560px;margin:0 auto;">${comptes.map(productCard).join('')}</div>
+        <div class="prod-cta-banner" style="background:linear-gradient(135deg,#0d0628,#003a74,#0d4a8a);margin-top:40px;">
+          <div><h3>Devenez client Banque Privée</h3><p>Contactez-nous pour un premier entretien confidentiel avec votre futur conseiller privé.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Nous contacter</a>
+          </div>
         </div>
       </div>
-      <div class="section-header"><span class="eyebrow">Nos offres</span><h2>Services Banque Privée</h2><div class="divider"></div></div>
-      <div class="grid-2" style="margin-top:32px;">${products.map(productCard).join('')}</div>
+
+      <!-- GESTION DE PATRIMOINE -->
+      <div id="tab-patrimoine" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Gestion de Patrimoine</span>
+          <h2>Votre patrimoine, notre expertise</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Des stratégies d'investissement sur mesure élaborées par nos experts pour faire fructifier et protéger votre patrimoine.</p>
+        </div>
+        <div style="max-width:560px;margin:32px auto 0;">${patrimoine.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+          ${[['fa-chart-pie','Diversification','Allocation d\'actifs optimisée selon votre profil de risque'],['fa-shield-alt','Protection','Solutions d\'assurance et de prévoyance patrimoniale'],['fa-globe','Transmission','Stratégies de transmission et de planification successorale']].map(([ico,t,d])=>`
+          <div style="background:white;border-radius:8px;padding:24px;border:1px solid var(--bgfi-border);text-align:center;">
+            <div style="font-size:28px;color:var(--bgfi-sky);margin-bottom:10px;"><i class="fas ${ico}"></i></div>
+            <div style="font-weight:700;color:var(--bgfi-navy);margin-bottom:8px;">${t}</div>
+            <div style="font-size:13px;color:var(--bgfi-text-light);line-height:1.6;">${d}</div>
+          </div>`).join('')}
+        </div>
+        <div class="prod-cta-banner" style="background:linear-gradient(135deg,#0d0628,#003a74,#0d4a8a);margin-top:32px;">
+          <div><h3>Audit patrimonial offert</h3><p>Bénéficiez d'un bilan patrimonial complet et confidentiel avec l'un de nos experts.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEMENTS -->
+      <div id="tab-placements" class="prod-section">
+        <div class="section-header">
+          <span class="eyebrow">Placements exclusifs</span>
+          <h2>Des rendements privilégiés pour votre épargne</h2>
+          <div class="divider"></div>
+          <p style="color:var(--bgfi-text-light);max-width:600px;margin:0 auto;">Accédez à des produits de placement à taux bonifiés, réservés exclusivement aux clients Banque Privée.</p>
+        </div>
+        <div style="max-width:560px;margin:32px auto 0;">${placements.map(productCard).join('')}</div>
+        <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--bgfi-sky);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">Pourquoi choisir nos placements privés ?</div>
+            <h3 style="color:var(--bgfi-navy);font-size:18px;font-weight:700;margin-bottom:16px;">Des avantages réservés à nos clients premium</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              ${['Taux bonifiés non accessibles au grand public','Flexibilité sur les durées et montants','Renouvellement automatique sur instruction','Suivi personnalisé par votre conseiller privé'].map(f=>`
+              <div style="display:flex;align-items:center;gap:10px;">
+                <i class="fas fa-star" style="color:#C2CFA4;font-size:12px;flex-shrink:0;"></i>
+                <span style="font-size:14px;color:var(--bgfi-text);">${f}</span>
+              </div>`).join('')}
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0d0628,#003a74);border-radius:10px;padding:28px;text-align:center;">
+            <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Rendement moyen</div>
+            <div style="color:#C2CFA4;font-size:48px;font-weight:700;line-height:1;">6–8%</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:12px;margin-top:4px;">par an selon durée</div>
+            <div style="border-top:1px solid rgba(255,255,255,0.1);margin-top:20px;padding-top:20px;color:rgba(255,255,255,0.7);font-size:13px;">
+              Conditions réservées aux clients<br>Banque Privée BGFIBank
+            </div>
+          </div>
+        </div>
+        <div class="prod-cta-banner" style="background:linear-gradient(135deg,#0d0628,#003a74,#0d4a8a);margin-top:32px;">
+          <div><h3>Optimisez votre épargne privée</h3><p>Votre conseiller privé vous présente les meilleures opportunités de placement du moment.</p></div>
+          <div class="cta-actions">
+            <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter mon conseiller</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>`
+  </section>
+
+  <script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
+  }
+  </script>`
   return c.html(getLayout(content, 'Banque Privée', 'banque-privee', store.settings))
 })
 
