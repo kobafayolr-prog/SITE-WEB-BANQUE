@@ -590,6 +590,36 @@ body {
 .breadcrumb a:hover { color: white; }
 .breadcrumb .sep { opacity: 0.4; }
 
+/* ── HERO PARALLAX (page Entreprises) ────────────────────── */
+.ent-parallax-hero {
+  position: relative;
+  height: 520px;
+  background-image: url('/static/images/entreprises-banner.jpg');
+  background-size: cover;
+  background-position: center 20%;
+  background-attachment: fixed;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.ent-parallax-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 30, 70, 0.45) 0%,
+    rgba(0, 20, 55, 0.72) 60%,
+    rgba(0, 15, 45, 0.88) 100%
+  );
+}
+.ent-parallax-content {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 52px;
+  padding-top: 32px;
+  width: 100%;
+}
+
 /* ── SIMULATEUR ──────────────────────────────────────────── */
 .simulator-tabs { display: flex; gap: 0; background: var(--bgfi-light); border-radius: 6px; padding: 4px; margin-bottom: 28px; }
 .sim-tab { flex: 1; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--bgfi-text-light); background: none; border: none; transition: all 0.2s; }
@@ -794,6 +824,13 @@ body {
   .page-hero { padding: 32px 16px; }
   .page-hero h1 { font-size: clamp(20px, 6vw, 28px); }
   .breadcrumb { font-size: 12px; }
+
+  /* Parallax hero mobile — désactive fixed (non supporté sur iOS) */
+  .ent-parallax-hero {
+    height: 420px;
+    background-attachment: scroll;
+    background-position: center center;
+  }
 
   /* Contact */
   .contact-grid { grid-template-columns: 1fr; }

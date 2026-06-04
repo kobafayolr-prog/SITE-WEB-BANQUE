@@ -845,22 +845,26 @@ pages.get('/entreprises', (c) => {
   const internat    = all.filter(p => p.slug === 'trade-finance')
 
   const content = `
-  <div class="page-hero">
-    <div class="container">
-      <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Entreprises</div>
-      <h1><i class="fas fa-industry" style="margin-right:12px;"></i>Espace Entreprises & Institutions</h1>
-      <p>Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international</p>
-    </div>
-  </div>
-
-  <div style="background:#f4f6f9;">
-    <div class="container" style="padding-top:40px;padding-bottom:0;">
-      <img
-        src="/static/images/entreprises-banner.jpg"
-        alt="BGFIBank Entreprises — Des solutions adaptées à chaque ambition"
-        style="width:100%;border-radius:12px;display:block;box-shadow:0 4px 24px rgba(0,54,102,0.12);"
-        loading="lazy"
-      >
+  <!-- HERO PARALLAX ENTREPRISES -->
+  <div class="ent-parallax-hero">
+    <div class="ent-parallax-overlay"></div>
+    <div class="ent-parallax-content container">
+      <div class="breadcrumb" style="color:rgba(255,255,255,0.6);">
+        <a href="/" style="color:rgba(255,255,255,0.7);">Accueil</a>
+        <span class="sep">›</span>Entreprises
+      </div>
+      <h1 style="color:white;font-size:clamp(28px,4vw,48px);font-weight:800;margin:12px 0 16px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">
+        Espace Entreprises & Institutions
+      </h1>
+      <p style="color:rgba(255,255,255,0.85);font-size:clamp(14px,2vw,18px);max-width:560px;line-height:1.6;text-shadow:0 1px 6px rgba(0,0,0,0.3);">
+        Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international
+      </p>
+      <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+        <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter un expert</a>
+        <a href="/agences" class="btn" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.4);backdrop-filter:blur(4px);">
+          <i class="fas fa-map-marker-alt"></i> Nos agences
+        </a>
+      </div>
     </div>
   </div>
 
