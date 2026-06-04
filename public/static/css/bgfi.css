@@ -590,34 +590,91 @@ body {
 .breadcrumb a:hover { color: white; }
 .breadcrumb .sep { opacity: 0.4; }
 
-/* ── HERO PARALLAX (page Entreprises) ────────────────────── */
+/* ── HERO KEN BURNS (page Entreprises) ───────────────────── */
 .ent-parallax-hero {
   position: relative;
-  height: 520px;
-  background-image: url('/static/images/entreprises-banner.jpg');
-  background-size: cover;
-  background-position: center 20%;
-  background-attachment: fixed;
+  height: 560px;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
 }
+
+/* L'image avec l'animation Ken Burns */
+.ent-parallax-hero .kb-img {
+  position: absolute;
+  inset: -10%;          /* déborde pour que le zoom ne coupe pas */
+  width: 120%;
+  height: 120%;
+  background-image: url('/static/images/entreprises-banner.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  animation: kenburns 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes kenburns {
+  0%   { transform: scale(1)    translateX(0%)   translateY(0%); }
+  25%  { transform: scale(1.06) translateX(-1%)  translateY(-1%); }
+  50%  { transform: scale(1.1)  translateX(-2%)  translateY(1%); }
+  75%  { transform: scale(1.06) translateX(1%)   translateY(-0.5%); }
+  100% { transform: scale(1)    translateX(0.5%) translateY(0.5%); }
+}
+
+/* Overlay gradient pour lisibilité du texte */
 .ent-parallax-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(
-    to bottom,
-    rgba(0, 30, 70, 0.45) 0%,
-    rgba(0, 20, 55, 0.72) 60%,
-    rgba(0, 15, 45, 0.88) 100%
+    160deg,
+    rgba(0, 15, 45, 0.30) 0%,
+    rgba(0, 20, 60, 0.60) 45%,
+    rgba(0, 10, 35, 0.88) 100%
   );
 }
+
+/* Contenu texte par-dessus */
 .ent-parallax-content {
   position: relative;
   z-index: 2;
-  padding-bottom: 52px;
+  padding-bottom: 56px;
   padding-top: 32px;
   width: 100%;
+}
+
+/* Ligne décorative animée sous le titre */
+.ent-parallax-content h1::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #C2CFA4, #0d91d0);
+  border-radius: 2px;
+  margin-top: 10px;
+  animation: lineReveal 1.2s 0.6s ease forwards;
+}
+@keyframes lineReveal {
+  to { width: 120px; }
+}
+
+/* Entrée du texte avec fondu */
+.ent-parallax-content .kb-title {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 0.8s 0.2s ease forwards;
+}
+.ent-parallax-content .kb-sub {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s 0.5s ease forwards;
+}
+.ent-parallax-content .kb-btns {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.8s 0.8s ease forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ── SIMULATEUR ──────────────────────────────────────────── */
@@ -825,12 +882,10 @@ body {
   .page-hero h1 { font-size: clamp(20px, 6vw, 28px); }
   .breadcrumb { font-size: 12px; }
 
-  /* Parallax hero mobile — désactive fixed (non supporté sur iOS) */
-  .ent-parallax-hero {
-    height: 420px;
-    background-attachment: scroll;
-    background-position: center center;
-  }
+  /* Ken Burns hero mobile */
+  .ent-parallax-hero { height: 440px; }
+  .ent-parallax-hero .kb-img { animation-duration: 24s; }
+  .ent-parallax-content { padding-bottom: 36px; }
 
   /* Contact */
   .contact-grid { grid-template-columns: 1fr; }

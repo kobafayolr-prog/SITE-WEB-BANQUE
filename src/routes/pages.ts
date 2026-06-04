@@ -845,23 +845,24 @@ pages.get('/entreprises', (c) => {
   const internat    = all.filter(p => p.slug === 'trade-finance')
 
   const content = `
-  <!-- HERO PARALLAX ENTREPRISES -->
+  <!-- HERO KEN BURNS ENTREPRISES -->
   <div class="ent-parallax-hero">
+    <div class="kb-img"></div>
     <div class="ent-parallax-overlay"></div>
     <div class="ent-parallax-content container">
-      <div class="breadcrumb" style="color:rgba(255,255,255,0.6);">
+      <div class="breadcrumb kb-title" style="color:rgba(255,255,255,0.6);">
         <a href="/" style="color:rgba(255,255,255,0.7);">Accueil</a>
         <span class="sep">›</span>Entreprises
       </div>
-      <h1 style="color:white;font-size:clamp(28px,4vw,48px);font-weight:800;margin:12px 0 16px;text-shadow:0 2px 12px rgba(0,0,0,0.3);">
+      <h1 class="kb-title" style="color:white;font-size:clamp(28px,4vw,46px);font-weight:800;margin:10px 0 16px;text-shadow:0 2px 16px rgba(0,0,0,0.4);letter-spacing:-0.5px;">
         Espace Entreprises & Institutions
       </h1>
-      <p style="color:rgba(255,255,255,0.85);font-size:clamp(14px,2vw,18px);max-width:560px;line-height:1.6;text-shadow:0 1px 6px rgba(0,0,0,0.3);">
+      <p class="kb-sub" style="color:rgba(255,255,255,0.88);font-size:clamp(14px,1.8vw,18px);max-width:540px;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.3);">
         Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international
       </p>
-      <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+      <div class="kb-btns" style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
         <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter un expert</a>
-        <a href="/agences" class="btn" style="background:rgba(255,255,255,0.15);color:white;border:2px solid rgba(255,255,255,0.4);backdrop-filter:blur(4px);">
+        <a href="/agences" class="btn" style="background:rgba(255,255,255,0.12);color:white;border:2px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);">
           <i class="fas fa-map-marker-alt"></i> Nos agences
         </a>
       </div>
