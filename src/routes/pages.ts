@@ -537,7 +537,7 @@ pages.get('/particuliers', (c) => {
     `<nav class="prod-nav-wrap">
       <div class="prod-nav">
         ${tabs.map((t,i)=>`
-        <button class="prod-nav-btn${i===0?' active':''}" onclick="showTab('${t.id}',this)">
+        <button class="prod-nav-btn${i===0?' active':''}" data-tab="${t.id}" onclick="showTab('${t.id}',this)">
           <i class="fas ${t.icon}"></i>${t.label}
           <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${t.count}</span>
         </button>`).join('')}
@@ -688,23 +688,25 @@ pages.get('/particuliers', (c) => {
 
   <script>
   function showTab(id, btn) {
-    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
-    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.prod-section').forEach(function(s) { s.classList.remove('visible'); });
+    document.querySelectorAll('.prod-nav-btn').forEach(function(b) { b.classList.remove('active'); });
     document.getElementById(id).classList.add('visible');
     btn.classList.add('active');
-    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
-  // Activation de l'onglet via le hash de l'URL (ex: /particuliers#tab-cartes)
-  (function() {
-    const hash = location.hash.replace('#', '');
+  window.addEventListener('load', function() {
+    var hash = location.hash.replace('#', '');
     if (!hash) return;
-    const target = document.getElementById(hash);
+    var target = document.getElementById(hash);
     if (!target) return;
-    const btns = document.querySelectorAll('.prod-nav-btn');
-    let found = null;
-    btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; });
-    if (found) showTab(hash, found);
-  })();
+    var btns = document.querySelectorAll('.prod-nav-btn');
+    var found = null;
+    btns.forEach(function(b) { if (b.getAttribute('data-tab') === hash) found = b; });
+    if (found) {
+      showTab(hash, found);
+      var nav = document.querySelector('.prod-nav-wrap');
+      if (nav) window.scrollTo({ top: nav.offsetTop - 70, behavior: 'instant' });
+    }
+  });
   </script>`
   return c.html(getLayout(content, 'Particuliers', 'particuliers', store.settings))
 })
@@ -727,15 +729,15 @@ pages.get('/professionnels', (c) => {
 
   <nav class="prod-nav-wrap">
     <div class="prod-nav">
-      <button class="prod-nav-btn active" onclick="showTab('tab-compte',this)">
+      <button class="prod-nav-btn active" data-tab="tab-compte" onclick="showTab('tab-compte',this)">
         <i class="fas fa-building"></i>Compte Professionnel
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${compte.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-credits-pro',this)">
+      <button class="prod-nav-btn" data-tab="tab-credits-pro" onclick="showTab('tab-credits-pro',this)">
         <i class="fas fa-tools"></i>Crédits & Financement
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${credits.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-digital-pro',this)">
+      <button class="prod-nav-btn" data-tab="tab-digital-pro" onclick="showTab('tab-digital-pro',this)">
         <i class="fas fa-laptop"></i>Banque Digitale
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${digital.length}</span>
       </button>
@@ -816,19 +818,21 @@ pages.get('/professionnels', (c) => {
 
   <script>
   function showTab(id, btn) {
-    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
-    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.prod-section').forEach(function(s) { s.classList.remove('visible'); });
+    document.querySelectorAll('.prod-nav-btn').forEach(function(b) { b.classList.remove('active'); });
     document.getElementById(id).classList.add('visible');
     btn.classList.add('active');
-    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
-  (function() {
-    const hash = location.hash.replace('#', '');
+  window.addEventListener('load', function() {
+    var hash = location.hash.replace('#', '');
     if (!hash) return;
-    const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
-    if (target && btn) showTab(hash, btn);
-  })();
+    var target = document.getElementById(hash);
+    if (!target) return;
+    var btns = document.querySelectorAll('.prod-nav-btn');
+    var found = null;
+    btns.forEach(function(b) { if (b.getAttribute('data-tab') === hash) found = b; });
+    if (found) { showTab(hash, found); var nav = document.querySelector('.prod-nav-wrap'); if (nav) window.scrollTo({ top: nav.offsetTop - 70, behavior: 'instant' }); }
+  });
   </script>`
   return c.html(getLayout(content, 'Professionnels', 'professionnels', store.settings))
 })
@@ -851,15 +855,15 @@ pages.get('/entreprises', (c) => {
 
   <nav class="prod-nav-wrap">
     <div class="prod-nav">
-      <button class="prod-nav-btn active" onclick="showTab('tab-compte-ent',this)">
+      <button class="prod-nav-btn active" data-tab="tab-compte-ent" onclick="showTab('tab-compte-ent',this)">
         <i class="fas fa-building"></i>Compte Société
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${compte.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-financement-ent',this)">
+      <button class="prod-nav-btn" data-tab="tab-financement-ent" onclick="showTab('tab-financement-ent',this)">
         <i class="fas fa-chart-bar"></i>Financement & Épargne
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${financement.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-international',this)">
+      <button class="prod-nav-btn" data-tab="tab-international" onclick="showTab('tab-international',this)">
         <i class="fas fa-ship"></i>Commerce International
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${internat.length}</span>
       </button>
@@ -944,19 +948,21 @@ pages.get('/entreprises', (c) => {
 
   <script>
   function showTab(id, btn) {
-    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
-    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.prod-section').forEach(function(s) { s.classList.remove('visible'); });
+    document.querySelectorAll('.prod-nav-btn').forEach(function(b) { b.classList.remove('active'); });
     document.getElementById(id).classList.add('visible');
     btn.classList.add('active');
-    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
-  (function() {
-    const hash = location.hash.replace('#', '');
+  window.addEventListener('load', function() {
+    var hash = location.hash.replace('#', '');
     if (!hash) return;
-    const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
-    if (target && btn) showTab(hash, btn);
-  })();
+    var target = document.getElementById(hash);
+    if (!target) return;
+    var btns = document.querySelectorAll('.prod-nav-btn');
+    var found = null;
+    btns.forEach(function(b) { if (b.getAttribute('data-tab') === hash) found = b; });
+    if (found) { showTab(hash, found); var nav = document.querySelector('.prod-nav-wrap'); if (nav) window.scrollTo({ top: nav.offsetTop - 70, behavior: 'instant' }); }
+  });
   </script>`
   return c.html(getLayout(content, 'Entreprises & Institutions', 'entreprises', store.settings))
 })
@@ -979,15 +985,15 @@ pages.get('/banque-privee', (c) => {
 
   <nav class="prod-nav-wrap" style="border-bottom-color:#e8e0f0;">
     <div class="prod-nav">
-      <button class="prod-nav-btn active" onclick="showTab('tab-compte-prive',this)">
+      <button class="prod-nav-btn active" data-tab="tab-compte-prive" onclick="showTab('tab-compte-prive',this)">
         <i class="fas fa-crown"></i>Compte Premium
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${comptes.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-patrimoine',this)">
+      <button class="prod-nav-btn" data-tab="tab-patrimoine" onclick="showTab('tab-patrimoine',this)">
         <i class="fas fa-gem"></i>Gestion de Patrimoine
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${patrimoine.length}</span>
       </button>
-      <button class="prod-nav-btn" onclick="showTab('tab-placements',this)">
+      <button class="prod-nav-btn" data-tab="tab-placements" onclick="showTab('tab-placements',this)">
         <i class="fas fa-file-invoice-dollar"></i>Placements
         <span style="background:var(--bgfi-light);color:var(--bgfi-text-light);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:700;">${placements.length}</span>
       </button>
@@ -1098,19 +1104,21 @@ pages.get('/banque-privee', (c) => {
 
   <script>
   function showTab(id, btn) {
-    document.querySelectorAll('.prod-section').forEach(s => s.classList.remove('visible'));
-    document.querySelectorAll('.prod-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.prod-section').forEach(function(s) { s.classList.remove('visible'); });
+    document.querySelectorAll('.prod-nav-btn').forEach(function(b) { b.classList.remove('active'); });
     document.getElementById(id).classList.add('visible');
     btn.classList.add('active');
-    window.scrollTo({top: document.querySelector('.prod-nav-wrap').offsetTop - 80, behavior: 'smooth'});
   }
-  (function() {
-    const hash = location.hash.replace('#', '');
+  window.addEventListener('load', function() {
+    var hash = location.hash.replace('#', '');
     if (!hash) return;
-    const target = document.getElementById(hash);
-    const btns = document.querySelectorAll('.prod-nav-btn'); let found = null; btns.forEach(function(b) { if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'" + hash + "'") !== -1) found = b; }); const btn = found;
-    if (target && btn) showTab(hash, btn);
-  })();
+    var target = document.getElementById(hash);
+    if (!target) return;
+    var btns = document.querySelectorAll('.prod-nav-btn');
+    var found = null;
+    btns.forEach(function(b) { if (b.getAttribute('data-tab') === hash) found = b; });
+    if (found) { showTab(hash, found); var nav = document.querySelector('.prod-nav-wrap'); if (nav) window.scrollTo({ top: nav.offsetTop - 70, behavior: 'instant' }); }
+  });
   </script>`
   return c.html(getLayout(content, 'Banque Privée', 'banque-privee', store.settings))
 })
