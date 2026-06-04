@@ -853,6 +853,17 @@ pages.get('/entreprises', (c) => {
     </div>
   </div>
 
+  <div style="background:#f4f6f9;">
+    <div class="container" style="padding-top:40px;padding-bottom:0;">
+      <img
+        src="/static/images/entreprises-banner.jpg"
+        alt="BGFIBank Entreprises — Des solutions adaptées à chaque ambition"
+        style="width:100%;border-radius:12px;display:block;box-shadow:0 4px 24px rgba(0,54,102,0.12);"
+        loading="lazy"
+      >
+    </div>
+  </div>
+
   <nav class="prod-nav-wrap">
     <div class="prod-nav">
       <button class="prod-nav-btn active" data-tab="tab-compte-ent" onclick="showTab('tab-compte-ent',this)">
