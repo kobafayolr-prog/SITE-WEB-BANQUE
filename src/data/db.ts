@@ -423,7 +423,7 @@ export const defaultProducts: Product[] = [
       "Achat d'unités téléphoniques",
       "Frais de souscription : 6 000 FCFA HT",
     ],
-    available: true, cta: "Télécharger", ctaUrl: "/contact"
+    available: true, cta: "Télécharger sur Google Play", ctaUrl: "bgfimobile-deeplink"
   },
 
   // ═══════════════════════════════════════

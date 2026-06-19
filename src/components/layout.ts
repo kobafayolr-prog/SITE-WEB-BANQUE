@@ -18,6 +18,19 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <!-- Leaflet (OpenStreetMap) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Deep link global BGFIMobile -->
+  <script>
+  function openBGFIMobile() {
+    var playStore = 'https://play.google.com/store/apps/details?id=com.bfi.rca.gabon&hl=fr';
+    var isAndroid = /android/i.test(navigator.userAgent);
+    if (isAndroid) {
+      var intent = 'intent://launch/#Intent;scheme=bgfimobile;package=com.bfi.rca.gabon;S.browser_fallback_url=' + encodeURIComponent(playStore) + ';end';
+      window.location.href = intent;
+    } else {
+      window.open(playStore, '_blank');
+    }
+  }
+  </script>
 </head>
 <body>
 

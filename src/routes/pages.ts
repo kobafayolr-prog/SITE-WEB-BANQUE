@@ -20,7 +20,9 @@ const productCard = (p: any) => `
     <div class="card-text">${p.description}</div>
     <ul>${p.features.map((f: string) => `<li>${f}</li>`).join('')}</ul>
     ${p.available
-      ? `<a href="${p.ctaUrl || '#'}" class="btn btn-primary-sm btn-full" style="margin-top:12px;">${p.cta || 'En savoir plus'}</a>`
+      ? p.ctaUrl === 'bgfimobile-deeplink'
+        ? `<button onclick="openBGFIMobile()" class="btn btn-primary-sm btn-full" style="margin-top:12px;border:none;cursor:pointer;"><i class="fab fa-google-play" style="margin-right:6px;"></i>${p.cta || 'Télécharger sur Google Play'}</button>`
+        : `<a href="${p.ctaUrl || '#'}" class="btn btn-primary-sm btn-full" style="margin-top:12px;">${p.cta || 'En savoir plus'}</a>`
       : `<form class="notify-form" onsubmit="preRegister(event,'${p.title}')">
           <input type="email" placeholder="Votre email" required>
           <button type="submit"><i class="fas fa-bell"></i> Notifiez-moi</button>
@@ -404,7 +406,7 @@ pages.get('/', (c) => {
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
             ${['Consultation de solde', 'Virements instantanés', 'Paiement de factures', 'Notifications temps réel'].map(f => `<span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;"><i class="fas fa-check" style="margin-right:4px;color:var(--bgfi-mint);"></i>${f}</span>`).join('')}
           </div>
-          <!-- Bouton intelligent : ouvre l'app si installée, sinon Play Store -->
+          <!-- Bouton intelligent : ouvre l'app si installée, sinon Play Store (fonction globale dans layout.ts) -->
           <button onclick="openBGFIMobile()" style="display:inline-flex;align-items:center;gap:14px;background:white;color:var(--bgfi-navy);border:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);transition:transform 0.15s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
             <i class="fab fa-google-play" style="font-size:24px;color:#01875f;"></i>
             <span style="text-align:left;">
@@ -413,20 +415,6 @@ pages.get('/', (c) => {
             </span>
           </button>
           <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:14px;"><i class="fas fa-magic" style="margin-right:4px;"></i>Si l'app est déjà installée sur votre téléphone, elle s'ouvrira directement.</p>
-          <script>
-          function openBGFIMobile() {
-            var playStore = 'https://play.google.com/store/apps/details?id=com.bfi.rca.gabon&hl=fr';
-            var isAndroid = /android/i.test(navigator.userAgent);
-            if (isAndroid) {
-              // Tente d'ouvrir l'app via intent Android
-              var intent = 'intent://launch/#Intent;scheme=bgfimobile;package=com.bfi.rca.gabon;S.browser_fallback_url=' + encodeURIComponent(playStore) + ';end';
-              window.location.href = intent;
-            } else {
-              // Desktop ou iOS : ouvre le Play Store dans un nouvel onglet
-              window.open(playStore, '_blank');
-            }
-          }
-          </script>
         </div>
         <div style="text-align:center;">
           <div style="width:200px;height:360px;background:rgba(255,255,255,0.08);border-radius:32px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.12);position:relative;">
