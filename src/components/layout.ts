@@ -206,8 +206,17 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
     </div>
   </section>
 
+  <!-- Wave entre newsletter et footer -->
+  <div class="wave-divider" style="background:linear-gradient(135deg,var(--bgfi-sky),var(--bgfi-teal));">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#0d1b2e"/>
+    </svg>
+  </div>
+
   <!-- ── FOOTER ── -->
   <footer id="footer">
+    <div id="footer-accent"></div>
+    <div class="footer-inner">
     <div class="container">
       <div class="footer-grid">
         <div>
@@ -266,6 +275,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
           <a href="/securite">Sécurité</a>
         </div>
       </div>
+    </div>
     </div>
   </footer>
 

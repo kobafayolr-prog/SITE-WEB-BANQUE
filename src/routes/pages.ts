@@ -14,6 +14,9 @@ const formatDate = (d: string) => new Date(d).toLocaleDateString('fr-FR', { day:
 const productCard = (p: any) => `
 <div class="card product-card reveal ${!p.available ? 'unavailable' : ''}">
   ${!p.available ? '<span class="badge-soon"><i class="fas fa-clock"></i> Bientôt disponible</span>' : ''}
+  ${p.badge === 'new' ? '<span class="badge-new"><i class="fas fa-star"></i> Nouveau</span>' : ''}
+  ${p.badge === 'popular' ? '<span class="badge-popular"><i class="fas fa-fire"></i> Populaire</span>' : ''}
+  ${p.badge === 'promo' ? '<span class="badge-promo"><i class="fas fa-tag"></i> Promo</span>' : ''}
   <div class="card-body">
     <div class="product-icon"><i class="fas ${p.icon}"></i></div>
     <div class="card-title">${p.title}</div>
@@ -293,6 +296,13 @@ pages.get('/', (c) => {
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Wave hero → contenu -->
+  <div class="wave-divider" style="background:linear-gradient(135deg,#003a74,#003666,#002a5c);">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#f0f2f5"/>
+    </svg>
   </div>
 
   <!-- SERVICES RAPIDES -->

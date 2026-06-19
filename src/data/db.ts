@@ -395,7 +395,7 @@ export const defaultProducts: Product[] = [
       "Opposition sur cartes/chèques",
       "Coût : 30 000 FCFA HT (particuliers)",
     ],
-    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/"
+    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/", badge: "popular"
   },
   {
     id: 14, segment: "particuliers", slug: "sms-banking",
@@ -423,7 +423,7 @@ export const defaultProducts: Product[] = [
       "Achat d'unités téléphoniques",
       "Frais de souscription : 6 000 FCFA HT",
     ],
-    available: true, cta: "Télécharger sur Google Play", ctaUrl: "bgfimobile-deeplink"
+    available: true, cta: "Télécharger sur Google Play", ctaUrl: "bgfimobile-deeplink", badge: "new"
   },
 
   // ═══════════════════════════════════════
