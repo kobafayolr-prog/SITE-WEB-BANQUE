@@ -10,7 +10,9 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title} — BGFIBank Centrafrique</title>
   <meta name="description" content="BGFIBank Centrafrique - Votre partenaire bancaire de confiance en République Centrafricaine. Comptes, épargne, crédits et solutions digitales.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23003a74'/><text y='.9em' font-size='65' font-family='Arial' font-weight='bold' fill='white' x='50%' text-anchor='middle' dominant-baseline='auto' dy='0.75em'>B</text></svg>">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/images/bgfibank-logo.png">
   <!-- Charte BGFIBank -->
   <link rel="stylesheet" href="/static/css/bgfi.css">
   <!-- Font Awesome -->
@@ -33,6 +35,19 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   </script>
 </head>
 <body>
+
+  <!-- ── LOADER ── -->
+  <div id="page-loader">
+    <div class="loader-inner">
+      <img src="/static/images/bgfibank-logo.png" alt="BGFIBank" class="loader-logo">
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+  </div>
+
+  <!-- ── BOUTON RETOUR EN HAUT ── -->
+  <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
   <!-- ── TOP BAR ── -->
   <div id="top-bar">
@@ -296,6 +311,43 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         else showToast(data.error || 'Erreur', 'error');
       } catch { showToast('Erreur de connexion', 'error'); }
     }
+  </script>
+
+  <!-- ── LOADER + BACK TO TOP + REVEAL ── -->
+  <script>
+  // 1. LOADER — masquer après chargement
+  window.addEventListener('load', function() {
+    var loader = document.getElementById('page-loader');
+    if (loader) {
+      setTimeout(function() {
+        loader.classList.add('hidden');
+      }, 1500);
+    }
+  });
+
+  // 2. BOUTON RETOUR EN HAUT
+  var backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  // 3. REVEAL AU SCROLL — IntersectionObserver
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+    revealObserver.observe(el);
+  });
   </script>
 </body>
 </html>`;

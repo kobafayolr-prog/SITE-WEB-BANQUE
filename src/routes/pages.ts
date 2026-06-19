@@ -12,7 +12,7 @@ const pages = new Hono()
 const formatDate = (d: string) => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
 
 const productCard = (p: any) => `
-<div class="card product-card ${!p.available ? 'unavailable' : ''}">
+<div class="card product-card reveal ${!p.available ? 'unavailable' : ''}">
   ${!p.available ? '<span class="badge-soon"><i class="fas fa-clock"></i> Bientôt disponible</span>' : ''}
   <div class="card-body">
     <div class="product-icon"><i class="fas ${p.icon}"></i></div>
@@ -32,7 +32,7 @@ const productCard = (p: any) => `
 </div>`
 
 const articleCard = (a: any) => `
-<div class="card" onclick="location.href='/actualites/${a.slug}'" style="cursor:pointer;">
+<div class="card reveal" onclick="location.href='/actualites/${a.slug}'" style="cursor:pointer;">
   <img src="${a.image}" alt="${a.title}" class="card-img" loading="lazy">
   <div class="card-body">
     <div class="card-category"><i class="fas fa-tag" style="margin-right:4px;"></i>${a.category}</div>
