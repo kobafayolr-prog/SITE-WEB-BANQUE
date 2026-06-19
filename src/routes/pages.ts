@@ -396,24 +396,47 @@ pages.get('/', (c) => {
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
         <div>
-          <span style="background:rgba(232,104,40,0.9);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-bottom:16px;animation:pulse-badge 2s infinite;">
-            <i class="fas fa-clock"></i> Bientôt disponible
+          <span style="background:rgba(34,197,94,0.9);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-bottom:16px;">
+            <i class="fas fa-check-circle"></i> Disponible maintenant
           </span>
           <h2 style="font-size:32px;font-weight:700;color:white;margin-bottom:12px;"><i class="fas fa-mobile-alt" style="margin-right:10px;color:var(--bgfi-mint);"></i>BGFIMobile</h2>
           <p style="color:rgba(255,255,255,0.8);font-size:16px;line-height:1.7;margin-bottom:24px;">Votre banque dans votre poche. Gérez vos comptes, effectuez des virements et payez vos factures depuis votre smartphone, où que vous soyez en RCA.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
             ${['Consultation de solde', 'Virements instantanés', 'Paiement de factures', 'Notifications temps réel'].map(f => `<span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;"><i class="fas fa-check" style="margin-right:4px;color:var(--bgfi-mint);"></i>${f}</span>`).join('')}
           </div>
-          <form class="notify-form" onsubmit="preRegister(event,'BGFIMobile')" style="max-width:400px;">
-            <input type="email" placeholder="Votre email pour être notifié" required style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;">
-            <button type="submit" style="background:var(--bgfi-sky);"><i class="fas fa-bell"></i> Notifiez-moi</button>
-          </form>
+          <!-- Bouton intelligent : ouvre l'app si installée, sinon Play Store -->
+          <button onclick="openBGFIMobile()" style="display:inline-flex;align-items:center;gap:14px;background:white;color:var(--bgfi-navy);border:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);transition:transform 0.15s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fab fa-google-play" style="font-size:24px;color:#01875f;"></i>
+            <span style="text-align:left;">
+              <span style="display:block;font-size:10px;font-weight:400;color:#888;text-transform:uppercase;letter-spacing:1px;">Télécharger sur</span>
+              Google Play
+            </span>
+          </button>
+          <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:14px;"><i class="fas fa-magic" style="margin-right:4px;"></i>Si l'app est déjà installée sur votre téléphone, elle s'ouvrira directement.</p>
+          <script>
+          function openBGFIMobile() {
+            var playStore = 'https://play.google.com/store/apps/details?id=com.bfi.rca.gabon&hl=fr';
+            var isAndroid = /android/i.test(navigator.userAgent);
+            if (isAndroid) {
+              // Tente d'ouvrir l'app via intent Android
+              var intent = 'intent://launch/#Intent;scheme=bgfimobile;package=com.bfi.rca.gabon;S.browser_fallback_url=' + encodeURIComponent(playStore) + ';end';
+              window.location.href = intent;
+            } else {
+              // Desktop ou iOS : ouvre le Play Store dans un nouvel onglet
+              window.open(playStore, '_blank');
+            }
+          }
+          </script>
         </div>
         <div style="text-align:center;">
-          <div style="width:200px;height:360px;background:rgba(255,255,255,0.1);border-radius:32px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.2);position:relative;">
+          <div style="width:200px;height:360px;background:rgba(255,255,255,0.08);border-radius:32px;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.12);position:relative;">
             <div style="position:absolute;top:16px;width:60px;height:6px;background:rgba(255,255,255,0.3);border-radius:3px;"></div>
-            <i class="fas fa-mobile-alt" style="font-size:80px;color:rgba(255,255,255,0.3);"></i>
-            <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:12px;">En cours de développement</div>
+            <i class="fab fa-google-play" style="font-size:64px;color:rgba(1,135,95,0.85);margin-bottom:16px;"></i>
+            <div style="color:white;font-weight:700;font-size:15px;">BGFIMobile</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:11px;margin-top:4px;">BGFIBank Centrafrique</div>
+            <div style="margin-top:20px;background:rgba(1,135,95,0.25);border:1px solid rgba(1,135,95,0.5);border-radius:20px;padding:6px 18px;color:rgba(255,255,255,0.9);font-size:12px;font-weight:600;">
+              <i class="fas fa-star" style="color:#facc15;font-size:10px;margin-right:4px;"></i>Disponible
+            </div>
           </div>
         </div>
       </div>
