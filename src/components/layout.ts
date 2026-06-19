@@ -156,7 +156,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <!-- ── NEWSLETTER ── -->
   <section id="newsletter-section">
     <div class="container">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+      <div class="newsletter-grid">
         <div>
           <h2><i class="fas fa-envelope-open-text" style="margin-right:10px;"></i>Restez informé</h2>
           <p>Recevez nos dernières actualités, offres et conseils financiers directement dans votre boîte mail.</p>
@@ -169,24 +169,22 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
             Vos données sont protégées conformément au RGPD.
           </p>
         </div>
-        <div style="text-align:right;">
-          <div style="display:inline-flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
-              <i class="fab fa-google-play" style="font-size:24px;color:white;"></i>
-              <div style="text-align:left;">
-                <div style="font-weight:700;color:white;font-size:14px;">BGFIMobile</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.7);">Application mobile banking</div>
-              </div>
-              <button onclick="openBGFIMobile()" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;">Télécharger</button>
+        <div class="newsletter-apps">
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
+            <i class="fab fa-google-play" style="font-size:24px;color:white;flex-shrink:0;"></i>
+            <div style="text-align:left;flex:1;min-width:0;">
+              <div style="font-weight:700;color:white;font-size:14px;">BGFIMobile</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.7);">Application mobile banking</div>
             </div>
-            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
-              <i class="fas fa-laptop" style="font-size:24px;color:white;"></i>
-              <div style="text-align:left;">
-                <div style="font-weight:700;color:white;font-size:14px;">BGFIOnline</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.7);">Banque en ligne 24h/24</div>
-              </div>
-              <a href="https://www5.bgfionline.com/" target="_blank" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;text-decoration:none;">Accéder</a>
+            <button onclick="openBGFIMobile()" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;">Télécharger</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
+            <i class="fas fa-laptop" style="font-size:24px;color:white;flex-shrink:0;"></i>
+            <div style="text-align:left;flex:1;min-width:0;">
+              <div style="font-weight:700;color:white;font-size:14px;">BGFIOnline</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.7);">Banque en ligne 24h/24</div>
             </div>
+            <a href="https://www5.bgfionline.com/" target="_blank" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;">Accéder</a>
           </div>
         </div>
       </div>
