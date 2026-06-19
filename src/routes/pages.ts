@@ -76,7 +76,7 @@ pages.get('/', (c) => {
       <!-- BADGE ANIMÉ -->
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span>Votre banque de confiance en RCA depuis 30 ans</span>
+        <span>Votre banque de confiance en RCA depuis 5 ans</span>
       </div>
 
       <!-- TITRE TYPEWRITER -->
@@ -1154,7 +1154,7 @@ pages.get('/bgfibank-rca', (c) => {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
         <div>
           <span class="eyebrow">Notre histoire</span>
-          <h2 style="font-size:28px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;">30 ans au service de la RCA</h2>
+          <h2 style="font-size:28px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;">5 ans au service de la RCA</h2>
           <p style="color:var(--bgfi-text-light);line-height:1.7;margin-bottom:16px;">Présent en République Centrafricaine depuis plusieurs décennies, BGFIBank s'est imposé comme un acteur incontournable du paysage bancaire centrafricain.</p>
           <p style="color:var(--bgfi-text-light);line-height:1.7;">Filiale du Groupe BGFIBank, présent dans 12 pays africains, nous combinons l'expertise d'un groupe continental avec une profonde connaissance du marché local.</p>
         </div>
