@@ -172,12 +172,12 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         <div style="text-align:right;">
           <div style="display:inline-flex;flex-direction:column;gap:12px;">
             <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
-              <i class="fas fa-mobile-alt" style="font-size:24px;color:white;"></i>
+              <i class="fab fa-google-play" style="font-size:24px;color:white;"></i>
               <div style="text-align:left;">
                 <div style="font-weight:700;color:white;font-size:14px;">BGFIMobile</div>
                 <div style="font-size:12px;color:rgba(255,255,255,0.7);">Application mobile banking</div>
               </div>
-              <span style="background:rgba(255,255,255,0.2);color:white;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;">Bientôt</span>
+              <button onclick="openBGFIMobile()" style="background:white;color:#003a74;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;">Télécharger</button>
             </div>
             <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.15);padding:12px 20px;border-radius:6px;">
               <i class="fas fa-laptop" style="font-size:24px;color:white;"></i>
