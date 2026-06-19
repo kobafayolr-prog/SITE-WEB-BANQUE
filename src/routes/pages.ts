@@ -104,7 +104,7 @@ pages.get('/', (c) => {
       <!-- STATS COMPTEURS ANIMÉS -->
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-number counter" data-target="30" data-suffix="+">0</span>
+          <span class="stat-number counter" data-target="5" data-suffix="+">0</span>
           <span class="stat-label">Ans d'expérience</span>
         </div>
         <div class="stat">
@@ -899,7 +899,7 @@ pages.get('/entreprises', (c) => {
         </div>
         <div style="max-width:600px;margin:32px auto 0;">${compte.map(productCard).join('')}</div>
         <div style="background:var(--bgfi-light);border-radius:12px;padding:32px;margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
-          ${[['30+','Années de présence en RCA'],['500M+','FCFA de crédits accordés'],['1 000+','Entreprises accompagnées'],['6','Agences & GAB en RCA']].map(([num,label])=>`
+          ${[['5+','Années de présence en RCA'],['500M+','FCFA de crédits accordés'],['1 000+','Entreprises accompagnées'],['6','Agences & GAB en RCA']].map(([num,label])=>`
           <div><div style="font-size:36px;font-weight:700;color:var(--bgfi-sky);margin-bottom:4px;">${num}</div><div style="font-size:13px;color:var(--bgfi-text-light);">${label}</div></div>`).join('')}
         </div>
         <div class="prod-cta-banner">
