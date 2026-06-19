@@ -43,11 +43,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
   <header id="header">
     <div class="container">
       <a href="/" class="logo">
-        <div class="logo-icon"><span>BGFI</span></div>
-        <div class="logo-text">
-          <span class="bank-name">BGFIBank</span>
-          <span class="bank-country">Centrafrique</span>
-        </div>
+        <img src="/static/images/bgfibank-logo.png" alt="BGFIBank Centrafrique" class="logo-img">
       </a>
       <div class="header-actions">
         <a href="https://www5.bgfionline.com/" target="_blank" class="btn-client">
@@ -189,11 +185,9 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
     <div class="container">
       <div class="footer-grid">
         <div>
-          <div class="footer-bgfi-logo"><span>BGFI</span></div>
           <div class="footer-brand">
-            <div class="bank-name">BGFIBank Centrafrique</div>
-            <div class="slogan">${s.slogan || "Votre partenaire pour l'avenir"}</div>
-            <p>Filiale du Groupe BGFIBank, nous accompagnons particuliers, professionnels et entreprises dans leur développement financier en République Centrafricaine.</p>
+            <img src="/static/images/bgfibank-logo.png" alt="BGFIBank Centrafrique" class="footer-logo-img">
+            <p style="margin-top:12px;">Filiale du Groupe BGFIBank, nous accompagnons particuliers, professionnels et entreprises dans leur développement financier en République Centrafricaine.</p>
           </div>
           <div class="footer-social">
             <a href="${s.facebook || '#'}" title="Facebook" ${s.facebook ? 'target="_blank"' : ''}><i class="fab fa-facebook-f"></i></a>
