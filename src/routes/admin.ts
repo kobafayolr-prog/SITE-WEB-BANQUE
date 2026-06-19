@@ -385,6 +385,19 @@ admin.get('/settings', (c) => {
       </div>
       <div class="form-group"><label>Conseil du jour</label><textarea id="economicTip" style="min-height:70px;"></textarea></div>
       <hr style="border:none;border-top:1px solid var(--bgfi-border);margin:20px 0;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;"><i class="fas fa-chart-bar" style="color:var(--bgfi-sky);margin-right:8px;"></i>Chiffres clés (bandeau page d'accueil)</h3>
+      <p style="font-size:12px;color:var(--bgfi-text-light);margin-bottom:16px;"><i class="fas fa-info-circle" style="margin-right:4px;"></i>Ces 4 statistiques apparaissent sur le hero de la page d'accueil. Vous pouvez les modifier à tout moment.</p>
+      <div class="form-grid-2">
+        <div class="form-group"><label>Stat 1 — Valeur <span style="color:var(--bgfi-text-light);font-weight:400;">(ex: 5+)</span></label><input type="text" id="stat1Value" placeholder="5+"></div>
+        <div class="form-group"><label>Stat 1 — Libellé</label><input type="text" id="stat1Label" placeholder="Ans d'expérience"></div>
+        <div class="form-group"><label>Stat 2 — Valeur <span style="color:var(--bgfi-text-light);font-weight:400;">(ex: 12)</span></label><input type="text" id="stat2Value" placeholder="12"></div>
+        <div class="form-group"><label>Stat 2 — Libellé</label><input type="text" id="stat2Label" placeholder="Pays africains"></div>
+        <div class="form-group"><label>Stat 3 — Valeur <span style="color:var(--bgfi-text-light);font-weight:400;">(ex: 10K+)</span></label><input type="text" id="stat3Value" placeholder="10K+"></div>
+        <div class="form-group"><label>Stat 3 — Libellé</label><input type="text" id="stat3Label" placeholder="Clients actifs"></div>
+        <div class="form-group"><label>Stat 4 — Valeur <span style="color:var(--bgfi-text-light);font-weight:400;">(ex: 24h)</span></label><input type="text" id="stat4Value" placeholder="24h"></div>
+        <div class="form-group"><label>Stat 4 — Libellé</label><input type="text" id="stat4Label" placeholder="Service en ligne"></div>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--bgfi-border);margin:20px 0;">
       <h3 style="font-size:14px;font-weight:700;color:var(--bgfi-navy);margin-bottom:16px;"><i class="fab fa-facebook" style="color:var(--bgfi-sky);margin-right:8px;"></i>Réseaux sociaux</h3>
       <div class="form-grid-2">
         <div class="form-group"><label>Facebook</label><input type="url" id="facebook"></div>

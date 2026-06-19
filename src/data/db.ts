@@ -80,6 +80,14 @@ export interface SiteSettings {
   exchangeUSD: string;
   exchangeEUR: string;
   beacRate: string;
+  stat1Value: string;
+  stat1Label: string;
+  stat2Value: string;
+  stat2Label: string;
+  stat3Value: string;
+  stat3Label: string;
+  stat4Value: string;
+  stat4Label: string;
 }
 
 export interface PreRegistration {
@@ -112,6 +120,14 @@ export const defaultSettings: SiteSettings = {
   exchangeUSD: "655.96",
   exchangeEUR: "655.96",
   beacRate: "4.50",
+  stat1Value: "5+",
+  stat1Label: "Ans d'expérience",
+  stat2Value: "12",
+  stat2Label: "Pays africains",
+  stat3Value: "10K+",
+  stat3Label: "Clients actifs",
+  stat4Value: "24h",
+  stat4Label: "Service en ligne",
 };
 
 export const defaultArticles: Article[] = [

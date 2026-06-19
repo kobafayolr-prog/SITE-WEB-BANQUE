@@ -104,20 +104,20 @@ pages.get('/', (c) => {
       <!-- STATS COMPTEURS ANIMÉS -->
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-number counter" data-target="5" data-suffix="+">0</span>
-          <span class="stat-label">Ans d'expérience</span>
+          <span class="stat-number" style="font-size:28px;">${store.settings.stat1Value}</span>
+          <span class="stat-label">${store.settings.stat1Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number counter" data-target="12" data-suffix="">0</span>
-          <span class="stat-label">Pays africains</span>
+          <span class="stat-number" style="font-size:28px;">${store.settings.stat2Value}</span>
+          <span class="stat-label">${store.settings.stat2Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number counter" data-target="10000" data-suffix="+" data-display="10K+">0</span>
-          <span class="stat-label">Clients actifs</span>
+          <span class="stat-number" style="font-size:28px;">${store.settings.stat3Value}</span>
+          <span class="stat-label">${store.settings.stat3Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number" style="font-size:28px;">24h</span>
-          <span class="stat-label">Service en ligne</span>
+          <span class="stat-number" style="font-size:28px;">${store.settings.stat4Value}</span>
+          <span class="stat-label">${store.settings.stat4Label}</span>
         </div>
       </div>
     </div>
