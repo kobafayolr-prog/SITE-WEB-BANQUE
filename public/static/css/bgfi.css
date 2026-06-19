@@ -86,7 +86,7 @@ body {
 }
 #header .container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 #header .logo { display: flex; align-items: center; text-decoration: none; }
-#header .logo-img { height: 38px; width: auto; display: block; object-fit: contain; }
+#header .logo-img { height: 52px; width: auto; display: block; object-fit: contain; }
 #header .logo-icon { width: 48px; height: 48px; background: var(--bgfi-navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 #header .logo-icon span { color: white; font-weight: 700; font-size: 16px; letter-spacing: 1px; }
 #header .logo-text { line-height: 1.2; }
@@ -821,7 +821,7 @@ body {
   #header .menu-toggle { display: flex; }
   #header { height: auto; min-height: 56px; }
   #header .header-inner { padding: 0 16px; height: 56px; }
-  #header .logo-img { height: 30px; }
+  #header .logo-img { height: 40px; }
   #top-bar { display: none; }
 
   /* Hero */
