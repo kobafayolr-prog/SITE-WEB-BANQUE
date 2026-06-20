@@ -27,6 +27,8 @@ export interface Product {
   available: boolean; // false = "Bientôt disponible"
   cta?: string;
   ctaUrl?: string;
+  badge?: string;   // new | popular | promo
+  image?: string;   // URL image de fond de la card (modifiable back-office)
 }
 
 export interface Agency {
@@ -211,7 +213,8 @@ export const defaultProducts: Product[] = [
       "Suivi des dépenses en temps réel",
       "Salaire minimum requis : 100 000 FCFA",
     ],
-    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact"
+    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?w=800&q=80"
   },
   {
     id: 2, segment: "particuliers", slug: "compte-epargne",
@@ -225,7 +228,8 @@ export const defaultProducts: Product[] = [
       "Plan Épargne Logement (PEL) disponible",
       "Conditions : pièce d'identité valide + 2 photos",
     ],
-    available: true, cta: "Souscrire", ctaUrl: "/contact"
+    available: true, cta: "Souscrire", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80"
   },
   {
     id: 3, segment: "particuliers", slug: "compte-gogoro",
@@ -239,7 +243,8 @@ export const defaultProducts: Product[] = [
       "Frais de dossier : 15 000 FCFA",
       "Réservé aux salariés CDI avec salaire min. 100 000 FCFA",
     ],
-    available: true, cta: "En savoir plus", ctaUrl: "/contact"
+    available: true, cta: "En savoir plus", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -257,7 +262,8 @@ export const defaultProducts: Product[] = [
       "Conditions : pièce d'identité + formulaire CRC",
       "Placement stable et sécurisé",
     ],
-    available: true, cta: "Simuler mon DAT", ctaUrl: "/simulateurs"
+    available: true, cta: "Simuler mon DAT", ctaUrl: "/simulateurs",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80"
   },
   {
     id: 5, segment: "particuliers", slug: "bon-de-caisse",
@@ -271,7 +277,8 @@ export const defaultProducts: Product[] = [
       "Suivi en parallèle du compte courant",
       "Conditions : pièce d'identité + formulaire CRC",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -289,7 +296,8 @@ export const defaultProducts: Product[] = [
       "Réservé aux salariés secteur privé et public",
       "Documents : 3 bulletins de salaire + pièce d'identité",
     ],
-    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+    available: true, cta: "Faire une demande", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=800&q=80"
   },
   {
     id: 7, segment: "particuliers", slug: "credit-immobilier",
@@ -303,7 +311,8 @@ export const defaultProducts: Product[] = [
       "Titulaire d'un compte chèque BGFIBank requis",
       "Documents : titre foncier, justificatifs revenus, devis travaux",
     ],
-    available: true, cta: "Simuler mon crédit", ctaUrl: "/simulateurs"
+    available: true, cta: "Simuler mon crédit", ctaUrl: "/simulateurs",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -321,7 +330,8 @@ export const defaultProducts: Product[] = [
       "Sécurité Motion Code",
       "Conditions : pièce d'identité + compte épargne ou chèque",
     ],
-    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&q=80"
   },
   {
     id: 9, segment: "particuliers", slug: "carte-gimac-anigre",
@@ -335,7 +345,8 @@ export const defaultProducts: Product[] = [
       "Paiement TPE — Utilisable dans la zone CEMAC",
       "Conditions : pièce d'identité + compte épargne ou chèque",
     ],
-    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80"
   },
   {
     id: 10, segment: "particuliers", slug: "carte-gimac-diamant",
@@ -349,7 +360,8 @@ export const defaultProducts: Product[] = [
       "Paiement TPE — Utilisable zone CEMAC",
       "Conditions : pièce d'identité + compte épargne ou chèque",
     ],
-    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=800&q=80"
   },
   {
     id: 11, segment: "particuliers", slug: "carte-visa-classique",
@@ -363,7 +375,8 @@ export const defaultProducts: Product[] = [
       "Commande de chéquiers incluse",
       "Conditions : pièce d'identité + compte chèque BGFIBank",
     ],
-    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1574539602803-41d45f6e48d3?w=800&q=80"
   },
   {
     id: 12, segment: "particuliers", slug: "carte-visa-gold",
@@ -377,7 +390,8 @@ export const defaultProducts: Product[] = [
       "Service à l'international — Achat en ligne",
       "Conditions : pièce d'identité + compte chèque BGFIBank",
     ],
-    available: true, cta: "Commander ma carte", ctaUrl: "/contact"
+    available: true, cta: "Commander ma carte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1598971861713-54ad16a7e72e?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -395,7 +409,8 @@ export const defaultProducts: Product[] = [
       "Opposition sur cartes/chèques",
       "Coût : 30 000 FCFA HT (particuliers)",
     ],
-    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/", badge: "popular"
+    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/", badge: "popular",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
   },
   {
     id: 14, segment: "particuliers", slug: "sms-banking",
@@ -409,7 +424,8 @@ export const defaultProducts: Product[] = [
       "Alerte SMS : 100 FCFA HT",
       "Message reçu : 150 FCFA HT",
     ],
-    available: true, cta: "Souscrire", ctaUrl: "/contact"
+    available: true, cta: "Souscrire", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80"
   },
   {
     id: 15, segment: "particuliers", slug: "bgfi-mobile",
@@ -423,7 +439,8 @@ export const defaultProducts: Product[] = [
       "Achat d'unités téléphoniques",
       "Frais de souscription : 6 000 FCFA HT",
     ],
-    available: true, cta: "Télécharger sur Google Play", ctaUrl: "bgfimobile-deeplink", badge: "new"
+    available: true, cta: "Télécharger sur Google Play", ctaUrl: "bgfimobile-deeplink", badge: "new",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -441,7 +458,8 @@ export const defaultProducts: Product[] = [
       "Formulaire d'envoi/retrait au guichet",
       "Réseau mondial MoneyGram",
     ],
-    available: true, cta: "Effectuer un transfert", ctaUrl: "/contact"
+    available: true, cta: "Effectuer un transfert", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80"
   },
   {
     id: 17, segment: "particuliers", slug: "virement-local",
@@ -455,7 +473,8 @@ export const defaultProducts: Product[] = [
       "Disponible pour particuliers et entreprises",
       "Zone CEMAC couverte",
     ],
-    available: true, cta: "Effectuer un virement", ctaUrl: "/contact"
+    available: true, cta: "Effectuer un virement", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?w=800&q=80"
   },
   {
     id: 18, segment: "particuliers", slug: "virement-international",
@@ -469,7 +488,8 @@ export const defaultProducts: Product[] = [
       "Évacuation sanitaire",
       "Documents selon nature du transfert",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -487,7 +507,8 @@ export const defaultProducts: Product[] = [
       "Documents : NIF, RCCM, statuts, pièce d'identité gérant",
       "Conseiller dédié",
     ],
-    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact"
+    available: true, cta: "Ouvrir un compte", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80"
   },
   {
     id: 20, segment: "professionnels", slug: "credit-exploitation",
@@ -501,7 +522,8 @@ export const defaultProducts: Product[] = [
       "NIF, RCCM, quitus fiscal, CNSS requis",
       "Demande adressée à la Direction Générale",
     ],
-    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+    available: true, cta: "Faire une demande", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80"
   },
   {
     id: 21, segment: "professionnels", slug: "credit-campagne",
@@ -515,7 +537,8 @@ export const defaultProducts: Product[] = [
       "Compte d'exploitation prévisionnel",
       "Demande adressée à la Direction Générale",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80"
   },
   {
     id: 22, segment: "professionnels", slug: "decouvert-avance-facture",
@@ -529,7 +552,8 @@ export const defaultProducts: Product[] = [
       "Compte courant BGFIBank requis",
       "Formulaire d'adhésion au CRC",
     ],
-    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+    available: true, cta: "Faire une demande", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80"
   },
   {
     id: 23, segment: "professionnels", slug: "engagements-signature",
@@ -543,7 +567,8 @@ export const defaultProducts: Product[] = [
       "Facilite l'obtention de marchés publics",
       "Documents : appel d'offre, modèle caution, dépôt en compte",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80"
   },
   {
     id: 24, segment: "professionnels", slug: "bgfi-online-pro",
@@ -557,7 +582,8 @@ export const defaultProducts: Product[] = [
       "Réclamations en ligne",
       "Coût : 100 000 FCFA HT",
     ],
-    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/"
+    available: true, cta: "Se connecter", ctaUrl: "https://www5.bgfionline.com/",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -575,7 +601,8 @@ export const defaultProducts: Product[] = [
       "Documents : NIF, RCCM, statuts notariés, PV désignation gérant",
       "Conseiller entreprise dédié",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
   },
   {
     id: 26, segment: "entreprises", slug: "credit-investissement",
@@ -589,7 +616,8 @@ export const defaultProducts: Product[] = [
       "RCCM, NIF, quitus fiscal, CNSS, ACFPE",
       "Demande adressée à la Direction Générale",
     ],
-    available: true, cta: "Faire une demande", ctaUrl: "/contact"
+    available: true, cta: "Faire une demande", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1559526324-593bc073d938?w=800&q=80"
   },
   {
     id: 27, segment: "entreprises", slug: "dat-entreprise",
@@ -603,7 +631,8 @@ export const defaultProducts: Product[] = [
       "Rattaché au compte courant",
       "Conditions : pièce d'identité + formulaire CRC",
     ],
-    available: true, cta: "Souscrire", ctaUrl: "/contact"
+    available: true, cta: "Souscrire", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&q=80"
   },
   {
     id: 28, segment: "entreprises", slug: "trade-finance",
@@ -617,7 +646,8 @@ export const defaultProducts: Product[] = [
       "Attestation de domiciliation bancaire",
       "Documents selon nature de l'opération",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=800&q=80"
   },
 
   // ═══════════════════════════════════════
@@ -635,7 +665,8 @@ export const defaultProducts: Product[] = [
       "Accompagnement personnalisé",
       "Contactez-nous pour les conditions",
     ],
-    available: true, cta: "Prendre RDV", ctaUrl: "/contact"
+    available: true, cta: "Prendre RDV", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=800&q=80"
   },
   {
     id: 30, segment: "banque-privee", slug: "gestion-patrimoine",
@@ -649,7 +680,8 @@ export const defaultProducts: Product[] = [
       "Reporting exclusif et régulier",
       "Contactez-nous pour les conditions",
     ],
-    available: true, cta: "Prendre RDV", ctaUrl: "/contact"
+    available: true, cta: "Prendre RDV", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80"
   },
   {
     id: 31, segment: "banque-privee", slug: "bon-caisse-prive",
@@ -663,7 +695,8 @@ export const defaultProducts: Product[] = [
       "Suivi indépendant du compte courant",
       "Conditions : pièce d'identité + formulaire CRC",
     ],
-    available: true, cta: "Nous contacter", ctaUrl: "/contact"
+    available: true, cta: "Nous contacter", ctaUrl: "/contact",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80"
   },
 ];
 

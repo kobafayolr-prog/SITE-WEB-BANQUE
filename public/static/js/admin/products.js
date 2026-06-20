@@ -54,6 +54,8 @@ function editProductModal(p) {
   var featuresVal = (p.features || []).join('\n');
   var ctaVal = (p.cta || 'En savoir plus').replace(/"/g, '&quot;');
   var ctaUrlVal = (p.ctaUrl || '#').replace(/"/g, '&quot;');
+  var imageVal = (p.image || '').replace(/"/g, '&quot;');
+  var badgeVal = p.badge || '';
   var checkedAttr = p.available ? ' checked' : '';
 
   var body =
@@ -64,12 +66,41 @@ function editProductModal(p) {
       '<div class="form-group"><label>Texte CTA</label><input type="text" id="fp-cta" value="' + ctaVal + '"></div>' +
       '<div class="form-group"><label>URL CTA</label><input type="text" id="fp-ctaUrl" value="' + ctaUrlVal + '"></div>' +
     '</div>' +
-    '<div class="form-group"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="fp-avail"' + checkedAttr + ' style="width:auto;margin:0;"> Disponible</label></div>';
+    // Champ Image URL + preview
+    '<div class="form-group">' +
+      '<label><i class="fas fa-image" style="color:var(--bgfi-sky);margin-right:4px;"></i> Image de fond (URL)</label>' +
+      '<input type="url" id="fp-image" value="' + imageVal + '" placeholder="https://images.unsplash.com/..." oninput="previewProductImg(this.value)">' +
+      '<div id="fp-img-preview" style="margin-top:8px;' + (imageVal ? '' : 'display:none;') + '">' +
+        '<img id="fp-img-thumb" src="' + imageVal + '" style="width:100%;height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--bgfi-border);" onerror="this.style.display=\'none\'">' +
+      '</div>' +
+      '<p style="font-size:11px;color:var(--bgfi-text-light);margin-top:4px;">Conseil : utilisez Unsplash (https://images.unsplash.com/photo-XXX?w=800&q=80)</p>' +
+    '</div>' +
+    // Badge
+    '<div class="form-grid-2">' +
+      '<div class="form-group"><label>Badge</label>' +
+        '<select id="fp-badge">' +
+          '<option value=""' + (badgeVal===''?' selected':'') + '>Aucun</option>' +
+          '<option value="new"' + (badgeVal==='new'?' selected':'') + '>Nouveau</option>' +
+          '<option value="popular"' + (badgeVal==='popular'?' selected':'') + '>Populaire</option>' +
+          '<option value="promo"' + (badgeVal==='promo'?' selected':'') + '>Promo</option>' +
+        '</select>' +
+      '</div>' +
+      '<div class="form-group"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:22px;"><input type="checkbox" id="fp-avail"' + checkedAttr + ' style="width:auto;margin:0;"> Disponible</label></div>' +
+    '</div>';
 
   openModal('Modifier : ' + p.title, body,
     '<button class="btn btn-primary-sm" onclick="saveProduct(' + p.id + ')"><i class="fas fa-save"></i> Sauvegarder</button>' +
     '<button class="btn btn-outline" onclick="closeModal()" style="margin-left:8px;">Annuler</button>'
   );
+}
+
+function previewProductImg(url) {
+  var wrap = document.getElementById('fp-img-preview');
+  var img = document.getElementById('fp-img-thumb');
+  if (!url) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  img.style.display = 'block';
+  img.src = url;
 }
 
 async function saveProduct(id) {
@@ -79,7 +110,9 @@ async function saveProduct(id) {
     features: document.getElementById('fp-features').value.split('\n').filter(function(f) { return f.trim(); }),
     cta: document.getElementById('fp-cta').value,
     ctaUrl: document.getElementById('fp-ctaUrl').value,
-    available: document.getElementById('fp-avail').checked
+    available: document.getElementById('fp-avail').checked,
+    image: document.getElementById('fp-image').value.trim() || undefined,
+    badge: document.getElementById('fp-badge').value || undefined
   };
   var r = await api('PUT', '/products/' + id, data);
   if (r.success) { showToast('Produit modifié !'); closeModal(); loadProducts(); }

@@ -11,28 +11,37 @@ const pages = new Hono()
 // ── HELPERS ──────────────────────────────────────────────────
 const formatDate = (d: string) => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
 
-const productCard = (p: any) => `
-<div class="card product-card reveal ${!p.available ? 'unavailable' : ''}">
-  ${!p.available ? '<span class="badge-soon"><i class="fas fa-clock"></i> Bientôt disponible</span>' : ''}
-  ${p.badge === 'new' ? '<span class="badge-new"><i class="fas fa-star"></i> Nouveau</span>' : ''}
-  ${p.badge === 'popular' ? '<span class="badge-popular"><i class="fas fa-fire"></i> Populaire</span>' : ''}
-  ${p.badge === 'promo' ? '<span class="badge-promo"><i class="fas fa-tag"></i> Promo</span>' : ''}
-  <div class="card-body">
-    <div class="product-icon"><i class="fas ${p.icon}"></i></div>
-    <div class="card-title">${p.title}</div>
-    <div class="card-text">${p.description}</div>
-    <ul>${p.features.map((f: string) => `<li>${f}</li>`).join('')}</ul>
-    ${p.available
-      ? p.ctaUrl === 'bgfimobile-deeplink'
-        ? `<button onclick="openBGFIMobile()" class="btn btn-primary-sm btn-full" style="margin-top:12px;border:none;cursor:pointer;"><i class="fab fa-google-play" style="margin-right:6px;"></i>${p.cta || 'Télécharger sur Google Play'}</button>`
-        : `<a href="${p.ctaUrl || '#'}" class="btn btn-primary-sm btn-full" style="margin-top:12px;">${p.cta || 'En savoir plus'}</a>`
-      : `<form class="notify-form" onsubmit="preRegister(event,'${p.title}')">
-          <input type="email" placeholder="Votre email" required>
-          <button type="submit"><i class="fas fa-bell"></i> Notifiez-moi</button>
-        </form>`
-    }
+const productCard = (p: any) => {
+  const img = p.image || `https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80`
+  const ctaBtn = p.available
+    ? p.ctaUrl === 'bgfimobile-deeplink'
+      ? `<button onclick="openBGFIMobile()" class="vc-cta"><i class="fab fa-google-play"></i>${p.cta || 'Télécharger'}</button>`
+      : `<a href="${p.ctaUrl || '#'}" class="vc-cta">${p.cta || 'En savoir plus'} <i class="fas fa-arrow-right"></i></a>`
+    : `<form class="vc-notify" onsubmit="preRegister(event,'${p.title}')">
+        <input type="email" placeholder="Votre email" required>
+        <button type="submit"><i class="fas fa-bell"></i></button>
+      </form>`
+  return `
+<div class="visual-card reveal ${!p.available ? 'vc-unavailable' : ''}">
+  <div class="vc-img-wrap">
+    <img src="${img}" alt="${p.title}" class="vc-img" loading="lazy">
+    <div class="vc-overlay"></div>
+    ${p.badge === 'new'     ? '<span class="vc-badge vc-badge-new"><i class="fas fa-star"></i> Nouveau</span>'      : ''}
+    ${p.badge === 'popular' ? '<span class="vc-badge vc-badge-pop"><i class="fas fa-fire"></i> Populaire</span>'    : ''}
+    ${p.badge === 'promo'   ? '<span class="vc-badge vc-badge-promo"><i class="fas fa-tag"></i> Promo</span>'       : ''}
+    ${!p.available          ? '<span class="vc-badge vc-badge-soon"><i class="fas fa-clock"></i> Bientôt</span>'    : ''}
+  </div>
+  <div class="vc-body">
+    <div class="vc-icon-wrap"><i class="fas ${p.icon} vc-icon"></i></div>
+    <h3 class="vc-title">${p.title}</h3>
+    <p class="vc-desc">${p.description}</p>
+    <ul class="vc-features">
+      ${p.features.slice(0,3).map((f: string) => `<li><i class="fas fa-check"></i>${f}</li>`).join('')}
+    </ul>
+    <div class="vc-footer">${ctaBtn}</div>
   </div>
 </div>`
+}
 
 // ── TYPEWRITER HERO (pages internes) ─────────────────────────
 // Affiche le titre lettre par lettre UNE SEULE FOIS (pas de boucle)
@@ -784,10 +793,38 @@ pages.get('/professionnels', (c) => {
   const digital  = all.filter(p => p.slug === 'bgfi-online-pro')
 
   const content = `
-  <div class="page-hero">
-    <div class="container">
-      <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Professionnels</div>
-      ${pageHeroTypewriter('fa-briefcase', 'Espace Professionnels', 'Des solutions adaptées pour développer et pérenniser votre activité professionnelle')}
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HERO CINÉMATIQUE CSS — PROFESSIONNELS                  -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="cinehero cinehero-pro">
+    <!-- Lignes lumineuses animées -->
+    <div class="ch-lines">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <!-- Grille tech -->
+    <div class="ch-grid"></div>
+    <!-- Orbes flottants -->
+    <div class="ch-orbs">
+      <div class="ch-orb ch-orb-1"></div>
+      <div class="ch-orb ch-orb-2"></div>
+      <div class="ch-orb ch-orb-3"></div>
+    </div>
+    <!-- Particules -->
+    <div class="ch-particles">
+      ${Array.from({length:12},(_,i)=>`<div class="ch-p ch-p-${i+1}"></div>`).join('')}
+    </div>
+    <!-- Contenu -->
+    <div class="container ch-content">
+      <div class="breadcrumb ch-breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Professionnels</div>
+      <div class="ch-badge"><span class="badge-dot"></span>Solutions Professionnelles BGFIBank</div>
+      ${pageHeroTypewriter('fa-briefcase', 'Espace Professionnels', 'Des solutions adaptées pour développer et pérenniser votre activité professionnelle', 'style="color:white;"')}
+      <div class="ch-metrics">
+        <div class="ch-metric"><span class="ch-num">500M+</span><span class="ch-lbl">FCFA financés</span></div>
+        <div class="ch-metric-sep"></div>
+        <div class="ch-metric"><span class="ch-num">1 000+</span><span class="ch-lbl">Entreprises</span></div>
+        <div class="ch-metric-sep"></div>
+        <div class="ch-metric"><span class="ch-num">48h</span><span class="ch-lbl">Réponse crédit</span></div>
+      </div>
     </div>
   </div>
 
@@ -909,21 +946,49 @@ pages.get('/entreprises', (c) => {
   const internat    = all.filter(p => p.slug === 'trade-finance')
 
   const content = `
-  <!-- HERO KEN BURNS ENTREPRISES -->
-  <div class="ent-parallax-hero">
-    <div class="kb-img"></div>
-    <div class="ent-parallax-overlay"></div>
-    <div class="ent-parallax-content container">
-      <div class="breadcrumb kb-title" style="color:rgba(255,255,255,0.6);">
-        <a href="/" style="color:rgba(255,255,255,0.7);">Accueil</a>
-        <span class="sep">›</span>Entreprises
-      </div>
-      ${pageHeroTypewriter('fa-industry', 'Espace Entreprises & Institutions', "Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international")}
-      <div class="kb-btns" style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HERO CINÉMATIQUE CSS — ENTREPRISES                     -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="cinehero cinehero-ent">
+    <div class="ch-lines"><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="ch-grid"></div>
+    <div class="ch-orbs">
+      <div class="ch-orb ch-orb-1"></div>
+      <div class="ch-orb ch-orb-2"></div>
+      <div class="ch-orb ch-orb-3"></div>
+    </div>
+    <!-- Bâtiments stylisés (SVG inline) -->
+    <div class="ch-skyline">
+      <svg viewBox="0 0 1440 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <rect x="60" y="80" width="40" height="120" fill="rgba(255,255,255,0.04)" rx="2"/>
+        <rect x="110" y="40" width="55" height="160" fill="rgba(255,255,255,0.06)" rx="2"/>
+        <rect x="175" y="60" width="35" height="140" fill="rgba(255,255,255,0.04)" rx="2"/>
+        <rect x="220" y="20" width="70" height="180" fill="rgba(13,145,208,0.12)" rx="2"/>
+        <rect x="300" y="70" width="45" height="130" fill="rgba(255,255,255,0.05)" rx="2"/>
+        <rect x="1050" y="50" width="60" height="150" fill="rgba(13,145,208,0.1)" rx="2"/>
+        <rect x="1120" y="30" width="80" height="170" fill="rgba(255,255,255,0.06)" rx="2"/>
+        <rect x="1210" y="60" width="50" height="140" fill="rgba(255,255,255,0.04)" rx="2"/>
+        <rect x="1270" y="80" width="40" height="120" fill="rgba(255,255,255,0.04)" rx="2"/>
+        <rect x="1320" y="45" width="55" height="155" fill="rgba(13,145,208,0.08)" rx="2"/>
+      </svg>
+    </div>
+    <div class="ch-particles">
+      ${Array.from({length:10},(_,i)=>`<div class="ch-p ch-p-${i+1}"></div>`).join('')}
+    </div>
+    <div class="container ch-content">
+      <div class="breadcrumb ch-breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Entreprises</div>
+      <div class="ch-badge"><span class="badge-dot"></span>Solutions Entreprises & Institutions</div>
+      ${pageHeroTypewriter('fa-industry', 'Espace Entreprises & Institutions', "Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international", 'style="color:white;"')}
+      <div class="ch-btns">
         <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter un expert</a>
-        <a href="/agences" class="btn" style="background:rgba(255,255,255,0.12);color:white;border:2px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);">
-          <i class="fas fa-map-marker-alt"></i> Nos agences
-        </a>
+        <a href="/agences" class="ch-btn-ghost"><i class="fas fa-map-marker-alt"></i> Nos agences</a>
+      </div>
+      <div class="ch-metrics">
+        <div class="ch-metric"><span class="ch-num">5+</span><span class="ch-lbl">Ans en RCA</span></div>
+        <div class="ch-metric-sep"></div>
+        <div class="ch-metric"><span class="ch-num">12</span><span class="ch-lbl">Pays du Groupe</span></div>
+        <div class="ch-metric-sep"></div>
+        <div class="ch-metric"><span class="ch-num">CEMAC</span><span class="ch-lbl">Zone couverte</span></div>
       </div>
     </div>
   </div>
@@ -1050,10 +1115,56 @@ pages.get('/banque-privee', (c) => {
   const placements = all.filter(p => p.slug === 'bon-caisse-prive')
 
   const content = `
-  <div class="page-hero" style="background:linear-gradient(135deg,#0d0628 0%,#003a74 60%,#0d4a8a 100%);">
-    <div class="container">
-      <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Banque Privée</div>
-      ${pageHeroTypewriter('fa-gem', 'Banque Privée', "Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales")}
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HERO CINÉMATIQUE CSS — BANQUE PRIVÉE (LUXE)            -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="cinehero cinehero-prive">
+    <!-- Fond dégradé doré animé -->
+    <div class="ch-gold-gradient"></div>
+    <!-- Cercles concentriques -->
+    <div class="ch-rings">
+      <div class="ch-ring ch-ring-1"></div>
+      <div class="ch-ring ch-ring-2"></div>
+      <div class="ch-ring ch-ring-3"></div>
+    </div>
+    <!-- Lignes diagonales dorées -->
+    <div class="ch-diag">
+      <span></span><span></span><span></span>
+    </div>
+    <!-- Étoiles scintillantes -->
+    <div class="ch-stars">
+      ${Array.from({length:20},(_,i)=>`<div class="ch-star ch-star-${(i%5)+1}"></div>`).join('')}
+    </div>
+    <!-- Particules dorées flottantes -->
+    <div class="ch-gold-particles">
+      ${Array.from({length:8},(_,i)=>`<div class="ch-gp ch-gp-${i+1}"></div>`).join('')}
+    </div>
+    <!-- Diamond SVG décoratif -->
+    <div class="ch-diamond-deco">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="60,5 115,45 95,110 25,110 5,45" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="1.5"/>
+        <polygon points="60,20 100,50 85,100 35,100 20,50" fill="none" stroke="rgba(212,175,55,0.15)" stroke-width="1"/>
+        <polygon points="60,35 85,55 75,90 45,90 35,55" fill="rgba(212,175,55,0.06)" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+        <line x1="60" y1="5" x2="5" y2="45" stroke="rgba(212,175,55,0.1)" stroke-width="0.5"/>
+        <line x1="60" y1="5" x2="115" y2="45" stroke="rgba(212,175,55,0.1)" stroke-width="0.5"/>
+        <line x1="5" y1="45" x2="35" y2="55" stroke="rgba(212,175,55,0.08)" stroke-width="0.5"/>
+        <line x1="115" y1="45" x2="85" y2="55" stroke="rgba(212,175,55,0.08)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="container ch-content">
+      <div class="breadcrumb ch-breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Banque Privée</div>
+      <div class="ch-badge ch-badge-gold"><i class="fas fa-gem" style="color:#D4AF37;margin-right:6px;font-size:10px;"></i>Excellence &amp; Exclusivité</div>
+      ${pageHeroTypewriter('fa-gem', 'Banque Privée', "Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales", 'style="color:white;"')}
+      <div class="ch-btns">
+        <a href="/rendez-vous" class="ch-btn-gold"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
+        <a href="/contact" class="ch-btn-ghost"><i class="fas fa-phone"></i> Nous appeler</a>
+      </div>
+      <div class="ch-privilege-tags">
+        <span><i class="fas fa-crown"></i> Conseiller Privé</span>
+        <span><i class="fas fa-lock"></i> Confidentialité totale</span>
+        <span><i class="fas fa-infinity"></i> Service 24h/24</span>
+        <span><i class="fas fa-shield-alt"></i> Sécurité Premium</span>
+      </div>
     </div>
   </div>
 
