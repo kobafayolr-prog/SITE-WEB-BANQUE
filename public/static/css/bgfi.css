@@ -1467,3 +1467,74 @@ body {
   #nav-drawer-overlay { display: none !important; }
 }
 
+
+/* ══════════════════════════════════════════════════════════
+   PAGE HERO — TYPEWRITER (pages internes)
+   ══════════════════════════════════════════════════════════ */
+.page-hero { 
+  background: linear-gradient(135deg, var(--bgfi-navy) 0%, var(--bgfi-blue) 60%, #0a2a5c 100%);
+  padding: 52px 0 44px;
+  position: relative;
+  overflow: hidden;
+}
+/* Petit motif décoratif en arrière-plan */
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(13,145,208,0.15) 0%, transparent 65%),
+              radial-gradient(ellipse at 10% 80%, rgba(194,207,164,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Badge pastille animée */
+.ph-tw-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Titre */
+.ph-tw-title {
+  font-size: clamp(26px, 3.8vw, 46px);
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  letter-spacing: -0.3px;
+  min-height: 1.3em; /* évite le layout shift */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Icône dans le titre */
+.ph-tw-icon {
+  color: var(--bgfi-mint);
+  font-size: 0.75em;
+  flex-shrink: 0;
+}
+
+/* Curseur clignotant */
+.ph-tw-cursor {
+  color: var(--bgfi-mint);
+  font-weight: 300;
+  animation: blink .65s step-end infinite;
+}
+
+/* Sous-titre */
+.ph-tw-sub {
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: rgba(255,255,255,0.78);
+  max-width: 600px;
+  line-height: 1.7;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+  .page-hero { padding: 36px 0 28px; }
+  .ph-tw-title { font-size: clamp(22px, 6vw, 30px); gap: 10px; }
+  .ph-tw-sub { font-size: 14px; }
+}
+

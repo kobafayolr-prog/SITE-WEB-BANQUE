@@ -34,6 +34,45 @@ const productCard = (p: any) => `
   </div>
 </div>`
 
+// ── TYPEWRITER HERO (pages internes) ─────────────────────────
+// Affiche le titre lettre par lettre UNE SEULE FOIS (pas de boucle)
+// icon   : classe FontAwesome ex: "fa-user"
+// title  : texte à écrire
+// sub    : sous-titre affiché directement
+// id     : identifiant unique pour l'élément (défaut: "pw-title")
+let _pwCount = 0
+const pageHeroTypewriter = (icon: string, title: string, sub: string, extraStyle = '') => {
+  const uid = `pw${++_pwCount}`
+  return `
+    <div class="ph-tw-badge"><span class="badge-dot"></span></div>
+    <h1 class="ph-tw-title" ${extraStyle}>
+      <i class="fas ${icon} ph-tw-icon"></i>
+      <span id="${uid}"></span><span class="cursor-blink ph-tw-cursor">|</span>
+    </h1>
+    <p class="ph-tw-sub">${sub}</p>
+    <script>
+    (function(){
+      var el = document.getElementById('${uid}');
+      var cur = document.querySelector('.ph-tw-cursor');
+      var text = ${JSON.stringify(title)};
+      var i = 0;
+      function type() {
+        if (!el) return;
+        if (i <= text.length) {
+          el.textContent = text.slice(0, i);
+          i++;
+          setTimeout(type, i === 1 ? 300 : 42);
+        } else {
+          // Animation terminée : curseur clignote 3s puis disparaît
+          if (cur) setTimeout(function(){ cur.style.display='none'; }, 3000);
+        }
+      }
+      // Démarrer après un léger délai (page loaded)
+      setTimeout(type, 250);
+    })();
+    <\/script>`
+}
+
 const articleCard = (a: any) => `
 <div class="card reveal" onclick="location.href='/actualites/${a.slug}'" style="cursor:pointer;">
   <img src="${a.image}" alt="${a.title}" class="card-img" loading="lazy">
@@ -575,8 +614,7 @@ pages.get('/particuliers', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Particuliers</div>
-      <h1><i class="fas fa-user" style="margin-right:12px;"></i>Espace Particuliers</h1>
-      <p>Des solutions bancaires complètes pour votre vie quotidienne et vos projets personnels</p>
+      ${pageHeroTypewriter('fa-user', 'Espace Particuliers', 'Des solutions bancaires complètes pour votre vie quotidienne et vos projets personnels')}
     </div>
   </div>
 
@@ -749,8 +787,7 @@ pages.get('/professionnels', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Professionnels</div>
-      <h1><i class="fas fa-briefcase" style="margin-right:12px;"></i>Espace Professionnels</h1>
-      <p>Des solutions adaptées pour développer et pérenniser votre activité professionnelle</p>
+      ${pageHeroTypewriter('fa-briefcase', 'Espace Professionnels', 'Des solutions adaptées pour développer et pérenniser votre activité professionnelle')}
     </div>
   </div>
 
@@ -881,12 +918,7 @@ pages.get('/entreprises', (c) => {
         <a href="/" style="color:rgba(255,255,255,0.7);">Accueil</a>
         <span class="sep">›</span>Entreprises
       </div>
-      <h1 class="kb-title" style="color:white;font-size:clamp(28px,4vw,46px);font-weight:800;margin:10px 0 16px;text-shadow:0 2px 16px rgba(0,0,0,0.4);letter-spacing:-0.5px;">
-        Espace Entreprises & Institutions
-      </h1>
-      <p class="kb-sub" style="color:rgba(255,255,255,0.88);font-size:clamp(14px,1.8vw,18px);max-width:540px;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.3);">
-        Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international
-      </p>
+      ${pageHeroTypewriter('fa-industry', 'Espace Entreprises & Institutions', "Des solutions sur mesure pour accompagner la croissance de votre entreprise en RCA et à l'international")}
       <div class="kb-btns" style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
         <a href="/contact" class="btn btn-white"><i class="fas fa-envelope"></i> Contacter un expert</a>
         <a href="/agences" class="btn" style="background:rgba(255,255,255,0.12);color:white;border:2px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);">
@@ -1021,8 +1053,7 @@ pages.get('/banque-privee', (c) => {
   <div class="page-hero" style="background:linear-gradient(135deg,#0d0628 0%,#003a74 60%,#0d4a8a 100%);">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Banque Privée</div>
-      <h1><i class="fas fa-gem" style="margin-right:12px;color:#C2CFA4;"></i>Banque Privée</h1>
-      <p>Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales</p>
+      ${pageHeroTypewriter('fa-gem', 'Banque Privée', "Une expérience bancaire d'exception, personnalisée selon vos ambitions patrimoniales")}
     </div>
   </div>
 
@@ -1172,8 +1203,7 @@ pages.get('/bgfibank-rca', (c) => {
   <div class="page-hero" style="background:linear-gradient(135deg,var(--bgfi-dark-teal),var(--bgfi-navy));">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>BGFIBank & la RCA</div>
-      <h1><i class="fas fa-globe-africa" style="margin-right:10px;"></i>BGFIBank & la République Centrafricaine</h1>
-      <p>Notre engagement pour le développement économique et social de la RCA</p>
+      ${pageHeroTypewriter('fa-globe-africa', 'BGFIBank & la République Centrafricaine', 'Notre engagement pour le développement économique et social de la RCA')}
     </div>
   </div>
   <section class="section" id="histoire">
@@ -1238,8 +1268,7 @@ pages.get('/espace-pme', (c) => {
   <div class="page-hero" style="background:linear-gradient(135deg,var(--bgfi-p3),var(--bgfi-teal));">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Espace PME</div>
-      <h1><i class="fas fa-store" style="margin-right:10px;"></i>Espace PME Centrafrique</h1>
-      <p>BGFIBank croit au potentiel des entrepreneurs centrafricains — Solutions exclusives pour les PME</p>
+      ${pageHeroTypewriter('fa-store', 'Espace PME Centrafrique', 'BGFIBank croit au potentiel des entrepreneurs centrafricains — Solutions exclusives pour les PME')}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1318,8 +1347,7 @@ pages.get('/actualites', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Actualités</div>
-      <h1><i class="fas fa-newspaper" style="margin-right:10px;"></i>Actualités</h1>
-      <p>Les dernières nouvelles de BGFIBank Centrafrique et de l'économie centrafricaine</p>
+      ${pageHeroTypewriter('fa-newspaper', 'Actualités', "Les dernières nouvelles de BGFIBank Centrafrique et de l'économie centrafricaine")}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1411,8 +1439,7 @@ pages.get('/simulateurs', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Simulateurs</div>
-      <h1><i class="fas fa-calculator" style="margin-right:10px;"></i>Simulateurs Bancaires</h1>
-      <p>Calculez et anticipez vos projets financiers en toute simplicité</p>
+      ${pageHeroTypewriter('fa-calculator', 'Simulateurs Bancaires', 'Calculez et anticipez vos projets financiers en toute simplicité')}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1528,8 +1555,7 @@ pages.get('/agences', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Nos Agences</div>
-      <h1><i class="fas fa-map-marker-alt" style="margin-right:10px;"></i>Nos Agences & GAB</h1>
-      <p>Retrouvez toutes nos agences et distributeurs automatiques en République Centrafricaine</p>
+      ${pageHeroTypewriter('fa-map-marker-alt', 'Nos Agences & GAB', 'Retrouvez toutes nos agences et distributeurs automatiques en République Centrafricaine')}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1595,8 +1621,7 @@ pages.get('/contact', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Contact</div>
-      <h1><i class="fas fa-envelope" style="margin-right:10px;"></i>Contactez-nous</h1>
-      <p>Notre équipe est disponible pour répondre à toutes vos questions</p>
+      ${pageHeroTypewriter('fa-envelope', 'Contactez-nous', 'Notre équipe est disponible pour répondre à toutes vos questions')}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1759,8 +1784,7 @@ pages.get('/carrieres', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Carrières</div>
-      <h1><i class="fas fa-briefcase" style="margin-right:10px;"></i>Rejoignez BGFIBank Centrafrique</h1>
-      <p>Construisez votre carrière dans l'une des plus grandes banques d'Afrique Centrale</p>
+      ${pageHeroTypewriter('fa-briefcase', 'Rejoignez BGFIBank Centrafrique', "Construisez votre carrière dans l'une des plus grandes banques d'Afrique Centrale")}
     </div>
   </div>
   <section class="section reveal-section">
@@ -1797,8 +1821,7 @@ pages.get('/rendez-vous', (c) => {
   <div class="page-hero">
     <div class="container">
       <div class="breadcrumb"><a href="/">Accueil</a><span class="sep">›</span>Prendre rendez-vous</div>
-      <h1><i class="fas fa-calendar-check" style="margin-right:10px;"></i>Prendre un Rendez-vous</h1>
-      <p>Réservez un créneau avec l'un de nos conseillers</p>
+      ${pageHeroTypewriter('fa-calendar-check', 'Prendre un Rendez-vous', "Réservez un créneau avec l'un de nos conseillers")}
     </div>
   </div>
   <section class="section reveal-section">
