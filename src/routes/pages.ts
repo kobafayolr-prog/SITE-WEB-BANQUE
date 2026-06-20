@@ -551,46 +551,86 @@ pages.get('/', (c) => {
     </div>
   </section>
 
-  <!-- ESPACE PME APERÇU -->
+  <!-- NOS AGENCES & GAB -->
   <section class="section section-dark">
     <div class="container">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
-        <div>
-          <span class="eyebrow" style="color:var(--bgfi-mint);">Innovation BGFIBank RCA</span>
-          <h2 style="color:white;font-size:32px;font-weight:700;margin-bottom:16px;line-height:1.3;">Espace PME Centrafrique</h2>
-          <p style="color:rgba(255,255,255,0.8);font-size:16px;line-height:1.7;margin-bottom:24px;">BGFIBank Centrafrique croit au potentiel des entrepreneurs centrafricains. Découvrez nos solutions spécialement conçues pour les PME locales.</p>
-          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
-            ${[
-              ['fa-percentage', 'Taux préférentiels PME', 'Des conditions de financement avantageuses'],
-              ['fa-user-tie', 'Conseiller PME dédié', 'Un expert à votre écoute pour votre projet'],
-              ['fa-file-contract', 'Accompagnement complet', 'De la création au développement de votre entreprise'],
-            ].map(([icon, title, desc]) => `
-              <div style="display:flex;gap:12px;align-items:flex-start;">
-                <div style="width:36px;height:36px;background:rgba(13,145,208,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <i class="fas ${icon}" style="color:var(--bgfi-mint);"></i>
-                </div>
-                <div>
-                  <div style="font-weight:700;color:white;font-size:14px;">${title}</div>
-                  <div style="font-size:13px;color:rgba(255,255,255,0.6);">${desc}</div>
-                </div>
-              </div>`).join('')}
-          </div>
-          <a href="/espace-pme" class="btn btn-white"><i class="fas fa-store"></i> Découvrir l'Espace PME</a>
+
+      <!-- En-tête -->
+      <div style="text-align:center;margin-bottom:40px;">
+        <span class="eyebrow" style="color:var(--bgfi-mint);">Réseau BGFIBank RCA</span>
+        <h2 style="color:white;font-size:32px;font-weight:700;margin:10px 0 14px;line-height:1.3;">
+          Nos Agences &amp; GAB
+        </h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:16px;max-width:580px;margin:0 auto 0;">
+          Retrouvez-nous dans toute la République Centrafricaine. Nos agences et distributeurs automatiques sont à votre service.
+        </p>
+      </div>
+
+      <!-- Compteurs agences vs GAB -->
+      <div style="display:flex;justify-content:center;gap:40px;margin-bottom:40px;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:42px;font-weight:800;color:var(--bgfi-sky);line-height:1;">${store.agencies.filter(a=>a.type==='agence').length}</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Agences</div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          ${[
-            ['fa-chart-line', 'var(--bgfi-sky)', 'Croissance', 'Financez votre expansion'],
-            ['fa-tools', 'var(--bgfi-mint)', 'Équipement', 'Modernisez vos outils'],
-            ['fa-users', 'var(--bgfi-p4)', 'Emploi', 'Développez vos équipes'],
-            ['fa-globe-africa', 'var(--bgfi-p3)', 'Export', 'Ouvrez-vous aux marchés'],
-          ].map(([icon, color, title, desc]) => `
-            <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:20px;border:1px solid rgba(255,255,255,0.1);text-align:center;">
-              <i class="fas ${icon}" style="font-size:28px;color:${color};margin-bottom:10px;display:block;"></i>
-              <div style="font-weight:700;color:white;margin-bottom:4px;">${title}</div>
-              <div style="font-size:12px;color:rgba(255,255,255,0.5);">${desc}</div>
-            </div>`).join('')}
+        <div style="width:1px;background:rgba(255,255,255,0.12);"></div>
+        <div style="text-align:center;">
+          <div style="font-size:42px;font-weight:800;color:var(--bgfi-mint);line-height:1;">${store.agencies.filter(a=>a.type==='gab').length}</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">GAB</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.12);"></div>
+        <div style="text-align:center;">
+          <div style="font-size:42px;font-weight:800;color:white;line-height:1;">${store.agencies.length}</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Points de service</div>
         </div>
       </div>
+
+      <!-- Grille des agences -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:36px;">
+        ${store.agencies.map(a => `
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:20px;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,0.10)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+          <!-- Type badge -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:38px;height:38px;border-radius:10px;background:${a.type==='agence' ? 'rgba(13,145,208,0.25)' : 'rgba(194,207,164,0.20)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fas ${a.type==='agence' ? 'fa-university' : 'fa-credit-card'}" style="color:${a.type==='agence' ? 'var(--bgfi-sky)' : 'var(--bgfi-mint)'};font-size:16px;"></i>
+              </div>
+              <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:10px;${a.type==='agence' ? 'background:rgba(13,145,208,0.2);color:var(--bgfi-sky);' : 'background:rgba(194,207,164,0.15);color:var(--bgfi-mint);'}">${a.type==='agence' ? 'Agence' : 'GAB'}</span>
+            </div>
+            ${a.type==='agence' ? '<span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;" title="Ouvert"></span>' : ''}
+          </div>
+
+          <!-- Nom -->
+          <div style="font-weight:700;color:white;font-size:15px;margin-bottom:12px;line-height:1.3;">${a.name}</div>
+
+          <!-- Infos -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:flex-start;gap:8px;">
+              <i class="fas fa-map-marker-alt" style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:2px;flex-shrink:0;width:14px;"></i>
+              <span style="font-size:13px;color:rgba(255,255,255,0.75);">${a.address}, ${a.city}</span>
+            </div>
+            ${a.phone ? `
+            <div style="display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-phone" style="color:rgba(255,255,255,0.4);font-size:12px;flex-shrink:0;width:14px;"></i>
+              <a href="tel:${a.phone}" style="font-size:13px;color:var(--bgfi-sky);text-decoration:none;font-weight:600;">${a.phone}</a>
+            </div>` : ''}
+            <div style="display:flex;align-items:flex-start;gap:8px;">
+              <i class="fas fa-clock" style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:2px;flex-shrink:0;width:14px;"></i>
+              <span style="font-size:12px;color:rgba(255,255,255,0.55);">${a.hours}</span>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+
+      <!-- CTA bas -->
+      <div style="text-align:center;">
+        <a href="/agences" class="btn btn-white" style="margin-right:12px;">
+          <i class="fas fa-map-marked-alt"></i> Voir sur la carte
+        </a>
+        <a href="/contact" class="btn" style="background:rgba(255,255,255,0.10);color:white;border:2px solid rgba(255,255,255,0.25);">
+          <i class="fas fa-phone"></i> Nous appeler
+        </a>
+      </div>
+
     </div>
   </section>
   `
