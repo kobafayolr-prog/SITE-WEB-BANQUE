@@ -1272,3 +1272,198 @@ body {
   color: white !important;
   box-shadow: 0 4px 12px rgba(13,145,208,0.3) !important;
 }
+
+/* ══════════════════════════════════════════════════════════
+   HEADER SHRINK AU SCROLL
+   ══════════════════════════════════════════════════════════ */
+#header {
+  transition: height 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+#header.shrunk {
+  height: 52px !important;
+  min-height: 52px !important;
+  box-shadow: 0 4px 20px rgba(0,54,102,0.18) !important;
+}
+#header.shrunk .logo-img {
+  height: 38px !important;
+  transition: height 0.3s ease;
+}
+#header.shrunk .btn-client,
+#header.shrunk .btn-online {
+  padding: 5px 14px !important;
+  font-size: 12px !important;
+}
+
+/* ── NAV — indicateur page active animé (souligné glissant) */
+#main-nav ul li {
+  position: relative;
+}
+#main-nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; right: 50%;
+  height: 2px;
+  background: var(--bgfi-mint);
+  transition: left 0.25s ease, right 0.25s ease;
+}
+#main-nav ul li a.active::after,
+#main-nav ul li a:hover::after {
+  left: 8px;
+  right: 8px;
+}
+#main-nav ul li a.active {
+  background: rgba(255,255,255,0.08) !important;
+  color: white !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DRAWER MOBILE — SLIDE-IN LATÉRAL
+   ══════════════════════════════════════════════════════════ */
+#nav-drawer-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#nav-drawer-overlay.open { display: block; opacity: 1; }
+
+#nav-drawer {
+  position: fixed;
+  top: 0; right: -320px;
+  width: 300px; height: 100dvh;
+  background: var(--bgfi-navy);
+  z-index: 1001;
+  overflow-y: auto;
+  transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 32px rgba(0,0,0,0.3);
+}
+#nav-drawer.open { right: 0; }
+
+/* Header du drawer */
+.drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.2);
+}
+.drawer-header img { height: 36px; width: auto; filter: brightness(0) invert(1); }
+.drawer-close {
+  background: rgba(255,255,255,0.1);
+  border: none; cursor: pointer;
+  color: white; font-size: 18px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.drawer-close:hover { background: rgba(255,255,255,0.2); }
+
+/* Liens du drawer */
+.drawer-nav { flex: 1; padding: 12px 0; }
+.drawer-nav a {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 24px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 14px; font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.2s, color 0.2s, padding-left 0.2s;
+}
+.drawer-nav a:hover,
+.drawer-nav a.active {
+  background: rgba(13,145,208,0.2);
+  color: white;
+  padding-left: 32px;
+}
+.drawer-nav a i { color: var(--bgfi-mint); width: 18px; font-size: 14px; }
+.drawer-nav a.active i { color: var(--bgfi-sky); }
+.drawer-section-title {
+  font-size: 10px; font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase; letter-spacing: 2px;
+  padding: 16px 24px 6px;
+}
+
+/* Footer du drawer */
+.drawer-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.drawer-footer a {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 0; border-radius: 6px;
+  text-decoration: none; font-size: 13px; font-weight: 700;
+  transition: all 0.2s;
+}
+.drawer-btn-client {
+  background: var(--bgfi-sky); color: white !important;
+}
+.drawer-btn-client:hover { background: #0b7db5 !important; }
+.drawer-btn-online {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.85) !important;
+}
+.drawer-btn-online:hover { border-color: white; background: rgba(255,255,255,0.08) !important; }
+
+/* ══════════════════════════════════════════════════════════
+   EFFET RIPPLE SUR BOUTONS
+   ══════════════════════════════════════════════════════════ */
+.btn-ripple {
+  position: relative; overflow: hidden;
+}
+.btn-ripple .ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: rippleAnim 0.55s linear;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+@keyframes rippleAnim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL INDICATOR — FLÈCHE BOUNCE
+   ══════════════════════════════════════════════════════════ */
+.scroll-arrow-bounce {
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer;
+  animation: arrowBounce 1.6s ease-in-out infinite;
+}
+.scroll-arrow-bounce i {
+  color: rgba(255,255,255,0.7);
+  font-size: 20px;
+  display: block;
+}
+.scroll-arrow-bounce i:nth-child(2) { opacity: 0.45; margin-top: -6px; font-size: 16px; }
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   COMPTEURS ANIMÉS — .stat-number avec data-count
+   ══════════════════════════════════════════════════════════ */
+.stat-number[data-count] {
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE DRAWER (≥ 769px : caché)
+   ══════════════════════════════════════════════════════════ */
+@media (min-width: 769px) {
+  #nav-drawer,
+  #nav-drawer-overlay { display: none !important; }
+}
+

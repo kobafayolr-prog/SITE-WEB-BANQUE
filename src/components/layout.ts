@@ -49,6 +49,40 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
     <i class="fas fa-chevron-up"></i>
   </button>
 
+  <!-- ── DRAWER MOBILE ── -->
+  <div id="nav-drawer-overlay" onclick="closeDrawer()"></div>
+  <div id="nav-drawer">
+    <div class="drawer-header">
+      <img src="/static/images/bgfibank-logo.png" alt="BGFIBank">
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="Fermer">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <span class="drawer-section-title">Navigation</span>
+      <a href="/" class="${activePage === '' ? 'active' : ''}"><i class="fas fa-home"></i> Accueil</a>
+      <a href="/particuliers" class="${activePage === 'particuliers' ? 'active' : ''}"><i class="fas fa-user"></i> Particuliers</a>
+      <a href="/professionnels" class="${activePage === 'professionnels' ? 'active' : ''}"><i class="fas fa-briefcase"></i> Professionnels</a>
+      <a href="/entreprises" class="${activePage === 'entreprises' ? 'active' : ''}"><i class="fas fa-industry"></i> Entreprises</a>
+      <a href="/banque-privee" class="${activePage === 'banque-privee' ? 'active' : ''}"><i class="fas fa-gem"></i> Banque Privée</a>
+      <a href="/espace-pme" class="${activePage === 'espace-pme' ? 'active' : ''}"><i class="fas fa-store"></i> Espace PME</a>
+      <span class="drawer-section-title">Informations</span>
+      <a href="/bgfibank-rca" class="${activePage === 'bgfibank-rca' ? 'active' : ''}"><i class="fas fa-globe-africa"></i> BGFIBank &amp; la RCA</a>
+      <a href="/actualites" class="${activePage === 'actualites' ? 'active' : ''}"><i class="fas fa-newspaper"></i> Actualités</a>
+      <a href="/simulateurs" class="${activePage === 'simulateurs' ? 'active' : ''}"><i class="fas fa-calculator"></i> Simulateurs</a>
+      <a href="/agences"><i class="fas fa-map-marker-alt"></i> Nos Agences</a>
+      <a href="/contact"><i class="fas fa-envelope"></i> Contact</a>
+    </nav>
+    <div class="drawer-footer">
+      <a href="https://www5.bgfionline.com/" target="_blank" class="drawer-btn-client">
+        <i class="fas fa-user-plus"></i> Devenir client
+      </a>
+      <a href="https://www5.bgfionline.com/" target="_blank" class="drawer-btn-online">
+        <i class="fas fa-lock"></i> BGFIOnline
+      </a>
+    </div>
+  </div>
+
   <!-- ── TOP BAR ── -->
   <div id="top-bar">
     <div class="container">
@@ -80,7 +114,7 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
         <a href="https://www5.bgfionline.com/" target="_blank" class="btn-online">
           <i class="fas fa-lock"></i> BGFIOnline
         </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu" onclick="openDrawer()">
           <i class="fas fa-bars"></i>
         </button>
       </div>
@@ -284,9 +318,20 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
 
   <!-- ── SCRIPTS GLOBAUX ── -->
   <script>
-    // Menu mobile
-    document.getElementById('menuToggle').addEventListener('click', () => {
-      document.getElementById('main-nav').classList.toggle('open');
+    // Drawer mobile
+    function openDrawer() {
+      document.getElementById('nav-drawer').classList.add('open');
+      document.getElementById('nav-drawer-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('nav-drawer-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // Fermer avec Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDrawer();
     });
 
     // Toast
@@ -335,15 +380,81 @@ export const getLayout = (content: string, title = 'BGFIBank Centrafrique', acti
     }
   });
 
-  // 2. BOUTON RETOUR EN HAUT
+  // 2. BOUTON RETOUR EN HAUT + HEADER SHRINK
   var backToTop = document.getElementById('back-to-top');
+  var header = document.getElementById('header');
   window.addEventListener('scroll', function() {
+    // Back to top
     if (window.scrollY > 300) {
       backToTop.classList.add('visible');
     } else {
       backToTop.classList.remove('visible');
     }
+    // Header shrink
+    if (window.scrollY > 80) {
+      header.classList.add('shrunk');
+    } else {
+      header.classList.remove('shrunk');
+    }
   }, { passive: true });
+
+  // 2b. RIPPLE sur boutons .btn-ripple
+  document.querySelectorAll('.btn-ripple, .btn-primary-sm, .btn-primary, #hero .btn-primary, #hero .btn-secondary').forEach(function(btn) {
+    btn.classList.add('btn-ripple');
+    btn.addEventListener('click', function(e) {
+      var rect = btn.getBoundingClientRect();
+      var size = Math.max(rect.width, rect.height) * 2;
+      var ripple = document.createElement('span');
+      ripple.className = 'ripple-effect';
+      ripple.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size/2) + 'px;top:' + (e.clientY - rect.top - size/2) + 'px;';
+      btn.appendChild(ripple);
+      setTimeout(function() { ripple.remove(); }, 600);
+    });
+  });
+
+  // 2c. COMPTEURS ANIMÉS sur .stat-number[data-count]
+  function animateCounter(el) {
+    if (el.dataset.animated) return;
+    el.dataset.animated = '1';
+    var raw = el.dataset.count || el.textContent;
+    var suffix = raw.replace(/[0-9]/g, '').trim();
+    var prefix = '';
+    var numStr = raw.replace(/[^0-9]/g, '');
+    if (!numStr) { return; } // valeur non numérique (ex: "24h")
+    var target = parseInt(numStr, 10);
+    var duration = 1800;
+    var start = null;
+    // stocker la valeur finale complète
+    var finalDisplay = el.dataset.display || raw;
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      var val = Math.floor(ease * target);
+      el.textContent = prefix + val + suffix;
+      if (progress < 1) { requestAnimationFrame(step); }
+      else { el.textContent = finalDisplay; }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Observer pour déclencher les compteurs quand visibles
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number').forEach(function(el) {
+    // Stocker la valeur affichée comme data-display et data-count
+    var txt = el.textContent.trim();
+    if (!el.dataset.display) el.dataset.display = txt;
+    if (!el.dataset.count) el.dataset.count = txt;
+    counterObserver.observe(el);
+  });
 
   // 3. REVEAL AU SCROLL — IntersectionObserver
   var revealObserver = new IntersectionObserver(function(entries) {

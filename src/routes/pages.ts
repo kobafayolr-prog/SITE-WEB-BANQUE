@@ -109,19 +109,19 @@ pages.get('/', (c) => {
       <!-- STATS COMPTEURS ANIMÉS -->
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-number" style="font-size:28px;">${store.settings.stat1Value}</span>
+          <span class="stat-number" data-count="${store.settings.stat1Value}" data-display="${store.settings.stat1Value}">${store.settings.stat1Value}</span>
           <span class="stat-label">${store.settings.stat1Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number" style="font-size:28px;">${store.settings.stat2Value}</span>
+          <span class="stat-number" data-count="${store.settings.stat2Value}" data-display="${store.settings.stat2Value}">${store.settings.stat2Value}</span>
           <span class="stat-label">${store.settings.stat2Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number" style="font-size:28px;">${store.settings.stat3Value}</span>
+          <span class="stat-number" data-count="${store.settings.stat3Value}" data-display="${store.settings.stat3Value}">${store.settings.stat3Value}</span>
           <span class="stat-label">${store.settings.stat3Label}</span>
         </div>
         <div class="stat">
-          <span class="stat-number" style="font-size:28px;">${store.settings.stat4Value}</span>
+          <span class="stat-number" data-count="${store.settings.stat4Value}" data-display="${store.settings.stat4Value}">${store.settings.stat4Value}</span>
           <span class="stat-label">${store.settings.stat4Label}</span>
         </div>
       </div>
@@ -138,6 +138,12 @@ pages.get('/', (c) => {
     <div class="scroll-indicator">
       <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
       <span>Défiler</span>
+    </div>
+
+    <!-- FLÈCHE BOUNCE -->
+    <div class="scroll-arrow-bounce" onclick="window.scrollBy({top: window.innerHeight * 0.85, behavior:'smooth'})" aria-label="Voir plus">
+      <i class="fas fa-chevron-down"></i>
+      <i class="fas fa-chevron-down"></i>
     </div>
 
   </section>
